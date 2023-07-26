@@ -30,13 +30,11 @@
   ];
   home.sessionVariables = {
     LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
-    NNN_OPENER = "${config.xdg.configHome}/nnn/plugins/nuke";
     ZELLIJ_AUTO_EXIT = "true";
   };
   home.shellAliases = {
     vim = "nvim";
     cat = "bat";
-    n = "nnn -cH";
   };
   xdg.configFile = {
     nvim = {
@@ -92,26 +90,6 @@
   programs.zellij = {
     enable = true;
     enableZshIntegration = true;
-  };
-  # TODO: Replace with own so we can integrate with zsh, zellij, or neovim 
-  programs.nnn = {
-    enable = true;
-    package = pkgs.nnn.override ({ withNerdIcons = true; });
-    plugins = {
-      src = (pkgs.fetchFromGitHub {
-        owner = "jarun";
-        repo = "nnn";
-        rev = "v4.8";
-        sha256 = "sha256-QbKW2wjhUNej3zoX18LdeUHqjNLYhEKyvPH2MXzp/iQ=";
-      }) + "/plugins";
-      mappings = {
-        n = "nuke";
-      };
-    };
-    bookmarks = {
-      c = "~/.config";
-      p = "~/projects";
-    };
   };
   programs.zsh = {
     enable = true;
