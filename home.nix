@@ -2,6 +2,8 @@
 
 {
   xdg.enable = true;
+  nix.settings.use-xdg-base-directories = true;
+  nix.package = pkgs.nix;
 
   home.username = "wdixon";
   home.homeDirectory = "/home/wdixon";
