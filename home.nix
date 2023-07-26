@@ -1,15 +1,17 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   xdg.enable = true;
   nix.settings.use-xdg-base-directories = true;
   nix.package = pkgs.nix;
+  nixpkgs.config = import ./dotfiles/nixpkgs/config.nix { inherit lib; };
 
   home.username = "wdixon";
   home.homeDirectory = "/home/wdixon";
   home.stateVersion = "23.05"; # Please read the comment before changing.
   home.packages = with pkgs; [
     (python311.withPackages(ps: with ps; [ pip ]))
+    _1password
     cargo
     curl
     fd
@@ -48,6 +50,12 @@
       recursive = false;
       text = "";
       target = "ripgrep/ripgreprc";
+    };
+    nixConfig = {
+      enable = true;
+      recursive = false;
+      source = ./dotfiles/nixpkgs/config.nix;
+      target = "nixpkgs/config.nix";
     };
   };
 
