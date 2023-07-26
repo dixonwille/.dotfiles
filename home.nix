@@ -14,6 +14,7 @@
     curl
     fd
     gawk
+    gcc
     gnumake
     gnutar
     go
@@ -26,7 +27,6 @@
     wget
     wl-clipboard
     wslu
-    zig
   ];
   home.sessionVariables = {
     LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
