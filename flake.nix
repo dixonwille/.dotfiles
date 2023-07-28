@@ -15,15 +15,17 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations."wdixon" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."hmdesk" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ ./home.nix ];
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
+        modules = [./nix/instances/home-desktop.nix];
+      };
+      homeConfigurations."winlap" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [./nix/instances/windows-laptop.nix];
+      };
+      homeConfigurations."splap" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [./nix/instances/synergi-laptop.nix];
       };
     };
 }

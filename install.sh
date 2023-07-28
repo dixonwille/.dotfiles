@@ -1,11 +1,58 @@
 #!/bin/bash -e
 
-# Install Updates
-sudo apt-get update
-sudo apt-get upgrade -y
+# Handle Args
+while [ $# -gt 0 ]; do
+  case $1 in
+    --machine|-m)
+      MACHINE=$2
+      shift
+      ;;
+    --no-upgrade)
+      NO_UPGRADE=1
+      ;;
+    *)
+      {
+        echo "install.sh [--machine]"
 
-# Update WSL Configuration
-sudo tee /etc/wsl.conf > /dev/null << EOF 
+        echo "Options"
+        echo ""
+        echo "--machine|-m: Which machine is the installer running for."
+        echo "    Can be one of 'hmdesk', 'winlap', 'splap'"
+        echo "    'hmdesk' is for the home desktop running wsl"
+        echo "    'winlap' is for a generic windows laptop running wsl"
+        echo "    'splap' is for work laptop provided by synergi"
+      } >&2
+      exit;;
+  esac
+  shift
+done
+
+# Make sure we are using a valid machine name
+if [ "$MACHINE" != "hmdesk" ] 
+  && [ "$MACHINE" != "winlap" ] 
+  && [ "$MACHINE" != "splap" ]
+then
+  printf "\e[1;31mError: --machine is not valid.\e[0m\n" >&2
+  exit 1
+fi
+
+# Set WSL to 1 if machine is on wsl
+if [ "$MACHINE" = "hmdesk" ] 
+  || [ "$MACHINE" = "winlap" ] 
+  || [ "$MACHINE" = "splap" ]
+then
+  WSL=1
+fi
+
+if [ -z "$NO_UPGRADE" ]; then
+  # Install Updates
+  sudo apt-get update
+  sudo apt-get upgrade -y
+fi
+
+if [ -n "$WSL" ]; then
+  # Update WSL Configuration
+  sudo tee /etc/wsl.conf > /dev/null << EOF 
 [boot]
 systemd=true
 
@@ -14,7 +61,8 @@ appendWindowsPath=false
 
 [user]
 default=$USER
-EOF
+  EOF
+fi
 
 # Need some extra arguments for nix
 nixExtra=$(mktemp)
@@ -41,7 +89,7 @@ pushd $HOME/.config/home-manager >/dev/null
 git remote set-url origin git@github.com:dixonwille/dotfiles
 
 # Switch to using the new profile
-nix run home-manager/master -- --flake ".#$USER" switch
+nix run home-manager/master -- --flake ".#$MACHINE" switch
 
 popd
 
@@ -49,7 +97,7 @@ mkdir -p "$home/.local/bin"
 
 cat << EOF > "$HOME/.local/bin/hm"
 #!/bin/sh -e
-home-manager --flake "$HOME/.config/home-manager#$USER" "\$@"
+home-manager --flake "\$HOME/.config/home-manager#$MACHINE" "\$@"
 EOF
 
 chmod +x "$home/.local/bin/hm"
