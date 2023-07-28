@@ -45,5 +45,14 @@ nix run home-manager/master -- --flake ".#$USER" switch
 
 popd
 
+mkdir -p "$home/.local/bin"
+
+cat << EOF > "$HOME/.local/bin/hm"
+#!/bin/sh -e
+home-manager --flake "$HOME/.config/home-manager#$USER" "\$@"
+EOF
+
+chmod +x "$home/.local/bin/hm"
+
 echo
 echo "home-manager has been installed. Please restart to get latest changes."

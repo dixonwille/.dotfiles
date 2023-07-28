@@ -34,6 +34,9 @@
     LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
     ZELLIJ_AUTO_EXIT = "true";
   };
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
   home.shellAliases = {
     vim = "nvim";
     cat = "bat";
