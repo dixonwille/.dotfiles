@@ -28,8 +28,8 @@ while [ $# -gt 0 ]; do
 done
 
 # Make sure we are using a valid machine name
-if [ "$MACHINE" != "hmdesk" ] 
-  && [ "$MACHINE" != "winlap" ] 
+if [ "$MACHINE" != "hmdesk" ] \
+  && [ "$MACHINE" != "winlap" ] \
   && [ "$MACHINE" != "splap" ]
 then
   printf "\e[1;31mError: --machine is not valid.\e[0m\n" >&2
@@ -37,8 +37,8 @@ then
 fi
 
 # Set WSL to 1 if machine is on wsl
-if [ "$MACHINE" = "hmdesk" ] 
-  || [ "$MACHINE" = "winlap" ] 
+if [ "$MACHINE" = "hmdesk" ] \
+  || [ "$MACHINE" = "winlap" ] \
   || [ "$MACHINE" = "splap" ]
 then
   WSL=1
@@ -60,8 +60,8 @@ systemd=true
 appendWindowsPath=false
 
 [user]
-default=$USER
-  EOF
+default=$USER  
+EOF
 fi
 
 # Need some extra arguments for nix
@@ -93,14 +93,14 @@ nix run home-manager/master -- --flake ".#$MACHINE" switch
 
 popd
 
-mkdir -p "$home/.local/bin"
+mkdir -p "$HOME/.local/bin"
 
 cat << EOF > "$HOME/.local/bin/hm"
 #!/bin/sh -e
 home-manager --flake "\$HOME/.config/home-manager#$MACHINE" "\$@"
 EOF
 
-chmod +x "$home/.local/bin/hm"
+chmod +x "$HOME/.local/bin/hm"
 
 echo
 echo "home-manager has been installed. Please restart to get latest changes."
