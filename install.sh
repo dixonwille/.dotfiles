@@ -102,5 +102,9 @@ EOF
 
 chmod +x "$HOME/.local/bin/hm"
 
+if [[ -e "$HOME/.config/systemd/user/onepassword.service" ]]; then
+  systemctl --user enable onepassword.service
+fi
+
 echo
 echo "home-manager has been installed. Please restart to get latest changes."
