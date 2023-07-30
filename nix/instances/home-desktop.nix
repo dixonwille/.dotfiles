@@ -10,6 +10,7 @@
       username = "wdixon";
       gitEmail = "will@willd.io";
     };
+    profiles.wsl._1passwordAgent.enable = true;
     
   };
 }
