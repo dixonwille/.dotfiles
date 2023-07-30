@@ -5,17 +5,28 @@ with lib;
 let
   cfg = config.profiles.base;
 in {
+  imports = [./wsl.nix];
   options.profiles.base = {
     username = mkOption {
       type = types.str;
       example = "wdixon";
       description = mdDoc "The username for which to setup configuration for.";
     };
-
-    gitEmail = mkOption {
-      type = types.str;
-      example = "will@willd.io";
-      description = mdDoc "Email to use for git configuration";
+    _1password.enable = mkEnableOption "Enable 1Password integrations";
+    git = {
+      email = mkOption {
+        type = types.str;
+        example = "will@willd.io";
+        description = mdDoc "Email to use for git configuration";
+      };
+      signing = {
+        enable = mkEnableOption "Enable git signing";
+        key = mkOption {
+          type = types.str;
+          description = "Git signing key to use";
+          default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRa1dR9AYMJDnKX815Y1M1qw8mh2rSRWxktiadaFJsP";
+        };
+      };
     };
   };
 
@@ -70,11 +81,16 @@ in {
 
     programs.git = {
       enable = true;
-      userEmail = cfg.gitEmail;
+      userEmail = cfg.git.email;
       userName = "Will Dixon";
       delta.enable = true;
+      signing = mkIf cfg.git.signing.enable {
+        key = cfg.git.signing.key;
+        signByDefault = true;
+      };
       extraConfig = {
         core = {
+          ignorecase = false;
           autocrlf = "input";
         };
         pull.rebase = true;

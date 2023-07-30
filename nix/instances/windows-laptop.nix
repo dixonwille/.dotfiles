@@ -3,13 +3,19 @@
   imports = [
     ../base
     ../neovim
-    ../wsl.nix
   ];
   config = {
     profiles.base = {
       username = "wdixon";
-      gitEmail = "will@willd.io";
+      _1password.enable = false;
+      git = {
+        email = "will@willd.io";
+        signing.enable = false;
+      };
+      wsl = {
+        enable = true;
+        windows.username = "wdixon";
+      };
     };
-    
   };
 }
