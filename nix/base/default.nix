@@ -109,7 +109,20 @@ in {
       antidote = {
         enable = true;
         plugins = [
+          "ohmyzsh/ohmyzsh path:plugins/git kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/npm kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/dotnet kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/docker kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/kubectl kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/azure kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/zoxide kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/ripgrep kind:fpath"
+          "ohmyzsh/ohmyzsh path:plugins/fd kind:fpath"
+          "zsh-users/zsh-completions"
+          "zsh-users/zsh-autosuggestions"
+          "zsh-users/zsh-syntax-highlighting"
           "belak/zsh-utils path:completion"
+          "ohmyzsh/ohmyzsh path:lib"
           "ohmyzsh/ohmyzsh path:plugins/git"
           "ohmyzsh/ohmyzsh path:plugins/npm"
           "ohmyzsh/ohmyzsh path:plugins/dotnet"
@@ -117,11 +130,6 @@ in {
           "ohmyzsh/ohmyzsh path:plugins/kubectl"
           "ohmyzsh/ohmyzsh path:plugins/azure"
           "ohmyzsh/ohmyzsh path:plugins/zoxide"
-          "ohmyzsh/ohmyzsh path:plugins/ripgrep kind:fpath"
-          "ohmyzsh/ohmyzsh path:plugins/fd kind:fpath"
-          "zsh-users/zsh-autosuggestions"
-          "zsh-users/zsh-completions"
-          "zsh-users/zsh-syntax-highlighting"
         ];
       };
     };
