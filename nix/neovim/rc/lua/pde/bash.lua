@@ -11,10 +11,12 @@ return {
 			vim.list_extend(opts.ensure_installed, { "shellharden", "beautysh" })
 		end,
 	},
-	"neovim/nvim-lspconfig",
-	opts = {
-		servers = {
-			bashls = {},
+	{
+		"neovim/nvim-lspconfig",
+		opts = {
+			servers = {
+				bashls = {},
+			},
 		},
 	},
 	{
