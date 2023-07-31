@@ -30,6 +30,6 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "80"
 
 vim.opt.listchars = "eol:↴,space:⋅,tab:>-,nbsp:+"
-vim.opt.list = true
+--vim.opt.list = true
 
 vim.opt.completeopt = "menuone,noselect"

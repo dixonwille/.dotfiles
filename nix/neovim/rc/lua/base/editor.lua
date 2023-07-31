@@ -8,8 +8,8 @@ return {
 		},
 		cmd = "Telescope",
 		keys = {
-			{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "[F]ind [F]iles" },
-			{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "[F]ind [B]uffers" },
+			{ "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "[S]earch [F]iles" },
+			{ "<leader>sb", "<cmd>Telescope buffers<cr>", desc = "[S]earch [B]uffers" },
 			{ "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "[S]earch [A]utocommands" },
 			{ "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "[S]earch with [G]rep" },
 			{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "[S]earch [H]elp" },
@@ -58,5 +58,24 @@ return {
 				},
 			},
 		},
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			setup = {
+				key_labels = { ["<leader>"] = "SPC" },
+			},
+			defaults = {
+				mode = { "n", "v" },
+				["<leader>c"] = { name = "+Check" },
+				["<leader>s"] = { name = "+Search" },
+			},
+		},
+		config = function(_, opts)
+			local wk = require("which-key")
+			wk.setup(opts.setup)
+			wk.register(opts.defaults)
+		end,
 	},
 }

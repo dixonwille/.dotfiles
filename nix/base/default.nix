@@ -60,8 +60,8 @@ in {
     ];
     home.shellAliases = {
       cat = "bat";
-      mktmpd = "'cd $(mktemp -d)'";
-      mktmpf = "'$EDITOR $(mktemp)'";
+      mktmpd = "cd $(mktemp -d)";
+      mktmpf = "$EDITOR $(mktemp)";
     };
 
     xdg.configFile = {
