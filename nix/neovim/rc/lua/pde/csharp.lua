@@ -27,6 +27,7 @@ return {
 	},
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = { "Hoffs/omnisharp-extended-lsp.nvim" },
 		opts = {
 			servers = {
 				omnisharp = {
@@ -35,8 +36,11 @@ return {
 				},
 			},
 			setup = {
-				omnisharp = function()
+				omnisharp = function(_, opts)
 					local lsp_utils = require("base.lsp.utils")
+					opts.handlers = {
+						["textDocument/definition"] = require("omnisharp_extended").handler,
+					}
 					lsp_utils.on_attach(function(client, _)
 						if client.name == "omnisharp" then
 							fix_tokens(client)
