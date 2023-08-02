@@ -8,7 +8,7 @@ return {
 		event = { "BufReadPost", "BufNewFile" },
 		keys = {
 			{ "<C-space>", desc = "Increment selection" },
-			{ "<bs", desc = "Shrink selection", mode = "x" },
+			{ "<bs>", desc = "Shrink selection", mode = "x" },
 		},
 		config = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
