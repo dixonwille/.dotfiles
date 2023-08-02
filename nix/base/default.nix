@@ -28,6 +28,11 @@ in {
         };
       };
     };
+    extraPackages = mkOption {
+      type = types.listOf types.package;
+      default = [];
+      description = "List of extra packages to install";
+    };
   };
 
   config = {
@@ -49,7 +54,7 @@ in {
       gnutar
       gzip
       unzip
-    ];
+    ] ++ cfg.extraPackages;
 
     home.sessionVariables = {
       LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
@@ -95,6 +100,10 @@ in {
         };
         pull.rebase = true;
       };
+    };
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
     };
     programs.bat.enable = true;
     programs.exa = {
