@@ -51,6 +51,7 @@ in {
       curl
       fd
       gawk
+      gnused
       gnutar
       gzip
       unzip
