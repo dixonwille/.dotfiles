@@ -51,9 +51,11 @@ in {
       curl
       fd
       gawk
+      git
       gnused
       gnutar
       gzip
+      openssh
       unzip
     ] ++ cfg.extraPackages;
 
