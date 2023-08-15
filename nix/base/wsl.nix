@@ -63,7 +63,10 @@ in {
         Description = "1Password SSH Agent";
       };
       Service = {
-        ExecStartPre = "rm -f ${cfg._1password.socketFile}";
+        ExecStartPre = [
+          "-/bin/mkdir -p $(dirname ${cfg._1password.socketFile})"
+          "/bin/rm -f ${cfg._1password.socketFile}"
+        ];
         ExecStart = "${pkgs.socat}/bin/socat UNIX-LISTEN:${cfg._1password.socketFile},fork EXEC:'${cfg._1password.npiperelayPath} -ei -s //./pipe/openssh-ssh-agent',nofork";
       };
       Install = {
