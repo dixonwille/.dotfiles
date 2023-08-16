@@ -2,57 +2,57 @@
 
 # Handle Args
 while [ $# -gt 0 ]; do
-  case $1 in
-    --machine|-m)
-      MACHINE=$2
-      shift
-      ;;
-    --no-upgrade)
-      NO_UPGRADE=1
-      ;;
-    *)
-      {
-        echo "install.sh [--machine]"
+    case $1 in
+        --machine|-m)
+            MACHINE=$2
+            shift
+            ;;
+        --no-upgrade)
+            NO_UPGRADE=1
+            ;;
+        *)
+            {
+                echo "install.sh [--machine]"
 
-        echo "Options"
-        echo ""
-        echo "--machine|-m: Which machine is the installer running for."
-        echo "    Can be one of 'hmdesk', 'winlap', 'splap'"
-        echo "    'hmdesk' is for the home desktop running wsl"
-        echo "    'winlap' is for a generic windows laptop running wsl"
-        echo "    'splap' is for work laptop provided by synergi"
-      } >&2
-      exit;;
-  esac
-  shift
+                echo "Options"
+                echo ""
+                echo "--machine|-m: Which machine is the installer running for."
+                echo "    Can be one of 'hmdesk', 'winlap', 'splap'"
+                echo "    'hmdesk' is for the home desktop running wsl"
+                echo "    'winlap' is for a generic windows laptop running wsl"
+                echo "    'splap' is for work laptop provided by synergi"
+            } >&2
+            exit ;;
+    esac
+    shift
 done
 
 # Make sure we are using a valid machine name
 if [ "$MACHINE" != "hmdesk" ] \
-  && [ "$MACHINE" != "winlap" ] \
-  && [ "$MACHINE" != "splap" ]
+    && [ "$MACHINE" != "winlap" ] \
+    && [ "$MACHINE" != "splap" ]
 then
-  printf "\e[1;31mError: --machine is not valid.\e[0m\n" >&2
-  exit 1
+    printf "\e[1;31mError: --machine is not valid.\e[0m\n" >&2
+    exit 1
 fi
 
 # Set WSL to 1 if machine is on wsl
 if [ "$MACHINE" = "hmdesk" ] \
-  || [ "$MACHINE" = "winlap" ] \
-  || [ "$MACHINE" = "splap" ]
+    || [ "$MACHINE" = "winlap" ] \
+    || [ "$MACHINE" = "splap" ]
 then
-  WSL=1
+    WSL=1
 fi
 
-if [ -z "$NO_UPGRADE" ]; then
-  # Install Updates
-  sudo apt-get update
-  sudo apt-get upgrade -y
+if [ "$NO_UPGRADE" = "" ]; then
+    # Install Updates
+    sudo apt-get update
+    sudo apt-get upgrade -y
 fi
 
-if [ -n "$WSL" ]; then
-  # Update WSL Configuration
-  sudo tee /etc/wsl.conf > /dev/null << EOF 
+if [ "$WSL" != "" ]; then
+    # Update WSL Configuration
+    sudo tee /etc/wsl.conf > /dev/null << EOF
 [boot]
 systemd=true
 
@@ -60,7 +60,7 @@ systemd=true
 appendWindowsPath=false
 
 [user]
-default=$USER  
+default=$USER
 EOF
 fi
 
@@ -72,7 +72,7 @@ use-xdg-base-directories = true
 EOF
 
 # Install nix
-sh <(curl -L https://nixos.org/nix/install) --daemon --yes --nix-extra-conf-file $nixExtra
+sh <(curl -L https://nixos.org/nix/install) --daemon --yes --nix-extra-conf-file "$nixExtra"
 
 # Source RC file again to get the nix executable
 . /etc/bashrc
@@ -81,9 +81,9 @@ sh <(curl -L https://nixos.org/nix/install) --daemon --yes --nix-extra-conf-file
 nix shell nixpkgs#nix-info --command nix-info -m
 
 # Clone down the dotfile repository
-nix flake clone github:dixonwille/dotfiles --dest $HOME/.config/home-manager
+nix flake clone github:dixonwille/dotfiles --dest "$HOME"/.config/home-manager
 
-pushd $HOME/.config/home-manager >/dev/null
+pushd "$HOME"/.config/home-manager >/dev/null
 
 # Use SSH for git
 git remote set-url origin git@github.com:dixonwille/dotfiles
@@ -93,6 +93,10 @@ nix run home-manager/master -- --flake ".#$MACHINE" switch
 
 popd
 
+echo "$(which zsh)" | sudo tee -a /etc/shells
+chsh -s "$(which zsh)"
+
+
 mkdir -p "$HOME/.local/bin"
 
 cat << EOF > "$HOME/.local/bin/hm"
@@ -101,9 +105,10 @@ home-manager --flake "\$HOME/.config/home-manager#$MACHINE" "\$@"
 EOF
 
 chmod +x "$HOME/.local/bin/hm"
+systemctl --user daemon-reload
 
 if [[ -e "$HOME/.config/systemd/user/onepassword.service" ]]; then
-  systemctl --user enable onepassword.service
+    systemctl --user enable onepassword.service
 fi
 
 echo
