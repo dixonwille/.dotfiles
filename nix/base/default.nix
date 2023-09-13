@@ -109,7 +109,7 @@ in {
       nix-direnv.enable = true;
     };
     programs.bat.enable = true;
-    programs.exa = {
+    programs.eza = {
       enable = true;
       enableAliases = true;
       git = true;
