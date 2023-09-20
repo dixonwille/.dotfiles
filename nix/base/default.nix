@@ -5,14 +5,13 @@ with lib;
 let
   cfg = config.profiles.base;
 in {
-  imports = [./wsl.nix];
+  imports = [./_1password.nix ./wsl.nix];
   options.profiles.base = {
     username = mkOption {
       type = types.str;
       example = "wdixon";
       description = mdDoc "The username for which to setup configuration for.";
     };
-    _1password.enable = mkEnableOption "Enable 1Password integrations";
     git = {
       email = mkOption {
         type = types.str;
