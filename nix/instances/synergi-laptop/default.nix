@@ -4,6 +4,7 @@
     ../../base
     ../../neovim
     ./azssh.nix
+    ./dotnet.nix
   ];
   config = {
     profiles.base = {
@@ -18,6 +19,17 @@
         enable = true;
         windows.username = "wdixon";
       };
+      extraPackages = with pkgs; [
+        powershell
+        azure-cli
+        go
+        nodejs_18
+        azure-functions-core-tools
+        (with dotnetCorePackages; combinePackages [
+          sdk_7_0
+          sdk_6_0
+        ])
+      ];
     };
   };
 }

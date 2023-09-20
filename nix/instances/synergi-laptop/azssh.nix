@@ -3,10 +3,10 @@
 with lib;
 
 let 
-   cfg = config.profiles.synergi-laptop;
+   cfg = config.profiles.synergi-laptop.azssh;
    azDevOpsCommitFile = ".ssh/azDevOpsCommit.pub";
 in {
-  options.profiles.synergi-laptop = {};
+  options.profiles.synergi-laptop.azssh = {};
   config = {
     home.file = {
       "${azDevOpsCommitFile}" = {
