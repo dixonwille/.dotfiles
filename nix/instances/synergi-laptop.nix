@@ -7,7 +7,7 @@
   config = {
     profiles.base = {
       username = "wdixon";
-      _1password.enable = false;
+      _1password.enable = true;
       git = {
         email = "wdixon@synergipartners.com";
         signing.enable = false;
