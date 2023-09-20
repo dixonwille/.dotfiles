@@ -4,30 +4,25 @@
 with lib;
 
 let 
-   cfg = config.profiles.synergi-laptop.dotnet;
-   pluginDir = "plugins/netcore/CredentialProvider.Microsoft";
-   azCredsProvider = pkgs.stdenv.mkDerivation {
-    name = "azure-artifacts-credprovider";
-    version = "1.0.9";
-    src = pkgs.fetchurl {
-      url = "https://github.com/microsoft/artifacts-credprovider/releases/download/v${version}/Microsoft.Net6.NuGet.CredentialProvider.tar.gz";
-      hash = "sha256-7SNpqz/0c1RZ1G0we68ZGd2ucrsKFBp7fAD/7j7n9Bc=";
-    };
-    sourceRoot = pluginDir;
-    buildInputs = [ pkgs.dotnet-sdk ];
-    installPhase = ''
-      mkdir -p $out
-      cp -r * $out/.
-    '';
-   };
+  cfg = config.profiles.synergi-laptop.dotnet;
+  attrs = {
+    inherit pkgs;
+    stdenv = pkgs.stdenv;
+    fetchurl = pkgs.fetchurl;
+  };
+  azCredsProvider = (import ./derivations/az-cred-provider.nix attrs);
+  sdk_5_0 = (import ./derivations/dotnet-sdk-5-0.nix attrs);
+  sdk_3_1 = (import ./derivations/dotnet-sdk-3-1.nix attrs);
 in {
   options.profiles.synergi-laptop.dotnet = {};
   config = {
-    home.file = {
-      ".nuget/${pluginDir}" = {
-        enable = true;
-        source = azCredsProvider;
-      };
-    };
+    home.packages = with pkgs; [
+      (dotnetCorePackages.combinePackages [
+        dotnetCorePackages.sdk_7_0
+        dotnetCorePackages.sdk_6_0
+        sdk_5_0
+        sdk_3_1
+      ])
+    ];
   };
-}
+} // azCredsProvider
