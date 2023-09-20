@@ -93,9 +93,8 @@ nix run home-manager/master -- --flake ".#$MACHINE" switch
 
 popd
 
-echo "$(which zsh)" | sudo tee -a /etc/shells
-chsh -s "$(which zsh)"
-
+echo "$HOME/.local/state/nix/profile/bin/zsh" | sudo tee -a /etc/shells
+chsh -s "$HOME/.local/state/nix/profile/bin/zsh"
 
 mkdir -p "$HOME/.local/bin"
 
@@ -109,6 +108,7 @@ systemctl --user daemon-reload
 
 if [[ -e "$HOME/.config/systemd/user/onepassword.service" ]]; then
     systemctl --user enable onepassword.service
+    systemctl --user start onepassword.service
 fi
 
 echo

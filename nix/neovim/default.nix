@@ -5,8 +5,7 @@ with lib;
 let
   cfg = config.profiles.neovim;
 in {
-  options.profiles.neovim = {
-  };
+  options.profiles.neovim = {};
   config = {
     home.packages = with pkgs; [
       (python311.withPackages(ps: with ps; [ pip ]))

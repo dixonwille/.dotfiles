@@ -56,7 +56,9 @@ in {
       };
     };
 
-    home.sessionVariables.SSH_AUTH_SOCK = mkIf config.profiles.base._1password.enable cfg._1password.socketFile;
+    home.sessionVariables = mkIf config.profiles.base._1password.enable {
+      SSH_AUTH_SOCK = cfg._1password.socketFile;
+    };
     systemd.user.services.onepassword = mkIf config.profiles.base._1password.enable {
       Unit = {
         After = [ "network.target" ];

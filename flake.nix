@@ -25,7 +25,7 @@
       };
       homeConfigurations."splap" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [./nix/instances/synergi-laptop.nix];
+        modules = [./nix/instances/synergi-laptop];
       };
     };
 }
