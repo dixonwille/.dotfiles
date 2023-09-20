@@ -35,7 +35,7 @@ return {
 			{ "<leader>b", "<cmd>Neotree toggle<cr>", desc = "Open File Tree" },
 		},
 		opts = {
-			close_if_last_window = true,
+			close_if_last_window = false,
 			filesystem = {
 				follow_current_file = {
 					enabled = true,
