@@ -86,7 +86,7 @@ nix flake clone github:dixonwille/dotfiles --dest "$HOME"/.config/home-manager
 pushd "$HOME"/.config/home-manager >/dev/null
 
 # Use SSH for git
-git remote set-url origin git@github.com:dixonwille/dotfiles
+git remote set-url origin git@github.com:dixonwille/dotfiles.git
 
 # Switch to using the new profile
 nix run home-manager/master -- --flake ".#$MACHINE" switch
