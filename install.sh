@@ -96,14 +96,6 @@ popd
 echo "$HOME/.local/state/nix/profile/bin/zsh" | sudo tee -a /etc/shells
 chsh -s "$HOME/.local/state/nix/profile/bin/zsh"
 
-mkdir -p "$HOME/.local/bin"
-
-cat << EOF > "$HOME/.local/bin/hm"
-#!/bin/sh -e
-home-manager --flake "\$HOME/.config/home-manager#$MACHINE" "\$@"
-EOF
-
-chmod +x "$HOME/.local/bin/hm"
 systemctl --user daemon-reload
 
 if [[ -e "$HOME/.config/systemd/user/onepassword.service" ]]; then

@@ -9,7 +9,19 @@
   config = {
     profiles.base = {
       username = "wdixon";
-      _1password.enable = true;
+      machine = "splap";
+      _1password = {
+        enable = true;
+        accounts = {
+          my = {
+            email = "dixonwille@gmail.com";
+          };
+          sy = {
+            address = "synergipartners.1password.com";
+            email = "wdixon@synergipartners.com";
+          };
+        };
+      };
       git = {
         email = "wdixon@synergipartners.com";
         signing.enable = true;

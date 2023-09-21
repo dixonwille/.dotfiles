@@ -10,13 +10,17 @@ in {
     username = mkOption {
       type = types.str;
       example = "wdixon";
-      description = mdDoc "The username for which to setup configuration for.";
+      description = "The username for which to setup configuration for.";
+    };
+    machine = mkOption {
+      type = types.str;
+      description = "The machine name used when using the install script";
     };
     git = {
       email = mkOption {
         type = types.str;
         example = "will@willd.io";
-        description = mdDoc "Email to use for git configuration";
+        description = "Email to use for git configuration";
       };
       signing = {
         enable = mkEnableOption "Enable git signing";
@@ -61,6 +65,15 @@ in {
     home.sessionVariables = {
       LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
       ZELLIJ_AUTO_EXIT = "true";
+    };
+    home.file = {
+      "${config.home.homeDirectory}/.local/bin/hm" = {
+        executable = true;
+        text = ''
+          #!/bin/sh -e
+          home-manager --flake "${config.xdg.configHome}/home-manager#${cfg.machine}" "$@"
+        '';
+      };
     };
     home.sessionPath = [
       "$HOME/.local/bin"

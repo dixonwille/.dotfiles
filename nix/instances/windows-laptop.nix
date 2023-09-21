@@ -7,6 +7,7 @@
   config = {
     profiles.base = {
       username = "wdixon";
+      machine = "winlap";
       _1password.enable = true;
       git = {
         email = "will@willd.io";
