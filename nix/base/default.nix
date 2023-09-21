@@ -65,6 +65,7 @@ in {
     home.sessionVariables = {
       LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
       ZELLIJ_AUTO_EXIT = "true";
+      DOCKER_CONFIG = "${config.xdg.configHome}/docker";
     };
     home.file = {
       "${config.home.homeDirectory}/.local/bin/hm" = {

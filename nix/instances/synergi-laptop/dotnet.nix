@@ -1,4 +1,3 @@
-
 { config, pkgs, lib, ... }:
 
 with lib;
@@ -24,5 +23,9 @@ in {
         sdk_3_1
       ])
     ];
+    home.sessionVariables = {
+      NUGET_PACKAGES = "${config.xdg.cacheHome}/NuGetPackages";
+      OMNISHARPHOME = "${config.xdg.configHome}/omnisharp";
+    };
   };
 } // azCredsProvider

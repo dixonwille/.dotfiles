@@ -23,6 +23,10 @@ in {
     home.shellAliases = {
       vim = "nvim";
     };
+    home.sessionVariables = {
+      CARGO_HOME = "${config.xdg.dataHome}/cargo";
+      GOPATH = "${config.xdg.dataHome}/go";
+    };
     xdg.configFile = {
       nvim = {
         enable = true;

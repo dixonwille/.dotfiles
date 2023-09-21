@@ -5,6 +5,7 @@
     ../../neovim
     ./az-ssh.nix
     ./dotnet.nix
+    ./npm.nix
   ];
   config = {
     profiles.base = {
@@ -35,9 +36,14 @@
         powershell
         azure-cli
         go
-        nodejs_18
         azure-functions-core-tools
       ];
+    };
+    home.sessionVariables = {
+      AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
+      AZURE_DEVOPS_CACHE_DIR = "${config.xdg.cacheHome}/azure-devops";
+      SY_PROJECTS_DIR = "${config.home.homeDirectory}/projects/synergi";
+      SY_DOCUMENTATION_REPOSITORY = "$SY_PROJECTS_DIR/Documentation";
     };
   };
 }

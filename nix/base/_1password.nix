@@ -68,7 +68,7 @@ let
     fi
   '' + lib.optionalString (hasSessionVariables short account)''
     $VERBOSE_ECHO "Injecting 1Password secrets for ${short}"
-    op inject < "${cfg.envPackages."${short}"}" >> "${envFilePath}"
+    cat "${cfg.envPackages."${short}"}" | op inject >> "${envFilePath}"
   '';
 
   activation = ''
