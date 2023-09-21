@@ -32,13 +32,13 @@
         enable = true;
         windows.username = "wdixon";
       };
-      extraPackages = with pkgs; [
-        powershell
-        azure-cli
-        go
-        azure-functions-core-tools
-      ];
     };
+    home.packages = with pkgs; [
+      powershell
+      azure-cli
+      go
+      azure-functions-core-tools
+    ];
     home.sessionVariables = {
       AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
       AZURE_DEVOPS_CACHE_DIR = "${config.xdg.cacheHome}/azure-devops";

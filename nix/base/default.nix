@@ -31,11 +31,6 @@ in {
         };
       };
     };
-    extraPackages = mkOption {
-      type = types.listOf types.package;
-      default = [];
-      description = "List of extra packages to install";
-    };
   };
 
   config = {
@@ -60,7 +55,7 @@ in {
       gzip
       openssh
       unzip
-    ] ++ cfg.extraPackages;
+    ];
 
     home.sessionVariables = {
       LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
