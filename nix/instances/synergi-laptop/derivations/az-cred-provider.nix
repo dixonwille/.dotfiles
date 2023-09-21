@@ -1,12 +1,12 @@
-{ stdenv, fetchurl, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   pname = "Microsoft.Net6.NuGet.CredentialProvider";
   version = "1.0.9";
   pluginDir = "plugins/netcore/CredentialProvider.Microsoft";
-  der = stdenv.mkDerivation {
+  der = pkgs.stdenv.mkDerivation {
     inherit version pname;
-    src = fetchurl {
+    src = pkgs.fetchurl {
       url = "https://github.com/microsoft/artifacts-credprovider/releases/download/v${version}/${pname}.tar.gz";
       hash = "sha256-7SNpqz/0c1RZ1G0we68ZGd2ucrsKFBp7fAD/7j7n9Bc=";
     };

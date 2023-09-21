@@ -1,19 +1,16 @@
-{ config, pkgs, lib, ... }:
+attrs@{ config, pkgs, lib, ... }:
 
 with lib;
 
 let 
   cfg = config.profiles.synergi-laptop.dotnet;
-  attrs = {
-    inherit pkgs;
-    stdenv = pkgs.stdenv;
-    fetchurl = pkgs.fetchurl;
-  };
-  azCredsProvider = (import ./derivations/az-cred-provider.nix attrs);
   sdk_5_0 = (import ./derivations/dotnet-sdk-5-0.nix attrs);
   sdk_3_1 = (import ./derivations/dotnet-sdk-3-1.nix attrs);
 in {
   options.profiles.synergi-laptop.dotnet = {};
+  imports = [
+    ./derivations/az-cred-provider.nix
+  ];
   config = {
     home.packages = with pkgs; [
       (dotnetCorePackages.combinePackages [
@@ -28,4 +25,4 @@ in {
       OMNISHARPHOME = "${config.xdg.configHome}/omnisharp";
     };
   };
-} // azCredsProvider
+} 
