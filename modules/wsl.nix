@@ -4,9 +4,9 @@
 with lib;
 
 let
-  cfg = config.profiles.base.wsl;
+  cfg = config.dixonwille.wsl;
 in {
-  options.profiles.base.wsl = {
+  options.dixonwille.wsl = {
     enable = mkEnableOption "This is a WSL environment";
     windows = {
       username = mkOption {
@@ -40,14 +40,14 @@ in {
     ]
     ++ optional config.dixonwille.onepassword.enable pkgs.socat;
 
-    profiles.base.wsl.windows.username = mkDefault config.home.username;
-    profiles.base.wsl.windows.homeDirectory = mkDefault "/mnt/c/Users/${cfg.windows.username}";
+    dixonwille.wsl.windows.username = mkDefault config.home.username;
+    dixonwille.wsl.windows.homeDirectory = mkDefault "/mnt/c/Users/${cfg.windows.username}";
 
-    profiles.base.wsl.onepassword.socketFile = mkDefault "${config.xdg.dataHome}/onepassword/agent.sock";
-    profiles.base.wsl.onepassword.npiperelayPath = mkDefault "${cfg.windows.homeDirectory}/bin/npiperelay.exe";
-    profiles.base.wsl.onepassword.signExe = mkDefault "${cfg.windows.homeDirectory}/AppData/Local/1Password/app/8/op-ssh-sign.exe";
+    dixonwille.wsl.onepassword.socketFile = mkDefault "${config.xdg.dataHome}/onepassword/agent.sock";
+    dixonwille.wsl.onepassword.npiperelayPath = mkDefault "${cfg.windows.homeDirectory}/bin/npiperelay.exe";
+    dixonwille.wsl.onepassword.signExe = mkDefault "${cfg.windows.homeDirectory}/AppData/Local/1Password/app/8/op-ssh-sign.exe";
 
-    programs.git.extraConfig = mkIf (config.profiles.base.git.signing.enable && config.dixonwille.onepassword.enable) {
+    programs.git.extraConfig = mkIf (config.dixonwille.base.git.signing.enable && config.dixonwille.onepassword.enable) {
       gpg = {
         format = "ssh";
         ssh = {

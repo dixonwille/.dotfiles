@@ -1,15 +1,23 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    ../../base
-    ../../neovim
-    ../../onepassword
+    ../../modules/base
     ./az-ssh.nix
     ./dotnet.nix
     ./npm.nix
   ];
   config = {
     dixonwille = {
+      neovim.enable = true;
+      base = {
+        username = "wdixon";
+        machine = "splap";
+        git = {
+          email = "wdixon@synergipartners.com";
+          signing.enable = true;
+          signing.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE1eoaIykCQPVIoA4B36RRNthzqcxBMjVVaQLLK8Xks2";
+        };
+      };
       onepassword = {
         enable = true;
         accounts = {
@@ -21,15 +29,6 @@
             email = "wdixon@synergipartners.com";
           };
         };
-      };
-    };
-    profiles.base = {
-      username = "wdixon";
-      machine = "splap";
-      git = {
-        email = "wdixon@synergipartners.com";
-        signing.enable = true;
-        signing.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE1eoaIykCQPVIoA4B36RRNthzqcxBMjVVaQLLK8Xks2";
       };
       wsl = {
         enable = true;

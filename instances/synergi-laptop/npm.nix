@@ -13,7 +13,7 @@ in {
     home.sessionVariables = {
       NPM_CONFIG_USERCONFIG="${config.xdg.configHome}/npm/npmrc";
     };
-    profiles.base._1password.accounts.sy.sessionVariables = {
+    dixonwille.onepassword.accounts.sy.sessionVariables = {
       SYNERGI_ARTIFACTS_PAT = "op://tezpe7lkur4l2faazekanwftw4/lti7rfhwjxum6swoakcyhgyf7y/b64credential";
     };
     xdg.configFile = {

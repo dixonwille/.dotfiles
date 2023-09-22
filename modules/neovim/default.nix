@@ -3,10 +3,12 @@
 with lib;
 
 let
-  cfg = config.profiles.neovim;
+  cfg = config.dixonwille.neovim;
 in {
-  options.profiles.neovim = {};
-  config = {
+  options.dixonwille.neovim = {
+    enable = mkEnableOption "Enable neovim integrations";
+  };
+  config = mkIf cfg.enable {
     home.packages = with pkgs; [
       (python311.withPackages(ps: with ps; [ pip ]))
       cargo

@@ -3,10 +3,14 @@
 with lib;
 
 let
-  cfg = config.profiles.base;
+  cfg = config.dixonwille.base;
 in {
-  imports = [./wsl.nix];
-  options.profiles.base = {
+  imports = [
+    ../neovim
+    ../onepassword
+    ../wsl.nix
+  ];
+  options.dixonwille.base = {
     username = mkOption {
       type = types.str;
       example = "wdixon";

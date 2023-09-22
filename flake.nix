@@ -17,15 +17,15 @@
     in {
       homeConfigurations."hmdesk" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [./nix/instances/home-desktop.nix];
+        modules = [./instances/home-desktop.nix];
       };
       homeConfigurations."winlap" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [./nix/instances/windows-laptop.nix];
+        modules = [./instances/windows-laptop.nix];
       };
       homeConfigurations."splap" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [./nix/instances/synergi-laptop];
+        modules = [./instances/synergi-laptop];
       };
     };
 }

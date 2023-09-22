@@ -1,12 +1,11 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    ../base
-    ../onepassword
-    ../neovim
+    ../modules/base
   ];
   config = {
     dixonwille = {
+      neovim.enable = true;
       onepassword = {
         enable = true;
         accounts = {
@@ -15,13 +14,13 @@
           };
         };
       };
-    };
-    profiles.base = {
-      username = "wdixon";
-      machine = "winlap";
-      git = {
-        email = "will@willd.io";
-        signing.enable = true;
+      base = {
+        username = "wdixon";
+        machine = "hmdesk";
+        git = {
+          email = "will@willd.io";
+          signing.enable = true;
+        };
       };
       wsl = {
         enable = true;
