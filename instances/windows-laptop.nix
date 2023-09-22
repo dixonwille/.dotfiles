@@ -6,14 +6,7 @@
   config = {
     dixonwille = {
       neovim.enable = true;
-      onepassword = {
-        enable = true;
-        accounts = {
-          my = {
-            email = "dixonwille@gmail.com";
-          };
-        };
-      };
+      onepassword.enable = true;
       base = {
         username = "wdixon";
         machine = "winlap";

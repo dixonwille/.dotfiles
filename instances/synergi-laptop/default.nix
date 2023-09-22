@@ -21,9 +21,6 @@
       onepassword = {
         enable = true;
         accounts = {
-          my = {
-            email = "dixonwille@gmail.com";
-          };
           sy = {
             address = "synergipartners.1password.com";
             email = "wdixon@synergipartners.com";
@@ -33,6 +30,9 @@
       wsl = {
         enable = true;
         windows.username = "wdixon";
+        symLinks = let documentationPath = "projects/synergi/Documentation"; in {
+          "${config.dixonwille.wsl.windows.homeDirectory}/${documentationPath}" = "${config.home.homeDirectory}/${documentationPath}";
+        };
       };
     };
     home.packages = with pkgs; [
@@ -45,7 +45,7 @@
       AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
       AZURE_DEVOPS_CACHE_DIR = "${config.xdg.cacheHome}/azure-devops";
       SY_PROJECTS_DIR = "${config.home.homeDirectory}/projects/synergi";
-      SY_DOCUMENTATION_REPOSITORY = "$SY_PROJECTS_DIR/Documentation";
+      SY_DOCUMENTATION_REPOSITORY = "${config.home.sessionVariables.SY_PROJECTS_DIR}/Documentation";
     };
   };
 }

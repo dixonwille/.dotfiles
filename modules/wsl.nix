@@ -5,6 +5,9 @@ with lib;
 
 let
   cfg = config.dixonwille.wsl;
+  newLineSep = fn: input: lib.concatStringsSep "\n" (lib.mapAttrsToList fn input);
+  link = from: to: ''createWSLSymLinkIfNotExists "${from}" "${to}"'';
+  linkAll = newLineSep link;
 in {
   options.dixonwille.wsl = {
     enable = mkEnableOption "This is a WSL environment";
@@ -17,6 +20,16 @@ in {
         type = types.str;
         description = "Home directory of the windows user mapped in WSL";
       };
+    };
+    symLinks =  mkOption {
+      default = {};
+      type = with types; attrsOf str;
+      description = "SymLinks to link to the home directory";
+      example = listeralExpression ''
+        {
+          "${dixonwille.wsl.windows.homeDirectory}/SomeFolder" = "${config.home.homeDirectory}/SomeFolder";
+        }
+      '';
     };
     onepassword = {
       socketFile = mkOption {
@@ -74,6 +87,21 @@ in {
       Install = {
         WantedBy = ["default.target"];
       };
+    };
+    home.activation = mkIf (cfg.symLinks != {}) {
+      wslSymLinks = hm.dag.entryAfter ["writeBoundary"] ''
+        function createWSLSymLinkIfNotExists() {
+          local from="$1"
+          local to="$2"
+
+          if [[ ! -h "$to" ]]; then
+            $VERBOSE_RUN _i "Creating link from %s to %s" "$from" "$to"
+            $DRY_RUN_CMD mkdir -p "$(dirname "$to")"
+            $DRY_RUN_CMD ln -s "$from" "$to"
+          fi
+        }
+        ${linkAll cfg.symLinks}
+      '';
     };
   };
 }

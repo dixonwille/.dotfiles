@@ -22,9 +22,6 @@ in {
       tree-sitter
       wget
     ];
-    home.shellAliases = {
-      vim = "nvim";
-    };
     home.sessionVariables = {
       CARGO_HOME = "${config.xdg.dataHome}/cargo";
       GOPATH = "${config.xdg.dataHome}/go";
@@ -40,6 +37,8 @@ in {
     programs.neovim = {
       enable = true;
       defaultEditor = true;
+      vimAlias = true;
+      vimdiffAlias = true;
     };
   };
 }

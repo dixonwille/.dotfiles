@@ -24,8 +24,8 @@ let
         description = "Environment Variables to set that are secrets read from 1Password";
         example = literalExpression ''
           {
-            SOME_SECRET = "op://private/super-secret/password"
-            ANOTHER_SECRET = "op://Shared/another-secret/key"
+            SOME_SECRET = "op://private/super-secret/password";
+            ANOTHER_SECRET = "op://Shared/another-secret/key";
           }
         '';
       };
@@ -86,7 +86,7 @@ in {
       ${builtins.readFile ./activate.sh}
     '' + lib.optionalString (anyAccountHasSessionVariables cfg.accounts) ''
       if [ ! -v DRY_RUN ]; then
-        mkdir -p $(dirname "${envFilePath}")
+        mkdir -p "$(dirname "${envFilePath}")"
         touch "${envFilePath}"
         chmod 0600 "${envFilePath}"
       fi

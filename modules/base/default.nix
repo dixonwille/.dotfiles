@@ -75,6 +75,16 @@ in {
         '';
       };
     };
+    
+    dixonwille.onepassword.accounts = {
+      my.email = "dixonwille@gmail.com";
+    };
+
+    dixonwille.wsl.symLinks = {
+      "${config.dixonwille.wsl.windows.homeDirectory}/Desktop" = "${config.home.homeDirectory}/Desktop";
+      "${config.dixonwille.wsl.windows.homeDirectory}/Downloads" = "${config.home.homeDirectory}/Downloads";
+    };
+
     home.sessionPath = [
       "$HOME/.local/bin"
     ];
