@@ -85,7 +85,7 @@ in {
     home.activation.onePassword = hm.dag.entryAfter ["writeBoundary"] (''
       ${builtins.readFile ./activate.sh}
     '' + lib.optionalString (anyAccountHasSessionVariables cfg.accounts) ''
-      if [[ -z "$DRY_RUN" ]]; then
+      if [ ! -v DRY_RUN ]; then
         mkdir -p $(dirname "${envFilePath}")
         touch "${envFilePath}"
         chmod 0600 "${envFilePath}"
