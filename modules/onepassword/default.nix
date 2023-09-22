@@ -88,6 +88,7 @@ in {
       if [ ! -v DRY_RUN ]; then
         mkdir -p "$(dirname "${envFilePath}")"
         touch "${envFilePath}"
+        > "${envFilePath}"
         chmod 0600 "${envFilePath}"
       fi
     '' + ''
