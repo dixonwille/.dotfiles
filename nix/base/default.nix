@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.profiles.base;
 in {
-  imports = [./_1password.nix ./wsl.nix];
+  imports = [./wsl.nix];
   options.profiles.base = {
     username = mkOption {
       type = types.str;

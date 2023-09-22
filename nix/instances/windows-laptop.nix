@@ -2,13 +2,23 @@
 {
   imports = [
     ../base
+    ../onepassword
     ../neovim
   ];
   config = {
+    dixonwille = {
+      onepassword = {
+        enable = true;
+        accounts = {
+          my = {
+            email = "dixonwille@gmail.com";
+          };
+        };
+      };
+    };
     profiles.base = {
       username = "wdixon";
       machine = "winlap";
-      _1password.enable = true;
       git = {
         email = "will@willd.io";
         signing.enable = true;

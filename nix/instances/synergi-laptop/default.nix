@@ -3,15 +3,14 @@
   imports = [
     ../../base
     ../../neovim
+    ../../onepassword
     ./az-ssh.nix
     ./dotnet.nix
     ./npm.nix
   ];
   config = {
-    profiles.base = {
-      username = "wdixon";
-      machine = "splap";
-      _1password = {
+    dixonwille = {
+      onepassword = {
         enable = true;
         accounts = {
           my = {
@@ -23,6 +22,10 @@
           };
         };
       };
+    };
+    profiles.base = {
+      username = "wdixon";
+      machine = "splap";
       git = {
         email = "wdixon@synergipartners.com";
         signing.enable = true;

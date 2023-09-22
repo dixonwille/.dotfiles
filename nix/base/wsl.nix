@@ -18,7 +18,7 @@ in {
         description = "Home directory of the windows user mapped in WSL";
       };
     };
-    _1password = {
+    onepassword = {
       socketFile = mkOption {
         type = types.str;
         description = "Path to the socket file";
@@ -38,38 +38,38 @@ in {
       wl-clipboard
       wslu
     ]
-    ++ optional config.profiles.base._1password.enable pkgs.socat;
+    ++ optional config.dixonwille.onepassword.enable pkgs.socat;
 
     profiles.base.wsl.windows.username = mkDefault config.home.username;
     profiles.base.wsl.windows.homeDirectory = mkDefault "/mnt/c/Users/${cfg.windows.username}";
 
-    profiles.base.wsl._1password.socketFile = mkDefault "${config.xdg.dataHome}/onepassword/agent.sock";
-    profiles.base.wsl._1password.npiperelayPath = mkDefault "${cfg.windows.homeDirectory}/bin/npiperelay.exe";
-    profiles.base.wsl._1password.signExe = mkDefault "${cfg.windows.homeDirectory}/AppData/Local/1Password/app/8/op-ssh-sign.exe";
+    profiles.base.wsl.onepassword.socketFile = mkDefault "${config.xdg.dataHome}/onepassword/agent.sock";
+    profiles.base.wsl.onepassword.npiperelayPath = mkDefault "${cfg.windows.homeDirectory}/bin/npiperelay.exe";
+    profiles.base.wsl.onepassword.signExe = mkDefault "${cfg.windows.homeDirectory}/AppData/Local/1Password/app/8/op-ssh-sign.exe";
 
-    programs.git.extraConfig = mkIf (config.profiles.base.git.signing.enable && config.profiles.base._1password.enable) {
+    programs.git.extraConfig = mkIf (config.profiles.base.git.signing.enable && config.dixonwille.onepassword.enable) {
       gpg = {
         format = "ssh";
         ssh = {
-          program = cfg._1password.signExe;
+          program = cfg.onepassword.signExe;
         };
       };
     };
 
-    home.sessionVariables = mkIf config.profiles.base._1password.enable {
-      SSH_AUTH_SOCK = cfg._1password.socketFile;
+    home.sessionVariables = mkIf config.dixonwille.onepassword.enable {
+      SSH_AUTH_SOCK = cfg.onepassword.socketFile;
     };
-    systemd.user.services.onepassword = mkIf config.profiles.base._1password.enable {
+    systemd.user.services.onepassword = mkIf config.dixonwille.onepassword.enable {
       Unit = {
         After = [ "network.target" ];
         Description = "1Password SSH Agent";
       };
       Service = {
         ExecStartPre = [
-          "-/bin/mkdir -p $(dirname ${cfg._1password.socketFile})"
-          "/bin/rm -f ${cfg._1password.socketFile}"
+          "-/bin/mkdir -p $(dirname ${cfg.onepassword.socketFile})"
+          "/bin/rm -f ${cfg.onepassword.socketFile}"
         ];
-        ExecStart = "${pkgs.socat}/bin/socat UNIX-LISTEN:${cfg._1password.socketFile},fork EXEC:'${cfg._1password.npiperelayPath} -ei -s //./pipe/openssh-ssh-agent',nofork";
+        ExecStart = "${pkgs.socat}/bin/socat UNIX-LISTEN:${cfg.onepassword.socketFile},fork EXEC:'${cfg.onepassword.npiperelayPath} -ei -s //./pipe/openssh-ssh-agent',nofork";
       };
       Install = {
         WantedBy = ["default.target"];
