@@ -40,7 +40,11 @@ return {
 				enable = true,
 				enable_autocmd = false,
 			},
-			ensure_installed = {},
+			ensure_installed = {
+				"gitcommit",
+				"git_rebase",
+				"gitignore",
+			},
 			incremental_selection = {
 				enable = true,
 				keymaps = {
