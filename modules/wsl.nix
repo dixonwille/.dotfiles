@@ -53,6 +53,12 @@ in {
     ]
     ++ optional config.dixonwille.onepassword.enable pkgs.socat;
 
+    home.sessionVariables = {
+      BROWSER = "wslview";
+    } // optionalAttrs config.dixonwille.onepassword.enable {
+      SSH_AUTH_SOCK = cfg.onepassword.socketFile;
+    };
+
     dixonwille.wsl.windows.username = mkDefault config.home.username;
     dixonwille.wsl.windows.homeDirectory = mkDefault "/mnt/c/Users/${cfg.windows.username}";
 
@@ -69,9 +75,6 @@ in {
       };
     };
 
-    home.sessionVariables = mkIf config.dixonwille.onepassword.enable {
-      SSH_AUTH_SOCK = cfg.onepassword.socketFile;
-    };
     systemd.user.services.onepassword = mkIf config.dixonwille.onepassword.enable {
       Unit = {
         After = [ "network.target" ];

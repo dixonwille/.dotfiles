@@ -7,6 +7,11 @@ let
 in {
   options.dixonwille.neovim = {
     enable = mkEnableOption "Enable neovim integrations";
+    goPackage = mkOption {
+      type = types.package;
+      description = "The go package to use";
+      default = pkgs.go;
+    };
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
@@ -15,7 +20,7 @@ in {
       curl
       gcc
       gnumake
-      go
+      cfg.goPackage
       lua54Packages.luarocks
       nodejs_18
       ruby

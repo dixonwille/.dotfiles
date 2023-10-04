@@ -59,6 +59,7 @@ in {
       gzip
       openssh
       unzip
+      xdg-utils
     ];
 
     home.sessionVariables = {

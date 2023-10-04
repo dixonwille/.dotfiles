@@ -8,7 +8,10 @@
   ];
   config = {
     dixonwille = {
-      neovim.enable = true;
+      neovim = {
+        enable = true;
+        goPackage = pkgs.go_1_21;
+      };
       base = {
         username = "wdixon";
         machine = "splap";
@@ -38,7 +41,6 @@
     home.packages = with pkgs; [
       powershell
       azure-cli
-      go
       azure-functions-core-tools
     ];
     home.sessionVariables = {
