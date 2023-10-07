@@ -8,10 +8,7 @@
   ];
   config = {
     dixonwille = {
-      neovim = {
-        enable = true;
-        goPackage = pkgs.go_1_21;
-      };
+      neovim.enable = true;
       base = {
         username = "wdixon";
         machine = "splap";

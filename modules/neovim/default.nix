@@ -10,7 +10,7 @@ in {
     goPackage = mkOption {
       type = types.package;
       description = "The go package to use";
-      default = pkgs.go;
+      default = pkgs.go_1_21;
     };
   };
   config = mkIf cfg.enable {
