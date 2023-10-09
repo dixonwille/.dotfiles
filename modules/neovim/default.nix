@@ -12,10 +12,15 @@ in {
       description = "The go package to use";
       default = pkgs.go_1_21;
     };
+    pythonPackage = mkOption {
+      type = types.package;
+      description = "The go package to use";
+      default = pkgs.python3;
+    };
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      (python311.withPackages(ps: with ps; [ pip ]))
+      (cfg.pythonPackage.withPackages(ps: with ps; [ pip ]))
       cargo
       curl
       gcc
