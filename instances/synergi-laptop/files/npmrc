@@ -4,5 +4,5 @@ tmp=${XDG_RUNTIME_DIR}/npm
 init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
 
 //pkgs.dev.azure.com/SynergiPartners/_packaging/Synergi/npm/registry/:username=SynergiPartners
-//pkgs.dev.azure.com/SynergiPartners/_packaging/Synergi/npm/registry/:_password=${SYNERGI_ARTIFACTS_PAT}
+//pkgs.dev.azure.com/SynergiPartners/_packaging/Synergi/npm/registry/:_password=${SYNERGI_ARTIFACTS_PAT_BASE64}
 //pkgs.dev.azure.com/SynergiPartners/_packaging/Synergi/npm/registry/:email=wdixon@synergipartners.com

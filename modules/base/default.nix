@@ -57,6 +57,7 @@ in {
       gnused
       gnutar
       gzip
+      just
       openssh
       unzip
       xdg-utils
