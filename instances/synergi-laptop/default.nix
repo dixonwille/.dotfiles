@@ -39,6 +39,7 @@
       powershell
       azure-cli
       azure-functions-core-tools
+      pdftk
     ];
     home.sessionVariables = {
       AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
