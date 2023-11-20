@@ -44,6 +44,7 @@
       qpdf
       asdf-vm
     ];
+    programs.zsh.initExtra = "source ${pkgs.asdf-vm}/share/asdf-vm/asdf.sh";
     home.sessionVariables = {
       AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
       AZURE_DEVOPS_CACHE_DIR = "${config.xdg.cacheHome}/azure-devops";
