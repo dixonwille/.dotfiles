@@ -42,6 +42,7 @@
       pdftk
       ghostscript
       qpdf
+      asdf-vm
     ];
     home.sessionVariables = {
       AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
