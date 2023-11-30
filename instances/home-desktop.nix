@@ -22,6 +22,7 @@
     };
     home.packages = with pkgs; [
       terraform
+      awscli2
     ];
   };
 }
