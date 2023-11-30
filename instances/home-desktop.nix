@@ -20,5 +20,8 @@
         windows.username = "wdixon";
       };
     };
+    home.packages = with pkgs; [
+      terraform
+    ];
   };
 }
