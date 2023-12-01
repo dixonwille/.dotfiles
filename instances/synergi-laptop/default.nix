@@ -42,6 +42,7 @@
       pdftk
       ghostscript
       qpdf
+      tilt
     ];
     home.sessionVariables = {
       AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
