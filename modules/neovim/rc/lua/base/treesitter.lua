@@ -1,8 +1,14 @@
 return {
 	{
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		opts = {
+			enable_autocmd = false,
+		},
+	},
+	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
-			"JoosepAlviste/nvim-ts-context-commentstring",
+			"nvim-ts-context-commentstring",
 		},
 		build = ":TSUpdate",
 		event = { "BufReadPost", "BufNewFile" },
@@ -36,10 +42,6 @@ return {
 				additional_vim_regex_highlighting = false,
 			},
 			indent = { enable = true },
-			context_commentstring = {
-				enable = true,
-				enable_autocmd = false,
-			},
 			ensure_installed = {
 				"gitcommit",
 				"git_rebase",
