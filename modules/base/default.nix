@@ -126,6 +126,7 @@ in {
           autocrlf = "input";
         };
         pull.rebase = true;
+        init.defaultBranch = "main";
       };
     };
     programs.direnv = {
