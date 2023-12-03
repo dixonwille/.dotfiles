@@ -23,6 +23,7 @@
     home.packages = with pkgs; [
       terraform
       awscli2
+      woff2
     ];
     home.sessionVariables = {
 # Assumes you ran aws sso login and setup an "admin" profile
