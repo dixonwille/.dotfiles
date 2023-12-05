@@ -31,6 +31,7 @@ in {
       ruby
       tree-sitter
       wget
+      rustc
     ];
     home.sessionVariables = {
       CARGO_HOME = "${config.xdg.dataHome}/cargo";
