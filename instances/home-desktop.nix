@@ -24,6 +24,7 @@
       terraform
       awscli2
       woff2
+      aoc-cli
     ];
     home.sessionVariables = {
 # Assumes you ran aws sso login and setup an "admin" profile
