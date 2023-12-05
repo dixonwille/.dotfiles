@@ -21,7 +21,6 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       (cfg.pythonPackage.withPackages(ps: with ps; [ pip ]))
-      cargo
       curl
       gcc
       gnumake
@@ -31,7 +30,7 @@ in {
       ruby
       tree-sitter
       wget
-      rustc
+      rustup
     ];
     home.sessionVariables = {
       CARGO_HOME = "${config.xdg.dataHome}/cargo";
