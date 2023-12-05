@@ -33,7 +33,6 @@ return {
 		opts = {
 			ensure_installed = {
 				"gitlint",
-				"codespell",
 			},
 		},
 		config = function(_, opts)
@@ -63,7 +62,6 @@ return {
 			return {
 				sources = {
 					nls.builtins.diagnostics.gitlint,
-					nls.builtins.diagnostics.codespell,
 				},
 			}
 		end,
