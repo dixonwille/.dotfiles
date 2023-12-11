@@ -50,5 +50,9 @@
       SY_PROJECTS_DIR = "${config.home.homeDirectory}/projects/synergi";
       SY_DOCUMENTATION_REPOSITORY = "${config.home.sessionVariables.SY_PROJECTS_DIR}/Documentation";
     };
+    home.sessionPath = [
+      "${config.home.homeDirectory}/.dotnet/tools"
+      "${config.xdg.dataHome}/azure/bin"
+    ];
   };
 }
