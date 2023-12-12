@@ -43,6 +43,7 @@
       ghostscript
       qpdf
       tilt
+      zulu
     ];
     home.sessionVariables = {
       AZURE_CONFIG_DIR = "${config.xdg.dataHome}/azure";
