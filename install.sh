@@ -84,4 +84,11 @@ echo "DFCONF[MACHINE]=\"$MACHINE\"" > "machine.sh"
 
 ./load.sh
 
+git remote set-url origin git@github.com:dixonwille/dotfiles.git
+
+zshBin=$(command -v "zsh")
+if [[ "$zshBin" != "" ]]; then
+  chsh -s "$zshBin"
+fi
+
 popd 2>&1 > /dev/null
