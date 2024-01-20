@@ -9,7 +9,7 @@ mkdir -p "$XDG_CONFIG_HOME/environment.d"
 mkdir -p "$XDG_CONFIG_HOME/alias.d"
 
 df_symlink "$DOTFILESDIR/modules/zsh/.zshenv" "$XDG_CONFIG_HOME/zsh/.zshenv"
-df_symlink "$DOTFILESDIR/modules/zsh/.zshenv" "$HOME/.zshenv"
+df_symlink "$XDG_CONFIG_HOME/zsh/.zshenv" "$HOME/.zshenv"
 df_symlink "$DOTFILESDIR/modules/zsh/.zshrc" "$XDG_CONFIG_HOME/zsh/.zshrc"
 df_symlink "$DOTFILESDIR/modules/zsh/.zprofile" "$XDG_CONFIG_HOME/zsh/.zprofile"
 df_symlink "$DOTFILESDIR/modules/zsh/mytheme.omp.json" "$XDG_CONFIG_HOME/oh-my-posh/mytheme.omp.json"

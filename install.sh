@@ -34,7 +34,7 @@ if [[ "$isFedora" == "1" ]]; then
   sudo dnf check-update -y
   set -e
   sudo dnf upgrade -y
-  sudo dnf install systemd passwd git 1password-cli util-linux -y
+  sudo dnf install systemd passwd git 1password-cli util-linux cracklib -y
 fi
 
 # setup a user account
@@ -46,11 +46,7 @@ if [[ "$(whoami)" == "root" ]]; then
     fi
     useradd -G wheel "$DFUSER"
     passwd "$DFUSER"
-    if [[ $# -eq 0 ]]; then
-      sudo -i -u "$DFUSER" -H sh -c 'bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh)'
-    else
-      sudo -i -u "$DFUSER" -H sh -c "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $@"
-    fi
+    sudo -i -u "$DFUSER" -H sh -c "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $@"
     exit 0
   else
     echo "---Unkown OS, please setup a user first"
@@ -68,15 +64,11 @@ systemd=true
 appendWindowsPath=false
 
 [user]
-default=$DFUSER
+default=$(whoami)
 EOF
 fi
 
-XDG_CACHE_HOME="$HOME/.cache"
-XDG_CONFIG_HOME="$HOME/.config"
-XDG_DATA_HOME="$HOME/.local/share"
-XDG_STATE_HOME="$HOME/.local/state"
-DOTFILESDIR="$XDG_DATA_HOME/dotfiles"
+DOTFILESDIR="$HOME/.local/share/dotfiles"
 
 git clone https://github.com/dixonwille/dotfiles "$DOTFILESDIR"
 
