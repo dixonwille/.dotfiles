@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+echo "$#"
+
 source "scripts/config.sh"
 source "scripts/functions.sh"
 if [[ -e "machine.sh" ]]; then
