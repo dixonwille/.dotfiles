@@ -51,6 +51,7 @@ if [[ "$(whoami)" == "root" ]]; then
     else
       sudo -i -u "$DFUSER" -H sh -c "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $@"
     fi
+    exit 0
   else
     echo "---Unkown OS, please setup a user first"
     exit 1
