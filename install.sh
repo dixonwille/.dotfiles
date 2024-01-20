@@ -34,7 +34,7 @@ if [[ "$isFedora" == "1" ]]; then
   sudo dnf check-update -y
   set -e
   sudo dnf upgrade -y
-  sudo dnf install systemd passwd git 1password-cli util-linux cracklib -y
+  sudo dnf install systemd passwd git 1password-cli util-linux cracklib cracklib-dicts -y
 fi
 
 # setup a user account

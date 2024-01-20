@@ -8,6 +8,7 @@ fi
 source "scripts/config.sh"
 source "scripts/functions.sh"
 if [[ ! -e "$HOME/.local/bin/dfload" ]]; then
+  mkdir -p "$HOME/.local/bin"
   df_symlink "load.sh" "$HOME/.local/bin/dfload"
 fi
 
