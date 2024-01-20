@@ -3,13 +3,14 @@ set -e
 
 if [[ "$DOTFILESDIR" != "" ]]; then
   pushd "$DOTFILESDIR" &> /dev/null
+  directed="1"
 fi
 
 source "scripts/config.sh"
 source "scripts/functions.sh"
 if [[ ! -e "$HOME/.local/bin/dfload" ]]; then
   mkdir -p "$HOME/.local/bin"
-  df_symlink "load.sh" "$HOME/.local/bin/dfload"
+  df_symlink "$DOTFILESDIR/load.sh" "$HOME/.local/bin/dfload"
 fi
 
 if [[ -e "machine.sh" ]]; then
@@ -22,6 +23,6 @@ install_packages
 after_install
 create_symlinks
 
-if [[ "$DOTFILESDIR" != "" ]]; then
+if [[ "$directed" == "1" ]]; then
   popd &> /dev/null
 fi
