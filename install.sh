@@ -30,7 +30,9 @@ if [[ "$isFedora" == "1" ]]; then
     sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
     sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
   fi
+  set +e
   sudo dnf check-update -y
+  set -e
   sudo dnf upgrade -y
   sudo dnf install systemd passwd git 1password-cli util-linux -y
 fi
@@ -44,7 +46,7 @@ if [[ "$(whoami)" == "root" ]]; then
     fi
     useradd -G wheel "$DFUSER"
     passwd "$DFUSER"
-    su - "$DFUSER"
+    sudo -i -u "$DFUSER" -H "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) -- $@"
   else
     echo "---Unkown OS, please setup a user first"
     exit 1
