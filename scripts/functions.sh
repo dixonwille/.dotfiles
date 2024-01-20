@@ -38,7 +38,7 @@ install_packages() {
   if [[ "${DFCONF[IS_FEDORA]}" == "1" ]];then
     sudo dnf update -y
     if [[ "${#_df_copr[@]}" -gt 0 ]];then
-      sudo dnf install dnf-plugins-core
+      sudo dnf install dnf-plugins-core -y
     fi
     for copr in "${_df_copr[@]}"; do
       sudo dnf copr enable "$copr" -y
