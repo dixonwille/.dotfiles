@@ -46,7 +46,11 @@ if [[ "$(whoami)" == "root" ]]; then
     fi
     useradd -G wheel "$DFUSER"
     passwd "$DFUSER"
-    sudo -i -u "$DFUSER" -H "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) -- $@"
+    if [[ "$#" -eq 0 ]]; then
+      sudo -i -u "$DFUSER" -H "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh)"
+    else
+      sudo -i -u "$DFUSER" -H "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) -- $@"
+    fi
   else
     echo "---Unkown OS, please setup a user first"
     exit 1
