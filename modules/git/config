@@ -1,0 +1,30 @@
+[core]
+	autocrlf = "input"
+	ignorecase = false
+	pager = "delta"
+
+[init]
+	defaultBranch = "main"
+
+[pull]
+	rebase = true
+
+[interactive]
+	diffFilter = "delta --color-only"
+
+[user]
+	name = "Will Dixon"
+	email = "will@willd.io"
+	signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRa1dR9AYMJDnKX815Y1M1qw8mh2rSRWxktiadaFJsP"
+
+[commit]
+	gpgSign = true
+
+[tag]
+	gpgSign = true
+
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+	program = "op-ssh-sign"
