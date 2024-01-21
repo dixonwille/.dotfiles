@@ -13,6 +13,11 @@ df_after_install() {
   _df_after_install+=("$1")
 }
 
+_df_before_install=()
+df_before_install() {
+  _df_before_install+=("$1")
+}
+
 declare -A _df_symlinks
 df_symlink() {
 	_df_symlinks[$1]="$2"
@@ -29,6 +34,8 @@ df_package() {
 }
 
 create_symlinks() {
+  rm "$XDG_CONFIG_HOME/environment.d/"*
+  rm "$XDG_CONFIG_HOME/alias.d/"*
   for src in "${!_df_symlinks[@]}"; do
     ln -sf "$src" "${_df_symlinks[$src]}"
   done
@@ -49,6 +56,12 @@ install_packages() {
 
 after_install() {
   for cmd in "${_df_after_install[@]}"; do
+    eval "$cmd"
+  done
+}
+
+before_install() {
+  for cmd in "${_df_before_install[@]}"; do
     eval "$cmd"
   done
 }
@@ -76,10 +89,14 @@ load_module() {
     df_symlink "$DOTFILESDIR/modules/$1/alias" "$XDG_CONFIG_HOME/alias.d/$_df_env_idx-$1"
     inc="1"
   fi
+  source "$DOTFILESDIR/modules/$1/module.sh"
+  if [[ -f "$DOTFILESDIR/modules/$1/out/environment" ]]; then
+    df_symlink "$DOTFILESDIR/modules/$1/out/environment" "$XDG_CONFIG_HOME/environment.d/$_df_env_idx-$1"
+    inc="1"
+  fi
   if [[ "$inc" == "1" ]]; then
     _df_env_idx=$(($_df_env_idx + 1))
   fi
-  source "$DOTFILESDIR/modules/$1/module.sh"
 }
 
 create_empty_file() {

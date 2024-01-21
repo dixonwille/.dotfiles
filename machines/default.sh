@@ -1,6 +1,7 @@
 DFCONF[IS_WORK]="0"
 [[ "${DFCONF[IS_WSL]}" == "1" ]] && DFCONF[WINDOWS_USER]="wdixon"
 
+df_module "1password"
 df_module "wsl"
 df_module "zsh"
 df_module "git"

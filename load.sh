@@ -19,6 +19,7 @@ fi
 source "machines/${DFCONF[MACHINE]}.sh"
 load_inherit
 load_modules
+before_install
 install_packages
 after_install
 create_symlinks
