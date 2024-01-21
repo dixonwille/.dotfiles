@@ -35,7 +35,7 @@ if [[ "$isFedora" == "1" ]]; then
   sudo dnf check-update -y
   set -e
   sudo dnf upgrade -y
-  sudo dnf install systemd passwd git 1password-cli util-linux cracklib cracklib-dicts -y
+  sudo dnf install systemd passwd git 1password-cli util-linux cracklib cracklib-dicts dnf-plugins-core -y
 fi
 
 # setup a user account
@@ -47,7 +47,6 @@ if [[ "$(whoami)" == "root" ]]; then
     fi
     useradd -G wheel "$DFUSER"
     passwd "$DFUSER"
-    echo "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $origArgs"
     sudo -i -u "$DFUSER" -H sh -c "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $origArgs"
     exit 0
   else

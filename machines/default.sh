@@ -1,4 +1,4 @@
-DFCONF[IS_WORK]="0"
+[[ -z "${DFCONF[IS_WORK]}" ]] && DFCONF[IS_WORK]="0"
 [[ "${DFCONF[IS_WSL]}" == "1" ]] && DFCONF[WINDOWS_USER]="wdixon"
 
 df_module "1password"
