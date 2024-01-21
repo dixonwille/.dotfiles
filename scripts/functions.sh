@@ -34,8 +34,8 @@ df_package() {
 }
 
 create_symlinks() {
-  rm "$XDG_CONFIG_HOME/environment.d/"*
-  rm "$XDG_CONFIG_HOME/alias.d/"*
+  rm -f "$XDG_CONFIG_HOME/environment.d/"*
+  rm -f "$XDG_CONFIG_HOME/alias.d/"*
   for src in "${!_df_symlinks[@]}"; do
     ln -sf "$src" "${_df_symlinks[$src]}"
   done
