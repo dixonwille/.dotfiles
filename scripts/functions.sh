@@ -45,7 +45,9 @@ install_packages() {
   if [[ "${DFCONF[IS_FEDORA]}" == "1" ]];then
     sudo dnf update -y
     for copr in "${_df_copr[@]}"; do
-      sudo dnf copr enable "$copr" -y
+      if [[ "$(sudo dnf repolist | grep "^copr:copr.fedorainfracloud.org:$(echo "$copr" | sed 's|/|:|')\\s")" == "" ]]; then
+        sudo dnf copr enable "$copr" -y
+      fi
     done
     sudo dnf install "${_df_packages[@]}" -y
   fi

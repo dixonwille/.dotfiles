@@ -3,3 +3,4 @@ df_inherit "default"
 
 df_module "azure"
 df_module "powershell"
+df_module "dotnet"
