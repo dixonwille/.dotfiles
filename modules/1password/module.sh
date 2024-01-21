@@ -16,12 +16,14 @@ create_empty_file "$envOut"
 add_pass_account "my" "my.1password.com" "dixonwille@gmail.com"
 echo "export OP_ACCOUNT=my.1password.com" > "$envOut"
 # Uncomment when/if default has secrets
-# cat "$DOTFILESDIR/modules/1password/default.env" | op inject --account "my" >> "$secOut"
+# eval "$(op signin --account my)"
+# cat "$DOTFILESDIR/modules/1password/default.env" | op inject >> "$secOut"
 
 if [[ "${DFCONF[IS_WORK]}" == "1" ]]; then
   add_pass_account "sypa" "synergipartners.1password.com" "wdixon@synergipartners.com"
   echo "export OP_ACCOUNT=synergipartners.1password.com" > "$envOut"
-  cat "$DOTFILESDIR/modules/1password/synergi.env" | op inject --account "sypa" >> "$secOut"
+  eval "$(op signin --account sypa)"
+  cat "$DOTFILESDIR/modules/1password/synergi.env" | op inject >> "$secOut"
 fi
 
 chmod -w "$secOut"
