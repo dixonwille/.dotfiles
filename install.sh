@@ -9,6 +9,7 @@ isWsl="0"
 [[ "$(uname -r)" == *WSL2 ]] && isWsl="1"
 
 # handle args
+origArgs="$@"
 MACHINE="default"
 while [ $# -gt 0 ]; do
   case $1 in
@@ -46,8 +47,7 @@ if [[ "$(whoami)" == "root" ]]; then
     fi
     useradd -G wheel "$DFUSER"
     passwd "$DFUSER"
-    echo "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $@"
-    sudo -i -u "$DFUSER" -H sh -c "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $@"
+    sudo -i -u "$DFUSER" -H sh -c "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $origArgs"
     exit 0
   else
     echo "---Unkown OS, please setup a user first"
