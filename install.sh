@@ -73,7 +73,13 @@ fi
 
 DOTFILESDIR="$HOME/.local/share/dotfiles"
 
-git clone https://github.com/dixonwille/dotfiles "$DOTFILESDIR"
+if [[ -d "$DOTFILESDIR" ]]; then
+  pushd "$DOTFILESDIR" 2>&1 > /dev/null
+  git pull
+  popd 2>&1 > /dev/null
+else
+  git clone https://github.com/dixonwille/dotfiles "$DOTFILESDIR"
+fi
 
 pushd "$DOTFILESDIR" 2>&1 > /dev/null
 
