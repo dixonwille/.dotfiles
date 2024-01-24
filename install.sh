@@ -45,8 +45,10 @@ if [[ "$(whoami)" == "root" ]]; then
       read -p "Username: "
       DFUSER="$REPLY"
     fi
-    useradd -G wheel "$DFUSER"
-    passwd "$DFUSER"
+    if ! id "$DFUSER" >/dev/null 2>&1; then
+      useradd -G wheel "$DFUSER"
+      passwd "$DFUSER"
+    fi
     sudo -i -u "$DFUSER" -H sh -c "bash <(curl -L https://raw.githubusercontent.com/dixonwille/dotfiles/main/install.sh) $origArgs"
     exit 0
   else
