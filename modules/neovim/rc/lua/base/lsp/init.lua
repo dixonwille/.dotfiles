@@ -53,9 +53,8 @@ return {
 			end
 		end,
 	},
-	-- TODO: Replace with nvimtools/none-ls.nvim
 	{
-		"jose-elias-alvarez/null-ls.nvim",
+		"nvimtools/none-ls.nvim",
 		event = "BufReadPre",
 		dependencies = { "mason.nvim" },
 		opts = function()
