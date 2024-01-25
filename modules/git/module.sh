@@ -33,7 +33,7 @@ fi
 
 if [[ "${DFCONF[IS_WORK]}" == "1" ]]; then
 	df_symlink "$DOTFILESDIR/modules/git/synergi" "$XDG_CONFIG_HOME/git/synergi"
-	echo "[includIf \"gitdir:~/projects/synergi\"]" >> "$gitOut"
+	echo "[includeIf \"gitdir:~/projects/synergi/\"]" >> "$gitOut"
 	echo "	path = \"$XDG_CONFIG_HOME/git/synergi\"" >> "$gitOut"
 fi
 

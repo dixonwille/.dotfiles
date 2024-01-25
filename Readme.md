@@ -31,3 +31,15 @@ Add this to `.wslconfig` file.
 [wsl2]
 kernelCommandLine = sysctl.net.ipv4.ping_group_range=\"0 2147483647\"
 ```
+
+## 1Password Choose SSH Key
+
+If in WSL2, you will need to add the following example to `%USERPROFILE%\.ssh\config`
+
+```
+Host ssh.dev.azure.com
+    IdentityFile ~/.ssh/devops.pub
+    IdentitiesOnly yes
+```
+
+You will need to download the public key to the specified path
