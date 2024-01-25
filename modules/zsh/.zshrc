@@ -1,3 +1,4 @@
+[[ "$TERM" == "dumb" ]] && return
 export HISTSIZE="10000"
 export SAVEHIST="10000"
 export HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
@@ -12,7 +13,7 @@ unsetopt EXTENDED_HISTORY
 
 # ZINIT
 declare -A ZINIT
-ZINIT[COMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/.zcompdump"
+ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/.zcompdump"
 ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -54,7 +55,7 @@ zinit light-mode lucid for \
 	zsh-users/zsh-syntax-highlighting
 
 autoload -Uz compinit
-compinit -d "${ZINIT[COMPDUMP_PATH]}"
+compinit -d "${ZINIT[ZCOMPDUMP_PATH]}"
 zinit cdreplay -q
 
 # Aliases
