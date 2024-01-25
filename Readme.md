@@ -43,3 +43,13 @@ Host ssh.dev.azure.com
 ```
 
 You will need to download the public key to the specified path
+
+## WSL2 VPN
+
+To allow WSL2 to access a VPN connected in Windows add this to `.wslconfig` file.
+
+```toml
+[wsl2]
+networkingMode = mirrored
+dnsTunneling = true
+```
