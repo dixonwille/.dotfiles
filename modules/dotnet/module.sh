@@ -16,12 +16,14 @@ df_package "libicu"
 df_package "openssl-libs"
 df_package "zlib"
 
-df_after_install "dotnet_install 3.1"
-df_after_install "dotnet_install 5.0"
-df_after_install "dotnet_install 6.0"
-df_after_install "dotnet_install 7.0"
-df_after_install "dotnet_install 8.0"
+df_after_install "dotnet_install LTS"
 
 df_symlink "$dotnetDir/dotnet" "$HOME/.local/bin/dotnet"
 df_symlink "$dotnetDir/dotnet-install.sh" "$HOME/.local/bin/dotnet-install"
-# TODO: Install if work https://github.com/microsoft/artifacts-credprovider
+
+if [[ "${DFCONF[IS_WORK]}" == "1" ]]; then
+  mkdir -p "$HOME/.nuget/plugins"
+  curl -H "Accept: application/octet-stream" \
+    -L "https://github.com/Microsoft/artifacts-credprovider/releases/latest/download/Microsoft.Net6.NuGet.CredentialProvider.tar.gz" \
+    | tar -xz -C "$HOME/.nuget/" "plugins/netcore"
+fi

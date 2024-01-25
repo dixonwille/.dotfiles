@@ -97,6 +97,7 @@ git remote set-url origin git@github.com:dixonwille/dotfiles.git
 zshBin=$(command -v "zsh")
 if [[ "$zshBin" != "" ]]; then
   chsh -s "$zshBin"
+  rm -f .bash*
 fi
 
 popd 2>&1 > /dev/null

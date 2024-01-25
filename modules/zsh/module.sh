@@ -7,6 +7,7 @@ mkdir -p "$XDG_CONFIG_HOME/zsh"
 mkdir -p "$XDG_CONFIG_HOME/oh-my-posh"
 mkdir -p "$XDG_CONFIG_HOME/environment.d"
 mkdir -p "$XDG_CONFIG_HOME/alias.d"
+mkdir -p "$XDG_CACHE_HOME/zsh"
 
 df_symlink "$DOTFILESDIR/modules/zsh/.zshenv" "$XDG_CONFIG_HOME/zsh/.zshenv"
 df_symlink "$XDG_CONFIG_HOME/zsh/.zshenv" "$HOME/.zshenv"
