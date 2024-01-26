@@ -6,6 +6,7 @@ df_module "wsl"
 df_module "zsh"
 df_module "git"
 df_module "neovim"
+df_module "containers"
 
 if [[ "${DFCONF[IS_FEDORA]}" == "1" ]]; then
   df_package "which"

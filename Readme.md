@@ -50,6 +50,5 @@ To allow WSL2 to access a VPN connected in Windows add this to `.wslconfig` file
 
 ```toml
 [wsl2]
-networkingMode = mirrored
 dnsTunneling = true
 ```

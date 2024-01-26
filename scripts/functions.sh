@@ -73,6 +73,10 @@ load_inherit() {
 
 _df_env_idx=20
 load_modules() {
+  rm -rf "$XDG_CONFIG_HOME/environment.d"
+  rm -rf "$XDG_CONFIG_HOME/alias.d"
+  mkdir -p "$XDG_CONFIG_HOME/environment.d"
+  mkdir -p "$XDG_CONFIG_HOME/alias.d"
   for module in "${_df_modules[@]}"; do
     load_module "$module"
   done
@@ -91,6 +95,10 @@ load_module() {
   source "$DOTFILESDIR/modules/$1/module.sh"
   if [[ -f "$DOTFILESDIR/modules/$1/out/environment" ]]; then
     df_symlink "$DOTFILESDIR/modules/$1/out/environment" "$XDG_CONFIG_HOME/environment.d/$_df_env_idx-$1"
+    inc="1"
+  fi
+  if [[ -f "$DOTFILESDIR/modules/$1/out/alias" ]]; then
+    df_symlink "$DOTFILESDIR/modules/$1/out/alias" "$XDG_CONFIG_HOME/alias.d/$_df_env_idx-$1"
     inc="1"
   fi
   if [[ "$inc" == "1" ]]; then
