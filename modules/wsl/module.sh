@@ -2,8 +2,12 @@
 [[ "${DFLOADED[WSL]}" == "1" ]] && return
 DFLOADED[WSL]="1"
 
-df_symlink "/mnt/c/Users/${DFCONF[WINDOWS_USER]}/Desktop" "$HOME/Desktop"
-df_symlink "/mnt/c/Users/${DFCONF[WINDOWS_USER]}/Downloads" "$HOME/Downloads"
+if [[ ! -e "$HOME/Desktop" ]]; then
+  df_symlink "/mnt/c/Users/${DFCONF[WINDOWS_USER]}/Desktop" "$HOME/Desktop"
+fi
+if [[ ! -e "$HOME/Downloads" ]]; then
+  df_symlink "/mnt/c/Users/${DFCONF[WINDOWS_USER]}/Downloads" "$HOME/Downloads"
+fi
 
 # BUG: https://github.com/wslutilities/wslu/issues/298
 # df_package wslutilities/wslu
