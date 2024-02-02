@@ -15,9 +15,6 @@ return {
 			if type(opts.sources) == "table" then
 				local nls = require("null-ls")
 				vim.list_extend(opts.sources, {
-					nls.builtins.code_actions.gomodifytags,
-					nls.builtins.code_actions.impl,
-					nls.builtins.formatting.gofumpt,
 					nls.builtins.formatting.goimports_reviser,
 				})
 			end
@@ -28,15 +25,9 @@ return {
 		opts = function(_, opts)
 			vim.list_extend(opts.ensure_installed, {
 				"delve",
-				"gotests",
 				"golangci-lint",
-				"gofumpt",
-				"goimports",
 				"golangci-lint-langserver",
-				"impl",
-				"gomodifytags",
-				"iferr",
-				"gotestsum",
+				"goimports-reviser",
 			})
 		end,
 	},
