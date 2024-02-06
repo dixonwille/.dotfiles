@@ -20,6 +20,8 @@ df_after_install "dotnet_install LTS"
 
 df_symlink "$dotnetDir/dotnet" "$HOME/.local/bin/dotnet"
 df_symlink "$dotnetDir/dotnet-install.sh" "$HOME/.local/bin/dotnet-install"
+mkdir -p "$XDG_CONFIG_HOME/omnisharp/.omnisharp"
+df_symlink "$DOTFILESDIR/modules/dotnet/omnisharp.json" "$XDG_CONFIG_HOME/omnisharp/.omnisharp/omnisharp.json"
 
 if [[ "${DFCONF[IS_WORK]}" == "1" ]]; then
   mkdir -p "$HOME/.nuget/plugins"

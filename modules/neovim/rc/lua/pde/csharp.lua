@@ -2,20 +2,6 @@ if vim.fn.executable("dotnet") == 0 then
 	return {}
 end
 
-local function fix_tokens(client)
-	local function to_snake_case(str)
-		return string.gsub(str, "%s*[- ]%s*", "_")
-	end
-	local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
-	for i, v in ipairs(tokenModifiers) do
-		tokenModifiers[i] = to_snake_case(v)
-	end
-	local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
-	for i, v in ipairs(tokenTypes) do
-		tokenTypes[i] = to_snake_case(v)
-	end
-end
-
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -41,15 +27,9 @@ return {
 			},
 			setup = {
 				omnisharp = function(_, opts)
-					local lsp_utils = require("base.lsp.utils")
 					opts.handlers = {
 						["textDocument/definition"] = require("omnisharp_extended").handler,
 					}
-					lsp_utils.on_attach(function(client, _)
-						if client.name == "omnisharp" then
-							fix_tokens(client)
-						end
-					end)
 				end,
 			},
 		},

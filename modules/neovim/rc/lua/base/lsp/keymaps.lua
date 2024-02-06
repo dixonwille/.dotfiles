@@ -3,7 +3,12 @@ local M = {}
 function M.on_attach(client, buffer)
 	local self = M.new(client, buffer)
 
-	self:map("gd", "Telescope lsp_definitions", { desc = "[G]oto [D]efinition" })
+	-- BUG: https://github.com/nvim-telescope/telescope.nvim/issues/2768
+	if type(client.handlers["textDocument/definition"]) == "function" then
+		self:map("gd", vim.lsp.buf.definition, { desc = "[G]oto [D]efinition" })
+	else
+		self:map("gd", "Telescope lsp_definitions", { desc = "[G]oto [D]efinition" })
+	end
 	self:map("gD", vim.lsp.buf.declaration, { desc = "[G]oto [D]eclaration" })
 	self:map("gi", "Telescope lsp_implementations", { desc = "[G]oto [I]mplementations" })
 	self:map("gr", "Telescope lsp_references", { desc = "[G]et [R]eferences" })
