@@ -13,4 +13,5 @@ if [[ "${DFCONF[IS_FEDORA]}" == "1" ]]; then
   df_package "iputils"
   df_package "bind-utils"
   df_package "iproute"
+  df_package "man"
 fi
