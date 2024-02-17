@@ -6,6 +6,7 @@ df_module "wsl"
 df_module "zsh"
 df_module "git"
 df_module "neovim"
+df_package "jq"
 
 if [[ "${DFCONF[IS_FEDORA]}" == "1" ]]; then
   df_package "which"
@@ -14,4 +15,5 @@ if [[ "${DFCONF[IS_FEDORA]}" == "1" ]]; then
   df_package "bind-utils"
   df_package "iproute"
   df_package "man"
+  df_package "xz"
 fi

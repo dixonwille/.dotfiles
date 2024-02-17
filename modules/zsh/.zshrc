@@ -25,7 +25,7 @@ zinit ice light-mode lucid
 zinit snippet OMZP::git
 zinit ice lucid as="program" from="gh-r" \
 	mv="posh* -> oh-my-posh" \
-	atclone="chmod +x ./oh-my-posh; ./oh-my-posh init zsh --config $XDG_CONFIG_HOME/oh-my-posh/mytheme.omp.json > init.zsh" \
+	atclone="./oh-my-posh init zsh --config $XDG_CONFIG_HOME/oh-my-posh/mytheme.omp.json > init.zsh; ./oh-my-posh completion zsh > _oh-my-posh" \
 	atpull="%atclone" src="init.zsh"
 zinit light JanDeDobbeleer/oh-my-posh
 zinit ice lucid as="program" from="gh-r" \
@@ -40,16 +40,16 @@ zinit ice lucide as="program" from="gh-r" \
 	bpick="*gnu*" mv="bat*/bat -> bat" cp="bat*/autocomplete/bat.zsh -> _bat" pick="bat"
 zinit light sharkdp/bat
 zinit ice lucide as="program" from="gh-r" \
-	bpick="*gnu*" mv="fd*/fd -> fd" cp="fd*/autocomplete/_fd -> _fd" pick="bat"
+	bpick="*gnu*" mv="fd*/fd -> fd" pick="fd"
 zinit light sharkdp/fd
 zinit ice lucide as="program" from="gh-r" \
-	mv="ripgrep*/rg -> rg" cp="ripgrep*/complete/_rg -> _rg" pick="rg" 
+	mv="ripgrep*/rg -> rg" pick="rg" 
 zinit light BurntSushi/ripgrep
-zinit ice lucid as="program" from="gh-r" \
-  mv="vfox*/vfox -> vfox" cp="vfox*/completions/zsh_autocomplete -> _vfox" pick="vfox" \
-  atinit="export PATH=\"\$(pwd):\$PATH\"; vfox activate zsh > init.zsh" \
-  src="init.zsh"
-zinit light version-fox/vfox
+zinit ice lucid as="null" completions="true" from="gh-r" \
+  bpick="mise-*-linux-x64.tar.gz" \
+  atclone="\$PWD/mise/bin/mise activate zsh > init.zsh;\$PWD/mise/bin/mise completion zsh > _mise" \
+  atpull="%atclone" src="init.zsh"
+zinit light jdx/mise
 zinit light-mode lucid for \
 	zsh-users/zsh-autosuggestions \
 	zsh-users/zsh-syntax-highlighting
