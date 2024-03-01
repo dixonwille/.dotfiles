@@ -26,6 +26,10 @@ return {
 				},
 			},
 			setup = {
+				-- BUG: There is currently an issue with version 1.39.9 - 1.39.11
+				-- Attempt to Index Local 'decoded' (a nil value)
+				-- https://github.com/OmniSharp/omnisharp-roslyn/issues/2574
+				-- WORKAROUND run `:MasonInstall omnisharp@v1.39.8` until bug is resolved
 				omnisharp = function(_, opts)
 					opts.handlers = {
 						["textDocument/definition"] = require("omnisharp_extended").handler,

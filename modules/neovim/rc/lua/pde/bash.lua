@@ -8,7 +8,7 @@ return {
 	{
 		"williamboman/mason.nvim",
 		opts = function(_, opts)
-			vim.list_extend(opts.ensure_installed, { "shellharden", "beautysh" })
+			vim.list_extend(opts.ensure_installed, { "shellharden", "shfmt" })
 		end,
 	},
 	{
@@ -26,7 +26,7 @@ return {
 				local nls = require("null-ls")
 				vim.list_extend(opts.sources, {
 					nls.builtins.formatting.shellharden,
-					nls.builtins.formatting.beautysh,
+					nls.builtins.formatting.shfmt,
 				})
 			end
 		end,
