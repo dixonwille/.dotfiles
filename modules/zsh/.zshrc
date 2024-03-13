@@ -75,5 +75,5 @@ if [[ -d "$XDG_CONFIG_HOME/alias.d" ]]; then
   done
 fi
 if (( $+commands[op] )); then
-	alias opmy='eval $(op signin --account my)'
+	alias ops='eval $(op signin)'
 fi
