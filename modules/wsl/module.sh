@@ -9,6 +9,12 @@ if [[ ! -e "$HOME/Downloads" ]]; then
 	df_symlink "/mnt/c/Users/${DFCONF[WINDOWS_USER]}/Downloads" "$HOME/Downloads"
 fi
 
+# BUG: https://github.com/microsoft/WSL/issues/11261
+mkdir -p "$XDG_CONFIG_HOME/systemd/user"
+df_symlink "$DOTFILESDIR/modules/wsl/symlink-wayland-socket.service" "$XDG_CONFIG_HOME/systemd/user/symlink-wayland-socket.service"
+df_after_symlinks "systemctl --user daemon-reload"
+df_after_symlinks "systemctl --user enable symlink-wayland-socket"
+
 envFile="$DOTFILESDIR/modules/wsl/out/environment"
 mkdir -p "$(dirname "$envFile")"
 create_empty_file "$envFile"
