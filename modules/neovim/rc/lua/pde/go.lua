@@ -26,7 +26,6 @@ return {
 			vim.list_extend(opts.ensure_installed, {
 				"delve",
 				"golangci-lint",
-				"golangci-lint-langserver",
 				"goimports-reviser",
 			})
 		end,
