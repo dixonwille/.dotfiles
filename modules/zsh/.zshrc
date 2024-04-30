@@ -68,6 +68,7 @@ alias ll='eza -l'
 alias lla='eza -la'
 alias ls='eza'
 alias lt='eza --tree'
+alias cd='z'
 
 if [[ -d "$XDG_CONFIG_HOME/alias.d" ]]; then
   for a in $XDG_CONFIG_HOME/alias.d/*; do
