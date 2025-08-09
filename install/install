@@ -1,0 +1,16 @@
+#!/bin/env bash
+TRGT="$HOME"
+
+for PKG in $PKGS
+do
+  stow_pkg="$PKG"
+  if [[ "$PKG" == */* ]]; then
+    pushd "$(dirname $PKG)" >/dev/null
+    stow_pkg="$(basename $PKG)"
+  fi
+  stow -Rt "$TRGT" "$stow_pkg"
+  if [[ "$PKG" == */* ]]; then
+    popd >/dev/null
+  fi
+done
+

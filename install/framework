@@ -1,0 +1,14 @@
+#!/bin/env bash
+packages=(
+  bin
+  ghostty
+  nvim
+  oh-my-posh
+  tmux
+  zsh
+  personal/git
+  personal/jj
+  personal/ssh
+)
+
+PKGS="${packages[@]}" ./install/install
