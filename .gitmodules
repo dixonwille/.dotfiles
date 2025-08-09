@@ -4,3 +4,6 @@
 [submodule "zsh/.local/share/zsh/plugins/zsh-syntax-highlighting"]
 	path = zsh/.local/share/zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "personal"]
+	path = personal
+	url = git@github.com:dixonwille/personal-dotfiles.git
