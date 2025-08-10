@@ -2,6 +2,7 @@
 packages=(
   bin
   ghostty
+  git
   nvim
   oh-my-posh
   tmux

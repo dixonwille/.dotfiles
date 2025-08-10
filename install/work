@@ -1,0 +1,23 @@
+#!/bin/env bash
+packages=(
+  bin
+  git
+  git-wsl
+  nvim
+  oh-my-posh
+  tmux
+  personal/git
+  personal/git-work
+)
+
+PKGS="${packages[@]}" ./install/install
+
+# TODO: This can be done for all WSL instances
+winHome=$(/mnt/c/Windows/System32/cmd.exe /C "echo %USERPROFILE%")
+winHome=$(wslpath -au "$winHome" | tr -d '\r')
+
+ln -sf "$winHome/AppData/Local/1Password/app/8/op-ssh-sign-wsl" "$HOME/.local/bin/op-ssh-sign"
+
+sudo stow -Rt /etc wsl
+
+# TODO: What do we do about the ssh configs that need to be stored/updated on windows
