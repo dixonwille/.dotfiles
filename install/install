@@ -8,7 +8,11 @@ do
     pushd "$(dirname $PKG)" >/dev/null
     stow_pkg="$(basename $PKG)"
   fi
-  stow -Rt "$TRGT" "$stow_pkg"
+  extra_flags=""
+  if [[ -f "$stow_pkg/.no-fold" ]]; then
+    extra_flags=" --no-folding"
+  fi
+  stow -Rt "$TRGT"$extra_flags "$stow_pkg"
   if [[ "$PKG" == */* ]]; then
     popd >/dev/null
   fi
