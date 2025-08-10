@@ -2,6 +2,12 @@
 
 ## Tools
 
+- curl
+- wget
+- tar
+- c toolchain
+    - gcc
+    - make
 - git
 - stow
 - ripgrep

@@ -1,0 +1,11 @@
+#!/bin/env bash
+
+tar_name=nvim-linux-x86_64.tar.gz
+curl -LO https://github.com/neovim/neovim/releases/download/nightly/$tar_name
+mkdir -p "$HOME/.local"
+mv $tar_name "$HOME"/.local/.
+pushd "$HOME"/.local >/dev/null
+tar -xzf $tar_name --strip-components 1
+rm -rf $tar_name
+rm -rf "$HOME"/.local/lib/nvim
+popd >/dev/null

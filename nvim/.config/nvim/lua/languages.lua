@@ -20,7 +20,7 @@ end
 
 local nvimts = require("nvim-treesitter")
 -- WARN: neovim expects some of these to be installed
-nvimts.install({ "c", "lua", "markdown", "markdown_inline", "query", "vim", "vimdoc", "comment" })
+nvimts.install({ "c", "lua", "markdown", "markdown_inline", "query", "vim", "vimdoc", "comment", "yaml" })
 
 ---Try and enable treesitter
 ---@param bufnr integer
@@ -78,7 +78,7 @@ vim.lsp.config("lua_ls", {
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
-      if path == vim.fn.stdpath("config") then
+      if path == vim.fn.stdpath("config") or vim.fs.joinpath(vim.fn.expand("$HOME"), ".dotfiles", "nvim", ".config", "nvim") then
         configure_nvim_lua_ls(client, true)
       end
     end

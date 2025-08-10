@@ -1,0 +1,11 @@
+#!/bin/env bash
+
+tar_file=eza_x86_64-unknown-linux-gnu.tar.gz
+curl -LO https://github.com/eza-community/eza/releases/download/v0.23.0/$tar_file
+mkdir -p "$HOME"/.local/bin
+mv $tar_file "$HOME"/.local/bin
+pushd "$HOME"/.local/bin >/dev/null
+tar -xzf $tar_file
+rm $tar_file
+chmod u+x eza
+popd >/dev/null

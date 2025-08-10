@@ -1,6 +1,24 @@
 vim.api.nvim_create_user_command("PackUpdate", function() vim.pack.update() end, { desc = "Update Packages" })
 
 -- TODO (WD): Make this more generic
+local update_luasnip = function()
+  local luasnipPath = vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "core", "opt", "LuaSnip")
+  if not vim.fn.isdirectory(luasnipPath) then
+    vim.notify("LuaSnip Directory doesn't exist", vim.log.levels.ERROR, {})
+  end
+  vim.notify("Updataing jsregexp", vim.log.levels.INFO, {})
+  vim.fn.jobstart({ "make", "install_jsregexp" }, {
+    cwd = luasnipPath,
+    on_exit = function(_, code, _)
+      if code ~= 0 then
+        vim.notify("Failed to install jsregexp", vim.log.levels.ERROR, {});
+      else
+        vim.notify("Successfully to install jsregexp", vim.log.levels.INFO, {});
+      end
+    end
+  })
+end
+
 local packupdateaug = vim.api.nvim_create_augroup("PackChanges", { clear = true })
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
   desc = "Run build like commands when packages are updated",
@@ -14,21 +32,7 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
       vim.cmd.TSUpdate()
     end
     if (data.kind == 'install' or data.kind == 'update') and data.spec.name == 'LuaSnip' then
-      local luasnipPath = vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "core", "opt", "LuaSnip")
-      if not vim.fn.isdirectory(luasnipPath) then
-        vim.notify("LuaSnip Directory doesn't exist", vim.log.levels.ERROR, {})
-      end
-      vim.notify("Updataing jsregexp", vim.log.levels.INFO, {})
-      vim.fn.jobstart({ "make", "install_jsregexp" }, {
-        cwd = luasnipPath,
-        on_exit = function(_, code, _)
-          if code ~= 0 then
-            vim.notify("Failed to install jsregexp", vim.log.levels.ERROR, {});
-          else
-            vim.notify("Successfully to install jsregexp", vim.log.levels.INFO, {});
-          end
-        end
-      })
+      update_luasnip()
     end
   end
 })
