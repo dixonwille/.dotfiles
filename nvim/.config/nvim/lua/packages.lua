@@ -46,7 +46,7 @@ vim.pack.add({
   { src = "https://github.com/mfussenegger/nvim-lint" },                                             -- Use Linters
   { src = "https://github.com/echasnovski/mini.pick" },                                              -- vim.ui.select and other functionality (finding files)
   { src = "https://github.com/stevearc/oil.nvim" },                                                  -- File navigation using Buffers
-  { src = "https://github.com/folke/tokyonight.nvim" },                                              -- Color Scheme
+  { src = "https://github.com/vague2k/vague.nvim" },                                                 -- Color Scheme
   { src = "https://github.com/echasnovski/mini.statusline" },                                        -- Pretty Status Line
   { src = "https://github.com/echasnovski/mini.tabline" },                                           -- Pretty Tab Line
   { src = "https://github.com/echasnovski/mini.notify" },                                            -- Pretty LSP Progress notifications
