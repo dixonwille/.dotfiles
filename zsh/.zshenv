@@ -6,7 +6,7 @@ if [ -d /etc/environment.d ]; then
     fi
   done
   set +a
-  export -n i
+  unset i
 fi
 
 if [ -d $HOME/.config/environment.d ]; then
@@ -17,7 +17,7 @@ if [ -d $HOME/.config/environment.d ]; then
     fi
   done
   set +a
-  export -n i
+  unset i
 fi
 
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
