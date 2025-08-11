@@ -49,9 +49,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-require("languages.lua")
-
-
 local aug = vim.api.nvim_create_augroup("Lint", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   desc = "Lint after save",
@@ -71,3 +68,5 @@ require("conform").setup({
     return { timeout_ms = 1000, lsp_format = "fallback" }
   end,
 })
+
+require("languages.lua")

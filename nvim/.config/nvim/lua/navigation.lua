@@ -53,6 +53,9 @@ local find_todos = function()
   }, {
     source = {
       name = "Find Todos",
+      show = function(buf_id, items, query)
+        MiniPick.default_show(buf_id, items, query, { show_icons = true })
+      end,
     }
   })
 end

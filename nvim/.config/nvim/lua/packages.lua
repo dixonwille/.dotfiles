@@ -80,6 +80,7 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.statusline" },                                        -- Pretty Status Line
   { src = "https://github.com/echasnovski/mini.tabline" },                                           -- Pretty Tab Line
   { src = "https://github.com/echasnovski/mini.notify" },                                            -- Pretty LSP Progress notifications
+  { src = "https://github.com/echasnovski/mini.icons" },                                             -- Support icons
   { src = "https://github.com/saghen/blink.cmp",                version = vim.version.range('^1') }, -- Better Auto Completion TODO (WD): see if there is a better option later 8/6/2025
   { src = "https://github.com/zbirenbaum/copilot.lua" },                                             -- Use Copilot for authenticating purposes
   { src = "https://github.com/olimorris/codecompanion.nvim" },                                       -- Agentic AI Chat
