@@ -49,71 +49,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
----Configure the LuaLS
----@param client vim.lsp.Client
----@param remove_config boolean?
-local function configure_nvim_lua_ls(client, remove_config)
-  local lib = vim.api.nvim_get_runtime_file("", true)
-  if remove_config then
-    lib = vim.tbl_filter(function(d)
-      return d ~= vim.fn.stdpath("config")
-    end, lib)
-  end
-  lib[#lib + 1] = "${3rd}/luv/library"
-  ---@diagnostic disable-next-line: param-type-mismatch
-  client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-    runtime = {
-      version = "LuaJIT",
-      path = { "lua/?.lua", "lua/?/init.lua" }
-    },
-    workspace = {
-      checkThirdParty = false,
-      library = lib,
-    },
-  })
-end
+require("languages.lua")
 
-vim.lsp.config("lua_ls", {
-  ---@type fun(client: vim.lsp.Client)
-  on_init = function(client)
-    if client.workspace_folders then
-      local path = client.workspace_folders[1].name
-      if path == vim.fn.stdpath("config") or vim.fs.joinpath(vim.fn.expand("$HOME"), ".dotfiles", "nvim", ".config", "nvim") then
-        configure_nvim_lua_ls(client, true)
-      end
-    end
-  end,
-  ---@type fun(client: vim.lsp.Client, bufnr: integer)
-  on_attach = function(client, bufnr)
-    ---@diagnostic disable-next-line: undefined-field
-    if not client.config.settings.Lua.workspace then
-      local filename = vim.fs.basename(vim.api.nvim_buf_get_name(bufnr))
-      if filename == ".nvim.lua" then
-        configure_nvim_lua_ls(client, false)
-      end
-    end
-  end,
-  settings = {
-    Lua = {},
-  },
-})
-
-vim.lsp.config("bicep", {
-  cmd = { "bicep-lsp" },
-})
-
-vim.lsp.config("roslyn_ls", {
-  cmd = {
-    "roslyn",
-    "--logLevel",
-    "Information",
-    "--extensionLogDirectory",
-    vim.fs.joinpath(vim.uv.os_tmpdir(), "roslyn_ls/logs"),
-    "--stdio",
-  },
-})
-
-vim.lsp.enable({ "lua_ls" })
 
 local aug = vim.api.nvim_create_augroup("Lint", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {

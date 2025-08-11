@@ -1,7 +1,33 @@
 vim.api.nvim_create_user_command("PackUpdate", function() vim.pack.update() end, { desc = "Update Packages" })
 
--- TODO (WD): Make this more generic
-local update_luasnip = function()
+--- @alias kind "install"|"update"|"delete"
+
+--- @type table<kind, table<string, fun()>>
+local pack_handlers = {
+  update = {},
+  install = {},
+  delete = {},
+}
+
+--- @param event kind | (kind)[]
+--- @param pkg string
+--- @param fn fun()
+local add_pack_handler = function(event, pkg, fn)
+  if type(event) == "string" then
+    pack_handlers[event][pkg] = fn
+  elseif type(event) == "table" then
+    for _, ev in ipairs(event) do
+      pack_handlers[ev][pkg] = fn
+    end
+  end
+end
+
+add_pack_handler("update", "nvim-treesitter", function()
+  vim.notify("Updating Treesitter Parsers", vim.log.levels.INFO, {})
+  vim.cmd.TSUpdate()
+end)
+
+add_pack_handler({ "update", "install" }, "LuaSnip", function()
   local luasnipPath = vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "core", "opt", "LuaSnip")
   if not vim.fn.isdirectory(luasnipPath) then
     vim.notify("LuaSnip Directory doesn't exist", vim.log.levels.ERROR, {})
@@ -17,24 +43,28 @@ local update_luasnip = function()
       end
     end
   })
-end
+end)
 
 local packupdateaug = vim.api.nvim_create_augroup("PackChanges", { clear = true })
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
   desc = "Run build like commands when packages are updated",
-  pattern = "*",
   group = packupdateaug,
   callback = function(opt)
-    --- @type {kind: "install"|"update"|"delete", spec: vim.pack.Spec, path: string}
+    --- @type {kind: kind, spec: vim.pack.Spec, path: string}
     local data = opt.data
-    if data.kind == 'update' and data.spec.name == 'nvim-treesitter' then
-      vim.notify("Updating Treesitter Parsers", vim.log.levels.INFO, {})
-      vim.cmd.TSUpdate()
+    local name = data.spec.name
+    if not name then
+      return
     end
-    if (data.kind == 'install' or data.kind == 'update') and data.spec.name == 'LuaSnip' then
-      update_luasnip()
+    local kind_table = pack_handlers[data.kind]
+    if not kind_table then
+      return
     end
-  end
+    local handler = kind_table[name]
+    if handler then
+      handler()
+    end
+  end,
 })
 
 vim.pack.add({
