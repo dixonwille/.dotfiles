@@ -6,8 +6,11 @@ packages=(
   nvim
   oh-my-posh
   tmux
+  zsh
+  zsh-plugins
   personal/git
   personal/git-work
+  personal/zsh-work
 )
 
 PKGS="${packages[@]}" ./install/install

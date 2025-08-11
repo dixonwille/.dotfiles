@@ -1,8 +1,8 @@
-[submodule "zsh/.local/share/zsh/plugins/zsh-autosuggestions"]
-	path = zsh/.local/share/zsh/plugins/zsh-autosuggestions
+[submodule "zsh-autosuggestions"]
+	path = zsh-plugins/.local/share/zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
-[submodule "zsh/.local/share/zsh/plugins/zsh-syntax-highlighting"]
-	path = zsh/.local/share/zsh/plugins/zsh-syntax-highlighting
+[submodule "zsh-syntax-highlighting"]
+	path = zsh-plugins/.local/share/zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule "personal"]
 	path = personal

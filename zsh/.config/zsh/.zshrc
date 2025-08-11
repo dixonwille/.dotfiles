@@ -17,6 +17,10 @@ compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 # Commone Environment
 export EDITOR="nvim"
 
+if [ -r "$HOME/.config/zsh/.zshrc_work" ]; then
+  source "$HOME/.config/zsh/.zshrc_work"
+fi
+
 # Get into tmux easier
 bindkey -s '^f' "tmux-sessionizer\n"
 
@@ -33,8 +37,10 @@ if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
 ZSH_PLUGINS=${XDG_DATE_HOME:-$HOME/.local/share}/zsh/plugins
-source "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+if [ -d "$ZSH_PLUGINS" ]; then
+  source "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
 if command -v oh-my-posh >/dev/null 2>&1; then
   eval "$(oh-my-posh init zsh --config "${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-posh/theme.omp.json")"
 fi
