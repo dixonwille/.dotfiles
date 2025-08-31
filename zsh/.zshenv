@@ -35,4 +35,6 @@ case ":${PATH}:" in
     ;;
 esac
 
-mkdir -p "$TMPDIR"
+if [[ -n "$TMPDIR" ]]; then
+  mkdir -p "$TMPDIR"
+fi

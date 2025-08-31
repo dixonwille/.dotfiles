@@ -14,6 +14,7 @@
 - fd-find
 - fzf
 - tmux
+- unzip
 - neovim (nightly v0.12)
     - tree-sitter-cli
 - git-delta
