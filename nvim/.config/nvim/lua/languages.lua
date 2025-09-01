@@ -49,13 +49,15 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+local linter = require("lint")
+linter.linters_by_ft = {}
 local aug = vim.api.nvim_create_augroup("Lint", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   desc = "Lint after save",
   pattern = "*",
   group = aug,
   callback = function()
-    require("lint").try_lint()
+    linter.try_lint()
   end,
 })
 
