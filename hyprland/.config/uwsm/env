@@ -1,0 +1,2 @@
+export XCURSOR_SIZE=24
+export QT_QPA_PLATFORMTHEME=hyprqt6engine
