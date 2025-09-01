@@ -19,10 +19,6 @@
 
 - `gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"`
 
-## Setting up 1Password
-
-- `sudo ln -sf /opt/1Password/op-ssh-sign /usr/bin/op-ssh-sign`
-
 ## Start apps
 
 - `systemctl --user enable gnome-keyring-daemon`
