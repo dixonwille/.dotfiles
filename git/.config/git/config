@@ -23,4 +23,4 @@
 [include]
   path = "~/.config/git/personal-config"
 [alias]
-    nuke = !git fetch -p && git for-each-ref --format='%(if)%(upstream)%(then)%(if)%(upstream:track)%(==)[gone]%(then)%(if)%(HEAD)%(==)*%(then)%(else)%(refname:short)%(end)%(end)%(end)' refs/heads | xargs -r -n1 git branch -D
+    nuke = !git fetch -p && git for-each-ref --format='%(if:equals=[gone])%(upstream:track)%(then)%(if:notequals=*)%(HEAD)%(then)%(refname:short)%(end)%(end)' refs/heads | xargs -r -n1 git branch -D
