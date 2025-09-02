@@ -121,3 +121,8 @@
   font-weight: 500;
   font-style: italic;
 }
+
+#tray menu {
+  background-color: rgb(15,27,53);
+  border-radius: 10px;
+}
