@@ -24,3 +24,4 @@
 - mise (optional)
 - oh-my-posh (optional)
 - jj (optional)
+- uv and uvx (for MCP)
