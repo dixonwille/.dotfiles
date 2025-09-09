@@ -1,12 +1,12 @@
 #!/bin/env bash
 packages=(
   bin
+  zsh
   git
   git-wsl
   nvim
   oh-my-posh
   tmux
-  zsh
   zsh-plugins
   personal/git
 )

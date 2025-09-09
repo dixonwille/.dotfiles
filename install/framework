@@ -1,13 +1,13 @@
 #!/bin/env bash
 packages=(
   bin
+  zsh
   hyprland
   ghostty
   git
   nvim
   oh-my-posh
   tmux
-  zsh
   zsh-plugins
   personal/git
   personal/jj

@@ -1,0 +1,5 @@
+#!/bin/env bash
+
+curl -fsSL https://claude.ai/install.sh | bash
+
+npm install --global --prefix ~/.local @zed-industries/claude-code-acp

@@ -45,18 +45,6 @@ add_pack_handler({ "update", "install" }, "LuaSnip", function()
   })
 end)
 
-add_pack_handler({ "update", "install" }, "mcphub.nvim", function()
-  vim.notify("Installing mcp-hub", vim.log.levels.INFO, {})
-  vim.fn.jobstart({ "npm", "install", "-g", "mcp-hub@latest" }, {
-    on_exit = function(_, code, _)
-      if code ~= 0 then
-        vim.notify("Failed to install mcp-hub", vim.log.levels.ERROR, {})
-      else
-        vim.notify("Successfully installed mcp-hub", vim.log.levels.INFO, {})
-      end
-    end
-  })
-end)
 
 local packupdateaug = vim.api.nvim_create_augroup("PackChanges", { clear = true })
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
@@ -81,7 +69,7 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
 })
 
 vim.pack.add({
-  { src = "https://github.com/nvim-lua/plenary.nvim" },                                              -- Package with util funtions for other packages (CodeCompanion, mcphub)
+  { src = "https://github.com/nvim-lua/plenary.nvim" },                                              -- Package with util funtions for other packages (CodeCompanion)
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },                  -- Better Syntax Highlighting
   { src = "https://github.com/neovim/nvim-lspconfig" },                                              -- Default configurations for LSPs
   { src = "https://github.com/mason-org/mason.nvim" },                                               -- Ability to install lsps, formatters, and linters
@@ -95,9 +83,7 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.notify" },                                            -- Pretty LSP Progress notifications
   { src = "https://github.com/echasnovski/mini.icons" },                                             -- Support icons
   { src = "https://github.com/saghen/blink.cmp",                version = vim.version.range('^1') }, -- Better Auto Completion TODO (WD): see if there is a better option later 8/6/2025
-  { src = "https://github.com/zbirenbaum/copilot.lua" },                                             -- Use Copilot for authenticating purposes
   { src = "https://github.com/olimorris/codecompanion.nvim" },                                       -- Agentic AI Chat
-  { src = "https://github.com/ravitemer/mcphub.nvim" },                                              -- MCP for CodeCompanion
   { src = "https://github.com/L3MON4D3/LuaSnip",                version = vim.version.range('^2') }, -- Get snippets included in completions
   { src = "https://github.com/rafamadriz/friendly-snippets" }                                        -- Bunch of snippets for different languages
 })
