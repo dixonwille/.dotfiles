@@ -7,6 +7,7 @@ zmodload zsh/stat 2>/dev/null
 _cache_op_secret() {
   local op_ref="$1"
   local var_name="$2"
+  local account="${3:-my.1password.com}"
   local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/op-secrets"
   local cache_file="$cache_dir/$var_name"
   local ttl_days=30
@@ -36,9 +37,9 @@ _cache_op_secret() {
   # Cache miss or expired - fetch from 1Password
   if command -v op >/dev/null 2>&1; then
     # Check if authenticated, sign in if needed
-    if ! op whoami >/dev/null 2>&1; then
-      echo "Signing in to 1Password to get updated secrets..." >&2
-      if ! eval $(op signin); then
+    if ! op whoami --account "$account" >/dev/null 2>&1; then
+      echo "Signing in to 1Password account $account to get updated secrets..." >&2
+      if ! eval $(op signin --account "$account"); then
         # Sign-in failed, return cached value if available
         if [ -f "$cache_file" ]; then
           cat "$cache_file"
@@ -48,7 +49,7 @@ _cache_op_secret() {
     fi
     
     local secret_value
-    if secret_value=$(op read "$op_ref" 2>/dev/null); then
+    if secret_value=$(op read "$op_ref" --account "$account" 2>/dev/null); then
       echo "$secret_value" > "$cache_file"
       chmod 600 "$cache_file"
       echo "$secret_value"
