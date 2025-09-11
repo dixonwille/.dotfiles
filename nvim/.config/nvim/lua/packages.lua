@@ -75,7 +75,7 @@ vim.pack.add({
   { src = "https://github.com/mason-org/mason.nvim" },                                               -- Ability to install lsps, formatters, and linters
   { src = "https://github.com/stevearc/conform.nvim" },                                              -- Use Formatters
   { src = "https://github.com/mfussenegger/nvim-lint" },                                             -- Use Linters
-  { src = "https://github.com/echasnovski/mini.pick" },                                              -- vim.ui.select and other functionality (finding files)
+  { src = "https://github.com/ibhagwan/fzf-lua" },                                                   -- Finding values in lists of things
   { src = "https://github.com/stevearc/oil.nvim" },                                                  -- File navigation using Buffers
   { src = "https://github.com/vague2k/vague.nvim" },                                                 -- Color Scheme
   { src = "https://github.com/echasnovski/mini.statusline" },                                        -- Pretty Status Line

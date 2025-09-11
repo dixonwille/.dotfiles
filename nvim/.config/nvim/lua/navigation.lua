@@ -1,17 +1,9 @@
 require("oil").setup()
 vim.keymap.set({ "n" }, "-", "<cmd>Oil<cr>", { desc = "Open Oil" })
 
-local picker = require('mini.pick')
+local picker = require('fzf-lua')
 picker.setup()
-vim.ui.select = picker.ui_select
-
-local find_hidden = function()
-  picker.builtin.cli({
-    command = { "fd", "--hidden", "--type", "f", "--exclude", ".git", "--exclude", "node_modules" }
-  }, {
-    source = { name = "Find All Files" }
-  })
-end
+picker.register_ui_select()
 
 local todo_keywords = table.concat({
   "TODO",
@@ -32,37 +24,19 @@ local todo_keywords = table.concat({
 }, "|")
 local reg_ex = ([[ \s?(?:KEYWORDS)(?:\s\(\w+\))?: ]]):gsub("KEYWORDS", todo_keywords)
 local find_todos = function()
-  picker.builtin.cli({
-    command = { "rg", "-Hn", "--column", reg_ex },
-    --- @param items string[]
-    postprocess = function(items)
-      local new_items = {}
-      for _, item in ipairs(items) do
-        local filename, line, column, text = item:match("([^:]+):(%d+):(%d+):(.*)")
-        if filename then
-          new_items[#new_items + 1] = {
-            text = string.format("%s:%s %s", filename, line, vim.trim(text)),
-            path = filename,
-            lnum = tonumber(line),
-            col = tonumber(column)
-          }
-        end
-      end
-      return new_items
-    end
-  }, {
-    source = {
-      name = "Find Todos",
-      show = function(buf_id, items, query)
-        MiniPick.default_show(buf_id, items, query, { show_icons = true })
-      end,
-    }
-  })
+  picker.fzf_exec(
+    "rg --column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden -g '!.git' -e '" ..
+    reg_ex .. "'",
+    {
+      ---@diagnostic disable-next-line: assign-type-mismatch
+      actions = picker.defaults.actions.files,
+      previewer = "builtin",
+      winopts = { title = "TODOs" }
+    })
 end
 
-vim.keymap.set({ "n" }, "<leader>ff", "<cmd>Pick files<cr>", { desc = "Find Files" })
-vim.keymap.set({ "n" }, "<leader>fa", find_hidden, { desc = "Find All Files" })
-vim.keymap.set({ "n" }, "<leader>fg", "<cmd>Pick grep_live<cr>", { desc = "Find Files" })
-vim.keymap.set({ "n" }, "<leader>fb", "<cmd>Pick buffers<cr>", { desc = "Find Buffers" })
-vim.keymap.set({ "n" }, "<leader>fh", "<cmd>Pick help<cr>", { desc = "Find Help" })
+vim.keymap.set({ "n" }, "<leader>ff", function() picker.files() end, { desc = "Find Files" })
+vim.keymap.set({ "n" }, "<leader>fg", function() picker.live_grep() end, { desc = "Live Grep" })
+vim.keymap.set({ "n" }, "<leader>fb", function() picker.buffers() end, { desc = "Find Buffers" })
+vim.keymap.set({ "n" }, "<leader>fh", function() picker.helptags() end, { desc = "Find Help" })
 vim.keymap.set({ "n" }, "<leader>ft", find_todos, { desc = "Find Todos" })
