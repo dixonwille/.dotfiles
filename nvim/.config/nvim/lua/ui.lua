@@ -4,7 +4,6 @@ vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
 
 require('mini.icons').setup()
 require("mini.statusline").setup()
-require("mini.tabline").setup()
 require('mini.notify').setup()
 
 require('vim._extui').enable({
@@ -17,11 +16,6 @@ require("luasnip.loaders.from_vscode").lazy_load()
 require("blink.cmp").setup({
   signature = { enabled = true },
   snippets = { preset = 'luasnip' },
-  sources = {
-    per_filetype = {
-      codecompanion = { "codecompanion" }
-    }
-  },
   completion = {
     documentation = {
       auto_show = true,

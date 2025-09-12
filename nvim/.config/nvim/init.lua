@@ -41,4 +41,3 @@ require("packages") -- This is what installs all the plugins and is a must
 safe_require("ui")
 safe_require("navigation")
 safe_require("languages")
-safe_require("ai")

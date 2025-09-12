@@ -69,7 +69,7 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
 })
 
 vim.pack.add({
-  { src = "https://github.com/nvim-lua/plenary.nvim" },                                              -- Package with util funtions for other packages (CodeCompanion)
+  { src = "https://github.com/nvim-lua/plenary.nvim" },                                              -- Package with util funtions for other packages
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },                  -- Better Syntax Highlighting
   { src = "https://github.com/neovim/nvim-lspconfig" },                                              -- Default configurations for LSPs
   { src = "https://github.com/mason-org/mason.nvim" },                                               -- Ability to install lsps, formatters, and linters
@@ -79,11 +79,9 @@ vim.pack.add({
   { src = "https://github.com/stevearc/oil.nvim" },                                                  -- File navigation using Buffers
   { src = "https://github.com/vague2k/vague.nvim" },                                                 -- Color Scheme
   { src = "https://github.com/echasnovski/mini.statusline" },                                        -- Pretty Status Line
-  { src = "https://github.com/echasnovski/mini.tabline" },                                           -- Pretty Tab Line
   { src = "https://github.com/echasnovski/mini.notify" },                                            -- Pretty LSP Progress notifications
   { src = "https://github.com/echasnovski/mini.icons" },                                             -- Support icons
   { src = "https://github.com/saghen/blink.cmp",                version = vim.version.range('^1') }, -- Better Auto Completion TODO (WD): see if there is a better option later 8/6/2025
-  { src = "https://github.com/olimorris/codecompanion.nvim" },                                       -- Agentic AI Chat
   { src = "https://github.com/L3MON4D3/LuaSnip",                version = vim.version.range('^2') }, -- Get snippets included in completions
   { src = "https://github.com/rafamadriz/friendly-snippets" }                                        -- Bunch of snippets for different languages
 })
