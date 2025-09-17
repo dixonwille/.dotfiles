@@ -4,11 +4,13 @@ packages=(
   zsh
   git
   git-wsl
+  jj
   nvim
   oh-my-posh
   tmux
   zsh-plugins
   personal/git
+  personal/jj
 )
 
 PKGS="${packages[@]}" ./install/install

@@ -5,6 +5,7 @@ packages=(
   hyprland
   ghostty
   git
+  jj
   nvim
   oh-my-posh
   tmux

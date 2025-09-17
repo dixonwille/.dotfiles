@@ -4,12 +4,15 @@ packages=(
   zsh
   git
   git-wsl
+  jj
   nvim
   oh-my-posh
   tmux
   zsh-plugins
   personal/git
   personal/git-work
+  personal/jj
+  personal/jj-work
   personal/zsh-work
 )
 
