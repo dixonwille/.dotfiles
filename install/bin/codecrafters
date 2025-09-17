@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export INSTALL_DIR="$HOME/.local/bin"
+curl https://codecrafters.io/install.sh | sh
