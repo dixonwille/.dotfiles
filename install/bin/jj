@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+tag=$(curl -sSL https://api.github.com/repos/jj-vcs/jj/releases/latest | jq -r '.tag_name')
+tar_file="jj-$tag-x86_64-unknown-linux-musl.tar.gz"
+curl -LO https://github.com/jj-vcs/jj/releases/download/$tag/$tar_file
+mkdir -p "$HOME"/.local/bin
+mv $tar_file "$HOME"/.local/bin
+pushd "$HOME"/.local/bin >/dev/null
+tar -xzf $tar_file
+rm $tar_file
+rm LICENSE
+rm README.md
+chmod u+x jj
+popd >/dev/null
+

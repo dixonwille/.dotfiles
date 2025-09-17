@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 tar_name=nvim-linux-x86_64.tar.gz
 curl -LO https://github.com/neovim/neovim/releases/download/nightly/$tar_name
