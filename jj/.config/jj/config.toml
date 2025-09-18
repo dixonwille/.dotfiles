@@ -3,3 +3,6 @@ behavior = "own"
 backend = "ssh"
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRa1dR9AYMJDnKX815Y1M1qw8mh2rSRWxktiadaFJsP"
 backends.ssh.program = "op-ssh-sign"
+
+[ui]
+default-command = ["log"]
