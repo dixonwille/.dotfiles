@@ -16,6 +16,7 @@ compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 
 # Commone Environment
 export EDITOR="nvim"
+export MANPAGER='nvim +Man!'
 
 if [ -r "$HOME/.config/zsh/.zshrc_work" ]; then
   source "$HOME/.config/zsh/.zshrc_work"
