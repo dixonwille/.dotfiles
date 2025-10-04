@@ -78,9 +78,9 @@ vim.pack.add({
   { src = "https://github.com/ibhagwan/fzf-lua" },                                                   -- Finding values in lists of things
   { src = "https://github.com/stevearc/oil.nvim" },                                                  -- File navigation using Buffers
   { src = "https://github.com/vague2k/vague.nvim" },                                                 -- Color Scheme
-  { src = "https://github.com/echasnovski/mini.statusline" },                                        -- Pretty Status Line
-  { src = "https://github.com/echasnovski/mini.notify" },                                            -- Pretty LSP Progress notifications
-  { src = "https://github.com/echasnovski/mini.icons" },                                             -- Support icons
+  { src = "https://github.com/nvim-mini/mini.statusline" },                                          -- Pretty Status Line
+  { src = "https://github.com/nvim-mini/mini.notify" },                                              -- Pretty LSP Progress notifications
+  { src = "https://github.com/nvim-mini/mini.icons" },                                               -- Support icons
   { src = "https://github.com/saghen/blink.cmp",                version = vim.version.range('^1') }, -- Better Auto Completion TODO (WD): see if there is a better option later 8/6/2025
   { src = "https://github.com/L3MON4D3/LuaSnip",                version = vim.version.range('^2') }, -- Get snippets included in completions
   { src = "https://github.com/rafamadriz/friendly-snippets" }                                        -- Bunch of snippets for different languages
