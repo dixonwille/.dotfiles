@@ -1,0 +1,67 @@
+{
+  "plugins": {
+    "LuaSnip": {
+      "rev": "4585605",
+      "src": "https://github.com/L3MON4D3/LuaSnip",
+      "version": "2.0.0 - 3.0.0"
+    },
+    "blink.cmp": {
+      "rev": "327fff9",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "1.0.0 - 2.0.0"
+    },
+    "conform.nvim": {
+      "rev": "9d859cb",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "friendly-snippets": {
+      "rev": "572f566",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
+    "fzf-lua": {
+      "rev": "a13c5c5",
+      "src": "https://github.com/ibhagwan/fzf-lua"
+    },
+    "mason.nvim": {
+      "rev": "ad7146a",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini.icons": {
+      "rev": "2847986",
+      "src": "https://github.com/nvim-mini/mini.icons"
+    },
+    "mini.notify": {
+      "rev": "7f3c4f0",
+      "src": "https://github.com/nvim-mini/mini.notify"
+    },
+    "mini.statusline": {
+      "rev": "faa3977",
+      "src": "https://github.com/nvim-mini/mini.statusline"
+    },
+    "nvim-lint": {
+      "rev": "335a604",
+      "src": "https://github.com/mfussenegger/nvim-lint"
+    },
+    "nvim-lspconfig": {
+      "rev": "e688b48",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-treesitter": {
+      "rev": "0594d1ba",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
+    },
+    "oil.nvim": {
+      "rev": "919e155",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "plenary.nvim": {
+      "rev": "b9fd522",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "vague.nvim": {
+      "rev": "25107de",
+      "src": "https://github.com/vague2k/vague.nvim"
+    }
+  }
+}
