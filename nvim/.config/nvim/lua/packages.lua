@@ -77,7 +77,7 @@ vim.pack.add({
   { src = "https://github.com/mfussenegger/nvim-lint" },                                             -- Use Linters
   { src = "https://github.com/ibhagwan/fzf-lua" },                                                   -- Finding values in lists of things
   { src = "https://github.com/stevearc/oil.nvim" },                                                  -- File navigation using Buffers
-  { src = "https://github.com/vague2k/vague.nvim" },                                                 -- Color Scheme
+  { src = "https://github.com/vague-theme/vague.nvim" },                                             -- Color Scheme
   { src = "https://github.com/nvim-mini/mini.statusline" },                                          -- Pretty Status Line
   { src = "https://github.com/nvim-mini/mini.notify" },                                              -- Pretty LSP Progress notifications
   { src = "https://github.com/nvim-mini/mini.icons" },                                               -- Support icons

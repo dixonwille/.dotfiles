@@ -11,7 +11,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "conform.nvim": {
-      "rev": "9d859cb",
+      "rev": "fbcb4fa",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "friendly-snippets": {
@@ -19,7 +19,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
-      "rev": "a13c5c5",
+      "rev": "58ebb27",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "mason.nvim": {
@@ -39,15 +39,15 @@
       "src": "https://github.com/nvim-mini/mini.statusline"
     },
     "nvim-lint": {
-      "rev": "335a604",
+      "rev": "9da1fb9",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
-      "rev": "e688b48",
+      "rev": "ac98db2",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "0594d1ba",
+      "rev": "0606c7a9",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -60,8 +60,8 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "vague.nvim": {
-      "rev": "25107de",
-      "src": "https://github.com/vague2k/vague.nvim"
+      "rev": "cdbfdc8",
+      "src": "https://github.com/vague-theme/vague.nvim"
     }
   }
 }
