@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+tag=$(curl -sSL https://api.github.com/repos/typst/typst/releases/latest | jq -r '.tag_name')
+tar_file=typst-x86_64-unknown-linux-musl.tar.xz
+curl -LO https://github.com/typst/typst/releases/download/$tag/$tar_file
+mkdir -p "$HOME"/.local/bin
+mv $tar_file "$HOME"/.local/bin
+pushd "$HOME"/.local/bin >/dev/null
+tar -xf $tar_file --strip-components 1
+rm -rf $tar_file
+rm -rf LICENSE
+rm -rf NOTICE
+rm -rf README.md
+popd >/dev/null
