@@ -19,7 +19,7 @@ PKGS="${packages[@]}" ./install/install
 winHome=$(/mnt/c/Windows/System32/cmd.exe /C "echo %USERPROFILE%")
 winHome=$(wslpath -au "$winHome" | tr -d '\r')
 
-ln -sf "$winHome/AppData/Local/1Password/app/8/op-ssh-sign-wsl" "$HOME/.local/bin/op-ssh-sign"
+ln -sf "$winHome/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe" "$HOME/.local/bin/op-ssh-sign"
 # The following is so Oh-My-Posh can see that it is a git directory. DO NOT BIND TO GIT (without extension)
 ln -sf "/mnt/c/Program Files/Git/cmd/git.exe" "$HOME/.local/bin/git.exe"
 
