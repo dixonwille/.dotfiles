@@ -1,17 +1,17 @@
 {
   "plugins": {
     "LuaSnip": {
-      "rev": "4585605",
+      "rev": "5a1e392",
       "src": "https://github.com/L3MON4D3/LuaSnip",
       "version": "2.0.0 - 3.0.0"
     },
     "blink.cmp": {
-      "rev": "327fff9",
+      "rev": "b19413d",
       "src": "https://github.com/saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
     "conform.nvim": {
-      "rev": "9fd3d5e",
+      "rev": "ffe26e8",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "friendly-snippets": {
@@ -19,40 +19,40 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
-      "rev": "6bb2a26",
+      "rev": "cae96b0",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "mason.nvim": {
-      "rev": "ad7146a",
+      "rev": "57e5a8a",
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.icons": {
-      "rev": "2847986",
+      "rev": "ff2e4f1",
       "src": "https://github.com/nvim-mini/mini.icons"
     },
     "mini.notify": {
-      "rev": "7f3c4f0",
+      "rev": "135dcfd",
       "src": "https://github.com/nvim-mini/mini.notify"
     },
     "mini.statusline": {
-      "rev": "faa3977",
+      "rev": "1491990",
       "src": "https://github.com/nvim-mini/mini.statusline"
     },
     "nvim-lint": {
-      "rev": "9da1fb9",
+      "rev": "d111879",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
-      "rev": "cbd1e91",
+      "rev": "effe4bf",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "645f42e8",
+      "rev": "c5623d34",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "oil.nvim": {
-      "rev": "7e1cd77",
+      "rev": "cbcb3f9",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "plenary.nvim": {
@@ -60,7 +60,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "vague.nvim": {
-      "rev": "5689afd",
+      "rev": "dba2805",
       "src": "https://github.com/vague-theme/vague.nvim"
     }
   }
