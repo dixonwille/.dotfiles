@@ -2,20 +2,17 @@
 packages=(
   bin
   zsh
-  hyprland
   ghostty
   git
-  jj
   nvim
   oh-my-posh
   tmux
   zsh-plugins
   ssh
-  ssh-linux
+  ssh-macos
   personal/git
-  personal/jj
 )
 
 PKGS="${packages[@]}" ./install/install
 
-ln -sf "/opt/1Password/op-ssh-sign" "$HOME/.local/bin/op-ssh-sign"
+ln -sf "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" "$HOME/.local/bin/op-ssh-sign"

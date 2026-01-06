@@ -1,6 +1,37 @@
 #!/usr/bin/env bash
 
-tar_name=nvim-linux-x86_64.tar.gz
+OS_TYPE=""
+ARCH_TYPE=""
+
+OS_NAME=$(uname -s)
+case "$OS_NAME" in
+	"Linux")
+		OS_TYPE="linux"
+	;;
+	"Darwin")
+		OS_TYPE="macos"
+	;;
+	*)
+		echo "Unsupported OS $OS_NAME" >&2
+		exit 1
+	;;
+esac
+
+ARCH_RAW=$(uname -m)
+case "$ARCH_RAW" in
+	"x86_64" | "amd64")
+		ARCH_TYPE="x86_64"
+	;;
+	"aarch64" | "arm64")
+		ARCH_TYPE="arm64"
+	;;
+	*)
+		echo "Unsupported Architecture $ARCH_RAW" >&2
+		exit 1
+	;;
+esac
+
+tar_name=nvim-$OS_TYPE-$ARCH_TYPE.tar.gz
 curl -LO https://github.com/neovim/neovim/releases/download/nightly/$tar_name
 mkdir -p "$HOME/.local"
 mv $tar_name "$HOME"/.local/.
