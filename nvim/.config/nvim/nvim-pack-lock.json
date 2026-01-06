@@ -1,17 +1,17 @@
 {
   "plugins": {
     "LuaSnip": {
-      "rev": "5a1e392",
+      "rev": "5a1e39223db9a0498024a77b8441169d260c8c25",
       "src": "https://github.com/L3MON4D3/LuaSnip",
       "version": "2.0.0 - 3.0.0"
     },
     "blink.cmp": {
-      "rev": "b19413d",
+      "rev": "b19413d214068f316c78978b08264ed1c41830ec",
       "src": "https://github.com/saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
     "conform.nvim": {
-      "rev": "ffe26e8",
+      "rev": "8314f4c9e205e7f30b62147069729f9a1227d8bf",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "friendly-snippets": {
@@ -19,40 +19,40 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
-      "rev": "cae96b0",
+      "rev": "a03d68e40eea835a1cdbd9f93049708dab3621e6",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "mason.nvim": {
-      "rev": "57e5a8a",
+      "rev": "57e5a8addb8c71fb063ee4acda466c7cf6ad2800",
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.icons": {
-      "rev": "ff2e4f1",
+      "rev": "efc85e42262cd0c9e1fdbf806c25cb0be6de115c",
       "src": "https://github.com/nvim-mini/mini.icons"
     },
     "mini.notify": {
-      "rev": "135dcfd",
+      "rev": "29ec27f60bf4b63e447c851d9061c434d80795a6",
       "src": "https://github.com/nvim-mini/mini.notify"
     },
     "mini.statusline": {
-      "rev": "1491990",
+      "rev": "3e96596ebe51b899874d8174409cdc4f3c749d9a",
       "src": "https://github.com/nvim-mini/mini.statusline"
     },
     "nvim-lint": {
-      "rev": "d111879",
+      "rev": "1e6b2ac034d1a7588d11b0b8e862a7ad89368376",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
-      "rev": "effe4bf",
+      "rev": "0b38bc74487e73489624d61396af7805af9cc75f",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "c5623d34",
+      "rev": "b033ab331ca0bccbd93c3c2b4f886fdfc09abec0",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "oil.nvim": {
-      "rev": "cbcb3f9",
+      "rev": "81b8a91735ad5cd24a6b3137f14a89f19176364f",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "plenary.nvim": {
@@ -60,7 +60,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "vague.nvim": {
-      "rev": "dba2805",
+      "rev": "fcc283576764474ccfbbcca240797d5d7f4d8a78",
       "src": "https://github.com/vague-theme/vague.nvim"
     }
   }
