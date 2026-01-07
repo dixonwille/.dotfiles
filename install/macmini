@@ -2,6 +2,7 @@
 packages=(
   bin
   zsh
+  nix
   ghostty
   git
   nvim

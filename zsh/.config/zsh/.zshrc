@@ -34,6 +34,9 @@ bindkey "^[[A" up-line-or-beginning-search
 bindkey "^[[B" down-line-or-beginning-search
 
 # Plugins
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
