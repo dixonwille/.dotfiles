@@ -16,6 +16,12 @@
           "type": "path"
         },
         {
+          "foreground": "#55ffff",
+          "style": "plain",
+          "template": "<#ffffff>\u2500(</>\ue843 {{ .Type }}<#ffffff>)</>",
+          "type": "nix-shell"
+        },
+        {
           "foreground": "#FF9248",
           "style": "plain",
           "template": "<#ffffff>\u2500(</>#<#ffffff>)</>",
