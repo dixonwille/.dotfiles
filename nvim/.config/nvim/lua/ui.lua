@@ -1,6 +1,11 @@
-require("vague").setup()
+require("vague").setup({
+  on_highlights = function(groups, c)
+    groups.CurSearch = { fg = c.bg, bg = c.search, bold = true }
+    groups.IncSearch = { link = 'CurSearch' }
+    groups["@lsp.type.comment"] = {}
+  end,
+})
 vim.cmd.colorscheme("vague")
-vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
 
 require('mini.icons').setup()
 require("mini.statusline").setup()
