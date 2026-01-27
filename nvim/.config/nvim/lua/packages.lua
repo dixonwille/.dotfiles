@@ -1,4 +1,6 @@
 vim.api.nvim_create_user_command("PackUpdate", function() vim.pack.update() end, { desc = "Update Packages" })
+vim.api.nvim_create_user_command("PackLock", function() vim.pack.update(nil, { target = "lockfile" }) end,
+  { desc = "Update Packages based on lockfile" })
 
 --- @alias kind "install"|"update"|"delete"
 
