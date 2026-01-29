@@ -11,6 +11,7 @@ packages=(
   zsh-plugins
   ssh
   ssh-macos
+  claude
   personal/git
 )
 
