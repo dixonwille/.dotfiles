@@ -30,6 +30,7 @@ Complete list of stow packages in this repository.
 | `jj` | Jujutsu VCS config |
 | `nix` | Nix package manager config |
 | `oh-my-posh` | Shell prompt theme |
+| `claude` | Global Claude SubAgents and Skills |
 
 ## Support Directories
 
