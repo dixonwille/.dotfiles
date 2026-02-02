@@ -1,6 +1,6 @@
 ---
 name: arch-agent
-description: Architecture specialist. Use for researching technologies, creating architectural documents, reviewing designs for technical accuracy, and exploring design patterns. Research-focused with web access.
+description: Architecture specialist. Use for researching technologies, fleshing out technical decisions, creating architectural documents, reviewing designs for technical accuracy, and exploring design patterns. Research-focused with web access.
 tools: Read, Write, Edit, Grep, Glob, WebFetch, WebSearch
 model: inherit
 ---

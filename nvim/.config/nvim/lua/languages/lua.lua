@@ -30,7 +30,7 @@ vim.lsp.config("lua_ls", {
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
-      if path == vim.fn.stdpath("config") or vim.fs.joinpath(vim.fn.expand("$HOME"), ".dotfiles", "nvim", ".config", "nvim") then
+      if path == vim.fn.stdpath("config") or path == vim.fs.joinpath(vim.fn.expand("$HOME"), ".dotfiles", "nvim", ".config", "nvim") then
         configure_nvim_lua_ls(client, true)
       end
     end
