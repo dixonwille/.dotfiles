@@ -11,7 +11,7 @@ require('mini.icons').setup()
 require("mini.statusline").setup()
 require('mini.notify').setup()
 
-require('vim._extui').enable({
+require('vim._core.ui2').enable({
   msg = {
     target = 'msg',
   }
