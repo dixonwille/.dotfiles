@@ -2,25 +2,19 @@
 packages=(
   bin
   zsh
+  nix
+  ghostty
   git
-  git-wsl
-  jj
   nvim
   oh-my-posh
   tmux
   zsh-plugins
+  ssh
+  ssh-linux
+  claude
   personal/git
-  personal/jj
 )
 
 PKGS="${packages[@]}" ./install/install
 
-# TODO: This can be done for all WSL instances
-winHome=$(/mnt/c/Windows/System32/cmd.exe /C "echo %USERPROFILE%")
-winHome=$(wslpath -au "$winHome" | tr -d '\r')
-
-ln -sf "$winHome/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe" "$HOME/.local/bin/op-ssh-sign"
-# The following is so Oh-My-Posh can see that it is a git directory. DO NOT BIND TO GIT (without extension)
-ln -sf "/mnt/c/Program Files/Git/cmd/git.exe" "$HOME/.local/bin/git.exe"
-
-sudo stow -Rt /etc wsl
+ln -sf "/opt/1Password/op-ssh-sign" "$HOME/.local/bin/op-ssh-sign"
