@@ -18,3 +18,5 @@ packages=(
 PKGS="${packages[@]}" ./install/install
 
 ln -sf "/opt/1Password/op-ssh-sign" "$HOME/.local/bin/op-ssh-sign"
+
+sudo stow -Rt / cachyos

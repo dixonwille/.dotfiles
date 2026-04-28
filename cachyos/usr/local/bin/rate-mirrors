@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# /usr/local/bin/rate-mirrors — interposer in front of /usr/bin/rate-mirrors.
+#
+# For `arch` and `cachyos` subcommands: fetch the upstream mirror list, drop
+# URLs matching /etc/pacman.d/mirror-blocklist.conf (extended regex, one per
+# line), and hand the surviving list to the real binary via `stdin`.
+#
+# Other invocations pass through unchanged.
+#
+# Upstream sources used here mirror what rate-mirrors does internally:
+#   arch    → https://archlinux.org/mirrors/status/json/
+#   cachyos → https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/
+#             master/cachyos-mirrorlist/cachyos-mirrorlist
+# If either URL ever changes upstream, update it here.
+
+set -e
+
+REAL_BIN=/usr/bin/rate-mirrors
+BLOCKLIST=/etc/pacman.d/mirror-blocklist.conf
+
+ARCH_JSON_URL="https://archlinux.org/mirrors/status/json/"
+CACHYOS_LIST_URL="https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/cachyos-mirrorlist/cachyos-mirrorlist"
+
+# Find an intercepted subcommand in the args. Simple scan — fine for canonical
+# invocations (main flags before subcommand, sub-flags after).
+subcommand=""
+for arg in "$@"; do
+    case "$arg" in
+        arch|cachyos) subcommand="$arg"; break ;;
+    esac
+done
+
+# No intercepted subcommand, or no blocklist: pass through.
+if [[ -z "$subcommand" ]] || [[ ! -f "$BLOCKLIST" ]]; then
+    exec "$REAL_BIN" "$@"
+fi
+
+# Rebuild args with first occurrence of the subcommand stripped; we'll append
+# `stdin` + format flags instead.
+args=()
+dropped=0
+for arg in "$@"; do
+    if (( ! dropped )) && [[ "$arg" == "$subcommand" ]]; then
+        dropped=1
+        continue
+    fi
+    args+=("$arg")
+done
+
+# Compile blocklist into an alternation regex (skip blank/comment lines).
+pattern="$(grep -Ev '^\s*(#|$)' "$BLOCKLIST" | paste -sd'|' -)"
+filter() { if [[ -n "$pattern" ]]; then grep -Ev "$pattern"; else cat; fi; }
+
+case "$subcommand" in
+    arch)
+        curl -sSL --connect-timeout 30 "$ARCH_JSON_URL" \
+          | jq -r '.urls[]
+                   | select(.active == true and .protocol == "https" and .completion_pct == 1)
+                   | "\(.url)\t\(.country_code // "ZZ")"' \
+          | filter \
+          | "$REAL_BIN" "${args[@]}" stdin \
+                --path-to-test "extra/os/x86_64/extra.files" \
+                --path-to-return '$repo/os/$arch' \
+                --output-prefix "Server = "
+        ;;
+    cachyos)
+        curl -sSL --connect-timeout 30 "$CACHYOS_LIST_URL" \
+          | grep -vE '^\s*#' \
+          | sed -E 's|^Server = ||; s|\$arch/\$repo$||' \
+          | grep -v '^\s*$' \
+          | filter \
+          | "$REAL_BIN" "${args[@]}" stdin \
+                --path-to-test "x86_64/cachyos/cachyos.files" \
+                --path-to-return '$arch/$repo' \
+                --output-prefix "Server = "
+        ;;
+esac
