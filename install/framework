@@ -2,18 +2,17 @@
 packages=(
   bin
   zsh
-  hyprland
+  nix
   ghostty
   git
-  jj
   nvim
   oh-my-posh
   tmux
   zsh-plugins
   ssh
   ssh-linux
+  claude
   personal/git
-  personal/jj
 )
 
 PKGS="${packages[@]}" ./install/install
