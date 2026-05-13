@@ -9,7 +9,6 @@ packages=(
   oh-my-posh
   tmux
   zsh-plugins
-  claude
   personal/git
   personal/git-work
   personal/jj

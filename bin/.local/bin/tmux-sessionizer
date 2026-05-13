@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
   selected=$1
 else
-  projects=($(find ~/projects -mindepth 1 -maxdepth 1 -type d) "$HOME/.dotfiles")
+  projects=($(find ~/Projects -mindepth 1 -maxdepth 1 -type d) $(find ~/projects -mindepth 1 -maxdepth 1 -type d) "$HOME/.dotfiles")
   selected=$(printf "%s\n" "${projects[@]}" | fzf)
 fi
 
