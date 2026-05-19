@@ -20,7 +20,19 @@ end
 
 local nvimts = require("nvim-treesitter")
 -- WARN: neovim expects some of these to be installed
-nvimts.install({ "c", "lua", "markdown", "markdown_inline", "query", "vim", "vimdoc", "comment", "yaml" })
+nvimts.install({
+  "c",
+  "comment",
+  "html",
+  "latex",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "query",
+  "vim",
+  "vimdoc",
+  "yaml"
+})
 
 ---Try and enable treesitter
 ---@param bufnr integer

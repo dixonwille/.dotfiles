@@ -52,3 +52,5 @@ require("blink.cmp").setup({
     }
   }
 })
+
+require('render-markdown').setup({})
