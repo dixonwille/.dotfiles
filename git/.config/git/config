@@ -25,3 +25,8 @@
 [alias]
   nuke = !git fetch -p && git for-each-ref --format='%(if:equals=[gone])%(upstream:track)%(then)%(if:notequals=*)%(HEAD)%(then)%(refname:short)%(end)%(end)' refs/heads | xargs -r -n1 git branch -D
   lg = log --graph --pretty=\"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset\"
+[merge]
+	tool = nvimdiff
+[mergetool]
+	prompt = false
+	keepBackup = false
