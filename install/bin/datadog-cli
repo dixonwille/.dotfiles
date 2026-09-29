@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+tag=$(curl -sSL https://api.github.com/repos/DataDog/pup/releases/latest | jq -r '.tag_name')
+tag=${tag#[vV]}
+tar_file=pup_"$tag"_Linux_x86_64.tar.gz
+curl -LO https://github.com/DataDog/pup/releases/download/v$tag/$tar_file
+mkdir -p "$HOME"/.local/bin
+mv $tar_file "$HOME"/.local/bin
+pushd "$HOME"/.local/bin >/dev/null
+tar -xzf $tar_file
+rm $tar_file
+rm LICENSE
+rm LICENSE-3rdparty.csv
+rm README.md
+chmod u+x pup
+popd >/dev/null
