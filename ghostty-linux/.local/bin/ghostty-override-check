@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+# Checks whether the Ghostty systemd override (ghostty-linux package) is still
+# needed by starting the stock unit's settings in throwaway transient units.
+#
+#   ghostty-override-check           probe; notify if the override can go
+#   ghostty-override-check --remove  remove the ghostty-linux package entirely
+
+set -uo pipefail
+
+stock_unit=/usr/lib/systemd/user/app-com.mitchellh.ghostty.service
+override="$HOME/.config/systemd/user/app-com.mitchellh.ghostty.service.d/override.conf"
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/ghostty-override-check"
+marker="$state_dir/fixed"
+probe_class=com.mitchellh.ghostty.probe
+# The bug is a race, so a single clean start proves nothing
+probe_runs=10
+
+# .../ghostty-linux/.local/bin/ghostty-override-check -> repo root
+pkg_dir="$(dirname "$(readlink -f "$0")")/../.."
+pkg_dir="$(readlink -f "$pkg_dir")"
+dotfiles="$(dirname "$pkg_dir")"
+
+log() {
+  echo "ghostty-override-check: $*" >&2
+}
+
+remove_override() {
+  systemctl --user disable --now ghostty-override-check.path ghostty-override-check.timer
+
+  cd "$dotfiles" || return 1
+  stow -D -t "$HOME" ghostty-linux
+  git rm -rq --ignore-unmatch ghostty-linux
+  rm -rf ghostty-linux
+  sed -i -e '/^  ghostty-linux$/d' -e '/ghostty-override-check/{N;d}' install/desktop install/framework
+
+  systemctl --user daemon-reload
+  rm -rf "$state_dir"
+
+  local msg="Removed the ghostty-linux package from $dotfiles. Review and commit the change."
+  log "$msg"
+  notify-send --app-name=Ghostty "Ghostty override removed" "$msg" || true
+}
+
+# Prints the probe's result: pass, fail or inconclusive
+probe_once() {
+  local unit="ghostty-override-probe-$1" type reload props out result
+
+  type="$(sed -n 's/^Type=//p' "$stock_unit" | tail -1)"
+  reload="$(sed -n 's/^ReloadSignal=//p' "$stock_unit" | tail -1)"
+  props=(-p "Type=${type:-simple}" -p RuntimeMaxSec=3)
+  [[ -n "$reload" ]] && props+=(-p "ReloadSignal=$reload")
+  [[ "$type" == dbus ]] && props+=(-p "BusName=$probe_class")
+
+  out="$(systemd-run --user --unit="$unit" --wait --collect "${props[@]}" \
+    /usr/bin/ghostty --gtk-single-instance=true --initial-window=false --class="$probe_class" 2>&1)"
+  result="$(sed -n 's/.*Finished with result: //p' <<<"$out")"
+
+  case "$result" in
+    # Stayed up until RuntimeMaxSec killed it, so it started fine
+    timeout) echo pass ;;
+    protocol) echo fail ;;
+    *)
+      log "probe $1 inconclusive: ${result:-no result} ($out)"
+      echo inconclusive
+      ;;
+  esac
+}
+
+check() {
+  if [[ ! -e "$override" ]]; then
+    log "no override installed, nothing to check"
+    return 0
+  fi
+  if [[ -e "$marker" ]]; then
+    log "already known to be fixed ($(<"$marker")), run with --remove"
+    return 0
+  fi
+  if [[ ! -r "$stock_unit" ]]; then
+    log "$stock_unit not found, skipping"
+    return 0
+  fi
+
+  # Path units fire mid-upgrade; let pacman finish first
+  while [[ -e /var/lib/pacman/db.lck ]]; do
+    sleep 5
+  done
+
+  local i result
+  for ((i = 1; i <= probe_runs; i++)); do
+    result="$(probe_once "$i")"
+    if [[ "$result" != pass ]]; then
+      log "override still needed (probe $i: $result)"
+      return 0
+    fi
+  done
+
+  local versions
+  versions="$(pacman -Q ghostty systemd | tr '\n' ' ')"
+  log "stock unit started cleanly $probe_runs times with $versions"
+  mkdir -p "$state_dir"
+  echo "$versions" >"$marker"
+
+  local action
+  action="$(notify-send --app-name=Ghostty --urgency=critical \
+    --action=remove="Remove override" --action=later="Later" \
+    "Ghostty override no longer needed" \
+    "The stock Ghostty service starts cleanly ($versions). The systemd workaround can be removed.")"
+  if [[ "$action" == remove ]]; then
+    remove_override
+  fi
+}
+
+case "${1:-}" in
+  --remove) remove_override ;;
+  "") check ;;
+  *)
+    echo "usage: ghostty-override-check [--remove]" >&2
+    exit 2
+    ;;
+esac

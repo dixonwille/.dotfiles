@@ -1,0 +1,8 @@
+[Unit]
+Description=Check whether the Ghostty systemd override is still needed
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/ghostty-override-check
+# Waits on the notification until it is clicked or dismissed
+TimeoutStartSec=infinity

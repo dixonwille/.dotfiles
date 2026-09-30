@@ -1,0 +1,10 @@
+[Unit]
+Description=Re-check the Ghostty systemd override after login
+
+[Timer]
+# A systemd upgrade only reaches the user manager after it restarts
+OnStartupSec=5min
+Unit=ghostty-override-check.service
+
+[Install]
+WantedBy=default.target

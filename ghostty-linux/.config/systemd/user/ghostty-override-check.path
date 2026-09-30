@@ -1,0 +1,10 @@
+[Unit]
+Description=Re-check the Ghostty systemd override when Ghostty or systemd is upgraded
+
+[Path]
+PathChanged=/usr/bin/ghostty
+PathChanged=/usr/lib/systemd/systemd
+Unit=ghostty-override-check.service
+
+[Install]
+WantedBy=default.target

@@ -4,6 +4,7 @@ packages=(
   zsh
   nix
   ghostty
+  ghostty-linux
   git
   nvim
   oh-my-posh
@@ -17,5 +18,7 @@ packages=(
 PKGS="${packages[@]}" ./install/install
 
 ln -sf "/opt/1Password/op-ssh-sign" "$HOME/.local/bin/op-ssh-sign"
+
+systemctl --user enable --now ghostty-override-check.path ghostty-override-check.timer
 
 sudo stow -Rt / cachyos

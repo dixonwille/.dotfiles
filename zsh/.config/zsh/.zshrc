@@ -22,6 +22,15 @@ if [ -r "$HOME/.config/zsh/.zshrc_work" ]; then
   source "$HOME/.config/zsh/.zshrc_work"
 fi
 
+# Source interactive-only files from module rc.d directories
+if [ -d "$ZDOTDIR/rc.d" ]; then
+  for rc_file in "$ZDOTDIR/rc.d"/*.zsh(N); do
+    if [ -r "$rc_file" ]; then
+      . "$rc_file"
+    fi
+  done
+fi
+
 # Get into tmux easier
 bindkey -s '^f' "tmux-sessionizer\n"
 
