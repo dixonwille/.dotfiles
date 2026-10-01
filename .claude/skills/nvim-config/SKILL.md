@@ -15,14 +15,12 @@ nvim/.config/nvim/
 ├── init.lua           # Entry point, core settings, keymaps
 └── lua/
     ├── packages.lua   # Plugin management (vim.pack)
-    ├── ui.lua         # UI configuration (theme, statusline)
+    ├── ui.lua         # UI configuration (theme, icons, ui2 messages)
+    ├── statusline.lua # Custom statusline (mini.statusline style, standard hl groups)
     ├── navigation.lua # File navigation (fzf, oil)
-    ├── languages.lua  # LSP, treesitter, formatting
-    └── languages/     # Language-specific configs
-        ├── csharp.lua
-        ├── lua.lua
-        ├── vue.lua
-        └── bicep.lua
+    ├── treesitter.lua # Parser auto-install (filetype + injected languages in view)
+    ├── languages.lua  # LSP, formatting, linting
+    └── completion.lua # blink.cmp setup (and why not built-in completion)
 ```
 
 ## Module Loading
@@ -32,7 +30,9 @@ nvim/.config/nvim/
 require("packages")      -- Must succeed (installs plugins)
 safe_require("ui")       -- Continues if fails
 safe_require("navigation")
+safe_require("treesitter")
 safe_require("languages")
+safe_require("completion")
 ```
 
 ## Plugin Management

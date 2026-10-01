@@ -1,1 +1,13 @@
 source $HOME/.nix-profile/share/nix-direnv/direnvrc
+
+# use toolchain <name>...
+#   Load toolchains from ~/.config/toolchains into this directory's environment,
+#   e.g. `use toolchain lua`. The names are exported as DOTFILES_TOOLCHAIN.
+use_toolchain() {
+  # Resolve the stow symlink; nix refuses a path: flake that is a symlink.
+  local flake
+  flake="$(realpath "${XDG_CONFIG_HOME:-$HOME/.config}/toolchains")"
+  export DOTFILES_TOOLCHAIN="$*"
+  watch_file "$flake"/*.nix "$flake/flake.lock"
+  use flake "path:$flake" --impure
+}

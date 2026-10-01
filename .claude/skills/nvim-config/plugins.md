@@ -44,33 +44,32 @@ end)
 
 | Plugin | Purpose |
 |--------|---------|
-| plenary.nvim | Utility functions for other plugins |
 | nvim-treesitter | Syntax highlighting and parsing |
 | nvim-lspconfig | LSP server configurations |
-| mason.nvim | LSP/formatter/linter installer |
 | conform.nvim | Formatting |
 | nvim-lint | Linting |
 | fzf-lua | Fuzzy finder UI |
 | oil.nvim | File navigation as buffer |
 | vague.nvim | Color scheme |
-| mini.statusline | Status line |
-| mini.notify | Notifications |
-| mini.icons | Icon support |
-| blink.cmp | Auto-completion |
-| LuaSnip | Snippet engine |
-| friendly-snippets | Snippet collection |
+| mini.icons | Icons (statusline, fzf-lua, oil); standalone, no other mini modules |
+| blink.cmp (v1) | Completion menu, docs and signature help windows; no snippet source |
 
-## Language-Specific Setup
+## Language Tooling
 
-Create files in `lua/languages/` for language-specific configs:
+Language servers, formatters, and linters are NOT installed by Neovim (no mason).
+They come from the project environment, and Neovim uses whatever is on `PATH`
+when it starts:
 
-```lua
--- lua/languages/example.lua
-vim.lsp.enable("example_ls")
+- A repo's `.envrc` loads toolchains: `use toolchain lua` (see the `nix` package,
+  `~/.config/toolchains/`). Repos with their own flake use `use flake` instead.
+- `languages.lua` applies one rule to all three: a tool is used only if its
+  command is executable.
+  - LSP: `enable_available({ ... })`. Use nvim-lspconfig defaults, no overrides.
+  - conform: `formatters_by_ft`; missing formatters are skipped quietly and LSP
+    formatting is the fallback.
+  - nvim-lint: `linters_by_ft`; missing linters are skipped. Linters that only
+    read config from their working directory go in `lint_roots`.
+- Tool settings belong in the project's own config files, not in Neovim
+  (e.g. `.luarc.json`, `.stylua.toml`, `selene.toml` in the nvim config dir).
 
-require("lint").linters_by_ft.example = { "example_linter" }
-
-require("conform").formatters_by_ft.example = { "example_fmt" }
-```
-DO NOT automatically require the language. These are for projects to require in
-their `.nvim.lua` file.
+Languages are reintroduced one at a time as they are needed.

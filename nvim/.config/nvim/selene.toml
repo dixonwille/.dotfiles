@@ -1,0 +1,7 @@
+std = "vim"
+
+[lints]
+# stylua keeps simple functions on one line (collapse_simple_statement)
+multiple_statements = "allow"
+# plugin option tables (e.g. blink.cmp columns) are mixed by design
+mixed_table = "allow"

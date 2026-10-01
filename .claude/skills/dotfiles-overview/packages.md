@@ -28,7 +28,7 @@ Complete list of stow packages in this repository.
 |---------|---------|
 | `ghostty` | Ghostty terminal config |
 | `jj` | Jujutsu VCS config |
-| `nix` | Nix package manager config |
+| `nix` | Nix and direnv config, plus `~/.config/toolchains` (flake of per-language dev toolchains loaded by `use toolchain <name>...` in `.envrc`) |
 | `oh-my-posh` | Shell prompt theme |
 | `claude` | Global Claude SubAgents and Skills |
 

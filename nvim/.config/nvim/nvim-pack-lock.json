@@ -1,10 +1,5 @@
 {
   "plugins": {
-    "LuaSnip": {
-      "rev": "642b0c595e11608b4c18219e93b88d7637af27bc",
-      "src": "https://github.com/L3MON4D3/LuaSnip",
-      "version": "2.0.0 - 3.0.0"
-    },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
       "src": "https://github.com/saghen/blink.cmp",
@@ -14,29 +9,13 @@
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
-    "friendly-snippets": {
-      "rev": "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219",
-      "src": "https://github.com/rafamadriz/friendly-snippets"
-    },
     "fzf-lua": {
       "rev": "eab53acb3fd36479f084f854b4418d02b5c70382",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
-    "mason.nvim": {
-      "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
-      "src": "https://github.com/mason-org/mason.nvim"
-    },
     "mini.icons": {
       "rev": "f642e3ba8c12afbc8f32f6d77ef6597eac56786f",
       "src": "https://github.com/nvim-mini/mini.icons"
-    },
-    "mini.notify": {
-      "rev": "13df5edffc3e27937b166a0f25a8329b46e15a4e",
-      "src": "https://github.com/nvim-mini/mini.notify"
-    },
-    "mini.statusline": {
-      "rev": "127997ebef7ef632161203b960c5ef9d158f4810",
-      "src": "https://github.com/nvim-mini/mini.statusline"
     },
     "nvim-lint": {
       "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
@@ -54,10 +33,6 @@
     "oil.nvim": {
       "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
       "src": "https://github.com/stevearc/oil.nvim"
-    },
-    "plenary.nvim": {
-      "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
-      "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "render-markdown.nvim": {
       "rev": "640a3ec6d538bad17c328be373c7cad0293d9589",
