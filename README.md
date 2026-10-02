@@ -36,10 +36,11 @@ Before installation, ensure these tools are available:
 ```bash
 # Essential tools
 sudo apt install git stow curl wget tar gcc make unzip
-
-# Core applications
-sudo apt install tmux ripgrep fd-find fzf
 ```
+
+Plus [Nix](https://nixos.org/download/) (multi-user). The install scripts add
+the everyday command-line tools to your nix profile (see
+[Command-Line Tools](#command-line-tools-nix-profile)).
 
 ### Installation
 
@@ -82,28 +83,34 @@ stow -Rt "$HOME" --no-folding bin
 - **tar/unzip** - Archive tools
 - **gcc/make** - C toolchain for building tools
 
-### Core Applications
-- **tmux** - Terminal multiplexer
-- **neovim** (nightly v0.12+) - Text editor
-- **tree-sitter-cli** - Syntax highlighting
-- **ripgrep** - Fast text search
-- **fd-find** - File finder
-- **fzf** - Fuzzy finder
+### Command-Line Tools (nix profile)
+`nix/.config/toolchains/profiles/` holds sets of command-line tools, newer than a
+distribution's packages, that each machine's install script adds to its nix
+profile:
 
-### Development Tools
-- **claude-code** - Claude Code CLI
-- **claude-code-acp** - Claude Code auto-commit-push
-- **git-delta** - Git diff viewer
-- **uv/uvx** - Python package management (for MCP servers)
+- **global** (every machine) - direnv, nix-direnv, oh-my-posh, tmux, fzf, eza,
+  bat, neovim, tree-sitter, ripgrep, fd, gh, delta, jujutsu, jq, yq, sqlite, uv,
+  cloudflared, htop, claude, and on Linux inotify-tools (Neovim's file watching
+  for language servers)
+- **work** (WSL) - podman, az (with extensions), pwsh, pup, sqlcmd (go-sqlcmd), pulumi,
+  terraform, redis-cli, op, xdg-utils, wsl-open (`$BROWSER`), wl-clipboard, and
+  the Az PowerShell modules scripts use (listed in
+  `toolchains/pkgs/pwsh-modules/modules.json`; `./update.sh [--latest]` there
+  re-locks them, then `nix profile upgrade --all`)
+- **personal** - typst, codecrafters
 
-### Optional Enhancements
+```bash
+toolchains="path:$(realpath ~/.config/toolchains)"
+nix profile add "$toolchains#global" "$toolchains#work"
+```
+
+After editing a set, or `nix flake update` in `~/.config/toolchains`, run
+`nix profile upgrade --all`. Project languages come from toolchains instead
+(`use toolchain <name>` in a project's `.envrc`).
+
+### Other Tools
 - **JetBrainsMono Nerd Font Mono** - Font with programming ligatures
-- **eza** - Modern `ls` replacement
-- **batcat** - Syntax-highlighted `cat`
-- **mise** - Runtime version manager
-- **oh-my-posh** - Cross-shell prompt
-- **jj** - Git-compatible VCS
-- **1Password CLI** - Secret management
+- **1Password** - Desktop app (its CLI integration needs the system's `op`)
 
 ## Key Features
 

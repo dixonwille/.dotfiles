@@ -17,6 +17,11 @@ packages=(
 
 PKGS="${packages[@]}" ./install/install
 
+# Command-line tools (nix/.config/toolchains/profiles/). Only warns for a set
+# already added; `nix profile upgrade --all` picks up changes.
+toolchains="path:$(realpath "$HOME/.config/toolchains")"
+nix profile add "$toolchains#global" "$toolchains#personal"
+
 ln -sf "/opt/1Password/op-ssh-sign" "$HOME/.local/bin/op-ssh-sign"
 
 systemctl --user enable --now ghostty-override-check.path ghostty-override-check.timer

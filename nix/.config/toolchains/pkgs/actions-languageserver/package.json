@@ -1,0 +1,7 @@
+{
+  "name": "actions-languageserver-toolchain",
+  "private": true,
+  "dependencies": {
+    "@actions/languageserver": "0.3.61"
+  }
+}

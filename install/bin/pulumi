@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-curl -s https://get.pulumi.com | sh -s -- --install-root ~/.local --no-edit-path

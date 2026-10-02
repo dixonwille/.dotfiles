@@ -10,6 +10,12 @@ bindkey -v
 # The following lines were added by compinstall
 zstyle :compinstall filename "${ZDOTDIR:-$HOME}/.zshrc"
 
+# Completions for the nix profile's tools, ahead of the system's. Not in env.d:
+# fpath isn't exported, and nested shells (tmux) don't read ~/.zshenv again.
+if [ -d "$HOME/.nix-profile/share/zsh/site-functions" ]; then
+  fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
+fi
+
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 # End of lines added by compinstall
@@ -46,10 +52,7 @@ bindkey "^[[B" down-line-or-beginning-search
 if command -v direnv >/dev/null 2>&1; then
   eval "$(direnv hook zsh)"
 fi
-if command -v mise >/dev/null 2>&1; then
-  eval "$(mise activate zsh)"
-fi
-ZSH_PLUGINS=${XDG_DATE_HOME:-$HOME/.local/share}/zsh/plugins
+ZSH_PLUGINS=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins
 if [ -d "$ZSH_PLUGINS" ]; then
   source "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
   source "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
