@@ -21,6 +21,7 @@ pkgs.buildEnv {
       fzf # tmux-sessionizer, fzf-lua
       eza # ls alias
       bat # cat alias, fzf-lua previews
+      tealdeer # tldr
 
       # Editor (nvim)
       neovim-unwrapped

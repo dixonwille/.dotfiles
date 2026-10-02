@@ -89,7 +89,7 @@ distribution's packages, that each machine's install script adds to its nix
 profile:
 
 - **global** (every machine) - direnv, nix-direnv, oh-my-posh, tmux, fzf, eza,
-  bat, neovim, tree-sitter, ripgrep, fd, gh, delta, jujutsu, jq, yq, sqlite, uv,
+  bat, tealdeer, neovim, tree-sitter, ripgrep, fd, gh, delta, jujutsu, jq, yq, sqlite, uv,
   cloudflared, htop, claude, and on Linux inotify-tools (Neovim's file watching
   for language servers)
 - **work** (WSL) - podman, az (with extensions), pwsh, pup, sqlcmd (go-sqlcmd), pulumi,
