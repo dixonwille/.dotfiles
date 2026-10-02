@@ -1,4 +1,4 @@
-source $HOME/.nix-profile/share/nix-direnv/direnvrc
+source "$HOME/.nix-profile/share/nix-direnv/direnvrc"
 
 # use toolchain <name>...
 #   Load toolchains from ~/.config/toolchains into this directory's environment,
@@ -8,6 +8,7 @@ use_toolchain() {
   local flake
   flake="$(realpath "${XDG_CONFIG_HOME:-$HOME/.config}/toolchains")"
   export DOTFILES_TOOLCHAIN="$*"
-  watch_file "$flake"/*.nix "$flake/flake.lock"
+  # Including packages built from pkgs/ (e.g. npm servers' package.json/lock)
+  watch_file "$flake"/*.nix "$flake/flake.lock" "$flake"/pkgs/*.nix "$flake"/pkgs/*/package*.json
   use flake "path:$flake" --impure
 }

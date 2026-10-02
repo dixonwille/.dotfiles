@@ -13,14 +13,30 @@ Lua-based configuration for Neovim nightly (v0.12+).
 ```
 nvim/.config/nvim/
 ├── init.lua           # Entry point, core settings, keymaps
+├── queries/           # Query extensions (; extends): gotmpl/ injections
+├── spell/             # Shared spell word list (en.utf-8.add; compiled .spl ignored)
 └── lua/
     ├── packages.lua   # Plugin management (vim.pack)
     ├── ui.lua         # UI configuration (theme, icons, ui2 messages)
     ├── statusline.lua # Custom statusline (mini.statusline style, standard hl groups)
     ├── navigation.lua # File navigation (fzf, oil)
     ├── treesitter.lua # Parser auto-install (filetype + injected languages in view)
-    ├── languages.lua  # LSP, formatting, linting
-    └── completion.lua # blink.cmp setup (and why not built-in completion)
+    ├── toolchains.lua # Loads every toolchains/ module and applies their specs
+    │                  # (servers, formatters, linters, filetypes, setup)
+    ├── toolchains/    # One module per toolchain, returning a Toolchain spec
+    │   ├── lua.lua, go.lua, protobuf.lua, shell.lua, nix.lua, bicep.lua,
+    │   │   angular.lua, container.lua   # plain specs
+    │   ├── dotnet.lua     # Roslyn: solution choice per file, :RoslynSolution
+    │   ├── typescript.lua # vtsls, eslint, html, cssls, jsonls; prettierd
+    │   ├── vue.lua        # vue_ls; vtsls gets the vue filetype and Vue's TS plugin
+    │   ├── tailwind.lua   # tailwindcss; cssls learns Tailwind at-rules
+    │   ├── python.lua     # ruff and ty from the project's .venv when present
+    │   ├── powershell.lua # Editor Services from the toolchain, VS Code formatting
+    │   ├── azure_pipelines.lua # Pipeline files (azure*.yml, DOTFILES_AZURE_PIPELINES)
+    │   └── github_actions.lua  # Workflow filetype, actions-languageserver, actionlint
+    ├── gotmpl.lua     # Go templates: filetype and rendered-language highlighting
+    ├── completion.lua # blink.cmp setup (and why not built-in completion)
+    └── spell.lua      # Spell checking (treesitter regions), word lists, z= picker
 ```
 
 ## Module Loading
@@ -31,8 +47,10 @@ require("packages")      -- Must succeed (installs plugins)
 safe_require("ui")       -- Continues if fails
 safe_require("navigation")
 safe_require("treesitter")
-safe_require("languages")
+safe_require("toolchains")
+safe_require("gotmpl")
 safe_require("completion")
+safe_require("spell")
 ```
 
 ## Plugin Management

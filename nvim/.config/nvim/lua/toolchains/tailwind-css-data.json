@@ -1,0 +1,65 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@tailwind",
+      "description": "Tailwind CSS v3: inserts Tailwind's `base`, `components`, `utilities`, or `variants` styles into the CSS.",
+      "references": [{ "name": "Tailwind CSS v3", "url": "https://v3.tailwindcss.com/docs/functions-and-directives#tailwind" }]
+    },
+    {
+      "name": "@apply",
+      "description": "Inlines existing utility classes into a custom CSS rule.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@layer",
+      "description": "Places custom styles in one of Tailwind's layers (`base`, `components`, `utilities`).",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@config",
+      "description": "Points the stylesheet at a JavaScript Tailwind config file (v3, or legacy config in v4).",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@screen",
+      "description": "Tailwind CSS v3: a media query for one of the configured breakpoints, by name.",
+      "references": [{ "name": "Tailwind CSS v3", "url": "https://v3.tailwindcss.com/docs/functions-and-directives#screen" }]
+    },
+    {
+      "name": "@theme",
+      "description": "Tailwind CSS v4: defines design tokens (colors, fonts, breakpoints, ...) as theme variables.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@source",
+      "description": "Tailwind CSS v4: adds files or directories to scan for class names.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@utility",
+      "description": "Tailwind CSS v4: defines a custom utility that works with variants.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@variant",
+      "description": "Tailwind CSS v4: applies a Tailwind variant (e.g. `dark`, `hover`) to styles in CSS.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@custom-variant",
+      "description": "Tailwind CSS v4: defines a custom variant.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@reference",
+      "description": "Tailwind CSS v4: imports a stylesheet for reference (theme, utilities for @apply) without emitting its CSS.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    },
+    {
+      "name": "@plugin",
+      "description": "Tailwind CSS v4: loads a JavaScript Tailwind plugin.",
+      "references": [{ "name": "Tailwind CSS", "url": "https://tailwindcss.com/docs/functions-and-directives" }]
+    }
+  ]
+}

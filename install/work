@@ -2,6 +2,7 @@
 packages=(
   bin
   zsh
+  nix
   git
   git-wsl
   jj
@@ -9,6 +10,7 @@ packages=(
   oh-my-posh
   tmux
   zsh-plugins
+  containers
   personal/git
   personal/git-work
   personal/jj
@@ -17,6 +19,15 @@ packages=(
 )
 
 PKGS="${packages[@]}" ./install/install
+
+# Command-line tools (nix/.config/toolchains/profiles/). Only warns for a set
+# already added; `nix profile upgrade --all` picks up changes.
+toolchains="path:$(realpath "$HOME/.config/toolchains")"
+nix profile add "$toolchains#global" "$toolchains#work"
+
+# podman's own user units (podman.socket for Testcontainers), from the profile so
+# they follow upgrades; run `systemctl --user daemon-reload` after one
+systemctl --user link "$HOME"/.nix-profile/lib/systemd/user/podman.{socket,service}
 
 # TODO: This can be done for all WSL instances
 winHome=$(/mnt/c/Windows/System32/cmd.exe /C "echo %USERPROFILE%")

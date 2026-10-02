@@ -1,0 +1,22 @@
+{
+  "Az": "16.3.0",
+  "modules": [
+    "Az.Accounts",
+    "Az.Automation",
+    "Az.Cdn",
+    "Az.Compute",
+    "Az.ContainerRegistry",
+    "Az.EventHub",
+    "Az.FrontDoor",
+    "Az.Functions",
+    "Az.KeyVault",
+    "Az.ManagedServiceIdentity",
+    "Az.Monitor",
+    "Az.Network",
+    "Az.PrivateDns",
+    "Az.Resources",
+    "Az.Sql",
+    "Az.Storage",
+    "Az.Websites"
+  ]
+}

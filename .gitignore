@@ -1,1 +1,3 @@
 .direnv/
+# Compiled spell word lists; rebuilt from the .add files (nvim lua/spell.lua)
+*.spl

@@ -28,8 +28,9 @@ Complete list of stow packages in this repository.
 |---------|---------|
 | `ghostty` | Ghostty terminal config |
 | `jj` | Jujutsu VCS config |
-| `nix` | Nix and direnv config, plus `~/.config/toolchains` (flake of per-language dev toolchains loaded by `use toolchain <name>...` in `.envrc`) |
+| `nix` | Nix and direnv config, plus `~/.config/toolchains` (flake of per-language dev toolchains loaded by `use toolchain <name>...` in `.envrc`), and the sets of command-line tools each machine adds to its nix profile (`toolchains/profiles/`: global, work, personal) |
 | `oh-my-posh` | Shell prompt theme |
+| `containers` | Podman's `~/.config/containers` (image policy; podman itself comes from the nix profile's work set) |
 | `claude` | Global Claude SubAgents and Skills |
 
 ## Support Directories

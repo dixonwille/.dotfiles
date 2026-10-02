@@ -1,0 +1,7 @@
+{
+  "name": "azure-pipelines-language-server-toolchain",
+  "private": true,
+  "dependencies": {
+    "azure-pipelines-language-server": "0.9.3"
+  }
+}
