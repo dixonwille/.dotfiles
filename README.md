@@ -91,9 +91,9 @@ profile:
 - **global** (every machine) - direnv, nix-direnv, oh-my-posh, tmux, fzf, eza,
   bat, tealdeer, neovim, tree-sitter, ripgrep, fd, gh, delta, jujutsu, jq, yq, sqlite, uv,
   cloudflared, htop, claude, and on Linux inotify-tools (Neovim's file watching
-  for language servers)
+  for language servers) and wl-clipboard (Neovim's and gh's clipboard)
 - **work** (WSL) - podman, az (with extensions), pwsh, pup, sqlcmd (go-sqlcmd), pulumi,
-  terraform, redis-cli, op, xdg-utils, wsl-open (`$BROWSER`), wl-clipboard, and
+  terraform, redis-cli, op, xdg-utils, wsl-open (`$BROWSER`), and
   the Az PowerShell modules scripts use (listed in
   `toolchains/pkgs/pwsh-modules/modules.json`; `./update.sh [--latest]` there
   re-locks them, then `nix profile upgrade --all`)
