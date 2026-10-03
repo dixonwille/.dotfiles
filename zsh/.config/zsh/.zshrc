@@ -37,8 +37,16 @@ if [ -d "$ZDOTDIR/rc.d" ]; then
   done
 fi
 
-# Get into tmux easier
-bindkey -s '^f' "tmux-sessionizer\n"
+# Jump to a project. Runs a real `cd` so prompt hooks and history see it.
+project-cd() {
+  local dir
+  dir=$(project-list | fzf --height=40% --reverse) || { zle reset-prompt; return }
+  BUFFER="cd ${(q)dir}"
+  zle accept-line
+}
+zle -N project-cd
+bindkey -M viins '^f' project-cd
+bindkey -M vicmd '^f' project-cd
 
 # History search
 autoload -U up-line-or-beginning-search

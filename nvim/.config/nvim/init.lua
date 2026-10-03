@@ -24,7 +24,6 @@ vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', { desc = "Yank selection to sys
 vim.keymap.set({ "n" }, "<Leader>Y", '"+Y', { desc = "Yank line to system" })
 vim.keymap.set({ "n", "v" }, "<Leader>p", '"+p', { desc = "Paste after from system" })
 vim.keymap.set({ "n" }, "<Leader>P", '"+P', { desc = "Paste before from system" })
-vim.keymap.set({ "n" }, "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { desc = "Switch Projects" })
 
 --- @param name string
 local function safe_require(name)

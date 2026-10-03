@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# List project directories for fuzzy pickers (project-cd widget, tmux-sessionizer)
+
+search_dirs=()
+for dir in "$HOME/Projects" "$HOME/projects"; do
+  [[ -d $dir ]] && search_dirs+=("$dir")
+done
+
+if [[ ${#search_dirs[@]} -gt 0 ]]; then
+  find "${search_dirs[@]}" -mindepth 1 -maxdepth 1 -type d
+fi
+echo "$HOME/.dotfiles"

@@ -3,19 +3,7 @@
 if [[ $# -eq 1 ]]; then
   selected=$1
 else
-  search_dirs=()
-  for dir in "$HOME/Projects" "$HOME/projects"; do
-    [[ -d $dir ]] && search_dirs+=("$dir")
-  done
-
-  selected=$(
-    {
-      if [[ ${#search_dirs[@]} -gt 0 ]]; then
-        find "${search_dirs[@]}" -mindepth 1 -maxdepth 1 -type d
-      fi
-      echo "$HOME/.dotfiles"
-    } | fzf
-  )
+  selected=$(project-list | fzf)
 fi
 
 if [[ -z $selected ]]; then
