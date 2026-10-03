@@ -18,7 +18,7 @@ pkgs.buildEnv {
       nix-direnv
       oh-my-posh
       tmux
-      fzf # tmux-sessionizer, fzf-lua
+      fzf # project-cd, tmux-sessionizer, fzf-lua
       eza # ls alias
       bat # cat alias, fzf-lua previews
       tealdeer # tldr

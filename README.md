@@ -8,7 +8,7 @@ This dotfiles setup organizes configurations by application, with each directory
 
 ```
 .dotfiles/
-├── bin/.local/bin/            # Custom scripts (e.g., tmux-sessionizer)
+├── bin/.local/bin/            # Custom scripts (e.g., project-list, tmux-sessionizer)
 ├── git/.config/git/           # Git configuration
 ├── hyprland/.config/hyprland/ # Hyprland window manager config
 ├── nvim/.config/nvim/         # Neovim configuration
@@ -114,11 +114,9 @@ After editing a set, or `nix flake update` in `~/.config/toolchains`, run
 
 ## Key Features
 
-### tmux-sessionizer
-Custom script (`bin/.local/bin/tmux-sessionizer`) for quick tmux session management:
-- **Keybind**: `Ctrl+f` in zsh
-- **Function**: Searches `~/projects` and `~/.config` directories
-- **Behavior**: Creates new tmux sessions or switches to existing ones
+### Project jumping
+- **`Ctrl+f` in zsh**: fzf over `project-list` (`~/Projects`, `~/projects`, `~/.dotfiles`), then `cd` there
+- **`tmux-sessionizer`**: run by name when something must outlive the terminal; creates or switches to a tmux session for the project
 
 ### Shell Configuration (Zsh)
 - **Vi mode**: Enabled by default

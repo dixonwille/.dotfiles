@@ -1,4 +1,48 @@
 font-family = JetBrainsMono Nerd Font Mono
 font-size = 10
-theme = vague
-mouse-scroll-multiplier = 1
+theme = Vague
+mouse-hide-while-typing = true
+
+unfocused-split-opacity = 0.85
+split-preserve-zoom = navigation
+
+copy-on-select = clipboard
+app-notifications = no-clipboard-copy
+
+# Notify when a long command finishes in a split/tab you're not looking at
+notify-on-command-finish = unfocused
+notify-on-command-finish-action = bell,notify
+notify-on-command-finish-after = 30s
+
+# Drop-down terminal from anywhere
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+quick-terminal-autohide = true
+
+# tmux-style prefix (mirrors tmux/.config/tmux/tmux.conf)
+keybind = ctrl+a>h=goto_split:left
+keybind = ctrl+a>j=goto_split:down
+keybind = ctrl+a>k=goto_split:up
+keybind = ctrl+a>l=goto_split:right
+keybind = ctrl+a>shift+5=new_split:right
+keybind = ctrl+a>shift+apostrophe=new_split:down
+keybind = ctrl+a>z=toggle_split_zoom
+keybind = ctrl+a>x=close_surface
+keybind = ctrl+a>c=new_tab
+keybind = ctrl+a>n=next_tab
+keybind = ctrl+a>p=previous_tab
+keybind = ctrl+a>comma=prompt_tab_title
+keybind = ctrl+a>slash=start_search
+keybind = ctrl+a>bracket_left=jump_to_prompt:-1
+keybind = ctrl+a>bracket_right=jump_to_prompt:1
+keybind = ctrl+a>shift+bracket_left=write_scrollback_file:open
+keybind = ctrl+a>r=reload_config
+keybind = ctrl+a>ctrl+a=text:\x01
+
+# Resize mode: ctrl+a R, then hjkl repeatedly, escape to leave
+keybind = ctrl+a>shift+r=activate_key_table:resize
+keybind = resize/h=resize_split:left,20
+keybind = resize/j=resize_split:down,20
+keybind = resize/k=resize_split:up,20
+keybind = resize/l=resize_split:right,20
+keybind = resize/equal=equalize_splits
+keybind = resize/escape=deactivate_key_table
