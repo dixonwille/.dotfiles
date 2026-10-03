@@ -42,6 +42,5 @@ pkgs.buildEnv {
 
     xdg-utils # xdg-open (Neovim's gx, Go's browser logins), which hands links to $BROWSER
     wsl-open # $BROWSER: opens links and files in Windows
-    wl-clipboard # wl-copy and Neovim's clipboard, through WSLg
   ];
 }

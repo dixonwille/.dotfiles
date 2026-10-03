@@ -52,5 +52,6 @@ pkgs.buildEnv {
       # nvim lua/toolchains/dotnet.lua); without it Neovim falls back to a watcher
       # per directory. Also for scripts that wait on file changes.
       inotify-tools
+      wl-clipboard # wl-copy: Neovim's clipboard, gh, rofimoji (WSL through WSLg)
     ];
 }
