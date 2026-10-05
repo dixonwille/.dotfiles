@@ -24,10 +24,6 @@ compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
 
-if [ -r "$HOME/.config/zsh/.zshrc_work" ]; then
-  source "$HOME/.config/zsh/.zshrc_work"
-fi
-
 # Source interactive-only files from module rc.d directories
 if [ -d "$ZDOTDIR/rc.d" ]; then
   for rc_file in "$ZDOTDIR/rc.d"/*.zsh(N); do
@@ -47,6 +43,11 @@ project-cd() {
 zle -N project-cd
 bindkey -M viins '^f' project-cd
 bindkey -M vicmd '^f' project-cd
+
+# Work overrides (after keybinds so they can rebind)
+if [ -r "$HOME/.config/zsh/.zshrc_work" ]; then
+  source "$HOME/.config/zsh/.zshrc_work"
+fi
 
 # History search
 autoload -U up-line-or-beginning-search
