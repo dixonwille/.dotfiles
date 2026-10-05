@@ -10,5 +10,9 @@ use_toolchain() {
   export DOTFILES_TOOLCHAIN="$*"
   # Including packages built from pkgs/ (e.g. npm servers' package.json/lock)
   watch_file "$flake"/*.nix "$flake/flake.lock" "$flake"/pkgs/*.nix "$flake"/pkgs/*/package*.json
+  # playwright.nix builds the browsers for the version this lockfile pins
+  if [[ " $* " == *" playwright "* ]]; then
+    watch_file "${DOTFILES_PLAYWRIGHT_LOCK:-package-lock.json}"
+  fi
   use flake "path:$flake" --impure
 }
