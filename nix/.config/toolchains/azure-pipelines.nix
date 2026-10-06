@@ -9,7 +9,7 @@
       inherit pkgs;
       package = "azure-pipelines-language-server";
       bin = "azure-pipelines-language-server";
-      src = ./pkgs/azure-pipelines-language-server;
+      src = ./pkgs/npm-server/azure-pipelines-language-server;
     })
   ];
   env.AZURE_PIPELINES_SCHEMA = pkgs.fetchurl {
