@@ -9,7 +9,7 @@
       inherit pkgs;
       package = "@actions/languageserver";
       bin = "actions-languageserver";
-      src = ./pkgs/actions-languageserver;
+      src = ./pkgs/npm-server/actions-languageserver;
     })
     pkgs.actionlint
   ];

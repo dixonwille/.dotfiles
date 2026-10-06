@@ -1,10 +1,12 @@
 # A language server published on npm but not packaged in nixpkgs. `src` is a
-# directory holding a package.json that depends on it (pinned version) and the
-# package-lock.json npm generated for it. importNpmLock fetches every package
-# by the lockfile's own integrity hashes, so there is no hash to maintain here.
+# directory in npm-server/ holding a package.json that depends on it (pinned
+# version) and the package-lock.json npm generated for it. importNpmLock
+# fetches every package by the lockfile's own integrity hashes, so there is no
+# hash to maintain here.
 # `package` is the npm package, `bin` the executable it provides.
 #
-# To update: change the version in package.json, then in that directory run
+# To update to the newest release, run npm-server/update.sh [<directory>...].
+# For a specific version, change it in package.json, then in that directory run
 #   npm install --package-lock-only --ignore-scripts
 {
   pkgs,
