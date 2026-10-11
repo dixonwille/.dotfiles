@@ -15,10 +15,12 @@ require("vim._core.ui2").enable({
     -- Default for messages not routed by `targets`. Undocumented (only a string
     -- `targets` sets it officially), but a table `targets` resets it to "cmd".
     target = "msg",
-    -- Output I asked for goes to the scrollable pager (which takes the cursor);
-    -- everything else stays in the ephemeral msg window
+    -- Listings and shell output go to the scrollable pager (which takes the
+    -- cursor); everything else stays in the ephemeral msg window (`g<` opens it
+    -- in the pager). Don't route the "typed_cmd" trigger here: it covers every
+    -- message from a typed command, so `:w`'s "written" would open the pager
+    -- and pull the cursor out of the buffer on every save.
     targets = {
-      typed_cmd = "pager",
       list_cmd = "pager",
       shell_out = "pager",
       shell_err = "pager",
