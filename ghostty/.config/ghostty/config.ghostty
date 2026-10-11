@@ -1,3 +1,8 @@
+# TODO: switch to the fonts WezTerm and Windows Terminal use, once installed:
+#   CachyOS: paru -S ttf-maplemono-nf-cn ttf-dejavu
+#   macOS:   brew install --cask font-maple-mono-nf-cn font-dejavu
+# font-family = Maple Mono NF CN
+# font-family = DejaVu Sans Mono
 font-family = JetBrainsMono Nerd Font Mono
 font-size = 10
 theme = Vague

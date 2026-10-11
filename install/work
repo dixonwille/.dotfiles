@@ -6,6 +6,7 @@ packages=(
   git
   git-wsl
   jj
+  wezterm
   nvim
   oh-my-posh
   tmux
@@ -36,6 +37,18 @@ winHome=$(wslpath -au "$winHome" | tr -d '\r')
 ln -sf "$winHome/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe" "$HOME/.local/bin/op-ssh-sign"
 # The following is so Oh-My-Posh can see that it is a git directory. DO NOT BIND TO GIT (without extension)
 ln -sf "/mnt/c/Program Files/Git/cmd/git.exe" "$HOME/.local/bin/git.exe"
+
+# WezTerm on Windows reads its config from the Windows home: point it at the one
+# in this repo, over the WSL share
+wezterm_lua=$(wslpath -w "$(realpath wezterm/.config/wezterm/wezterm.lua)")
+mkdir -p "$winHome/.config/wezterm"
+cat >"$winHome/.config/wezterm/wezterm.lua" <<EOF
+-- Written by ~/.dotfiles/install/work: the config lives in WSL.
+local wezterm = require("wezterm")
+local path = [[$wezterm_lua]]
+wezterm.add_to_config_reload_watch_list(path)
+return dofile(path)
+EOF
 
 sudo stow -Rt /etc wsl
 
