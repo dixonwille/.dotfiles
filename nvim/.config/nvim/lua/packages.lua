@@ -50,7 +50,7 @@ vim.pack.add({
   { src = "https://github.com/nvim-treesitter/nvim-treesitter",          version = "main" },                  -- Better Syntax Highlighting
   { src = "https://github.com/neovim/nvim-lspconfig" },                                                       -- Default configurations for LSPs
   { src = "https://github.com/stevearc/conform.nvim" },                                                       -- Use Formatters
-  { src = "https://github.com/mfussenegger/nvim-lint" },                                                      -- Use Linters
+  { src = "https://codeberg.org/mfussenegger/nvim-lint" },                                                    -- Use Linters
   { src = "https://github.com/ibhagwan/fzf-lua" },                                                            -- Finding values in lists of things
   { src = "https://github.com/stevearc/oil.nvim" },                                                           -- File navigation using Buffers
   { src = "https://github.com/vague-theme/vague.nvim" },                                                      -- Color Scheme
