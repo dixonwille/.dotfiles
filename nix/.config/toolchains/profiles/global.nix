@@ -8,24 +8,6 @@
 # Left to the system: what bootstraps the dotfiles before nix (git, stow, curl),
 # the login shell (zsh), and the C compiler tree-sitter builds parsers with.
 { pkgs }:
-let
-  inherit (pkgs) lib;
-  # nixpkgs' wrapper puts alsa-lib (voice input) on LD_LIBRARY_PATH, which every command Claude
-  # runs inherits: binaries on another glibc (Playwright's Chromium) then fail to start.
-  # Patch it into the binary's RUNPATH instead, which only Claude itself uses.
-  ldPrefix = "--prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ pkgs.alsa-lib ]}";
-  claude-code = pkgs.claude-code.overrideAttrs (old: {
-    runtimeDependencies = (old.runtimeDependencies or [ ]) ++ [ pkgs.alsa-lib ];
-    installPhase =
-      let
-        installPhase = builtins.replaceStrings [ ldPrefix ] [ "" ] old.installPhase;
-      in
-      assert lib.assertMsg (
-        installPhase != old.installPhase
-      ) "claude-code no longer sets LD_LIBRARY_PATH; drop this override";
-      installPhase;
-  });
-in
 pkgs.buildEnv {
   name = "dotfiles-global";
   paths =
@@ -63,7 +45,12 @@ pkgs.buildEnv {
       htop
 
       # Agents
-      claude-code # Doesn't update itself; moves with `nix flake update`
+      # Doesn't update itself; moves with `nix flake update`. Its wrapper puts
+      # alsa-lib (voice input) on LD_LIBRARY_PATH, which every command it runs
+      # inherits, so binaries on another glibc (Playwright's Chromium) can fail
+      # to start. It can't go in the binary's RUNPATH instead: patchelf breaks
+      # the app bundled in its .bun section.
+      claude-code
     ]
     ++ lib.optionals stdenv.hostPlatform.isLinux [
       # inotifywait: Neovim's file watching for language servers on Linux (see

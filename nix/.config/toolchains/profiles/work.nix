@@ -6,9 +6,8 @@ pkgs.buildEnv {
   name = "dotfiles-work";
   paths = with pkgs; [
     # Extensions are part of the package: `az extension add` can't install into
-    # it, so add them here instead. Not buildable in nixpkgs (their pins don't
-    # match its Python libraries): containerapp (core az has `az containerapp`,
-    # without the previews) and redisenterprise.
+    # it, so add them here instead. azure-cli comes from its own pinned nixpkgs
+    # (flake.nix's nixpkgs-azure).
     (azure-cli.withExtensions (
       with azure-cli.extensions;
       [
@@ -20,6 +19,12 @@ pkgs.buildEnv {
         log-analytics
         resource-graph
         storage-blob-preview
+        # Their exact pins don't match nixpkgs' Python libraries
+        # (NixOS/nixpkgs#498295), so they're relaxed. Each uses its library in
+        # only a few commands: kubernetes for Arc connected environments, redis
+        # for `az redisenterprise test-connection`.
+        (containerapp.overridePythonAttrs { pythonRelaxDeps = [ "kubernetes" ]; })
+        (redisenterprise.overridePythonAttrs { pythonRelaxDeps = [ "redis" ]; })
       ]
     ))
     # Rootless, with the system's setuid newuidmap/newgidmap (apt's uidmap) and

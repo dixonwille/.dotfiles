@@ -67,6 +67,13 @@ if [ -d "$ZSH_PLUGINS" ]; then
   source "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 if command -v oh-my-posh >/dev/null 2>&1; then
+  # init caches its script under a name that ignores the binary's path, so a nix
+  # rebuild at the same version keeps calling the old, garbage-collected binary.
+  # Drop any cached script that doesn't call this one; init writes a new one.
+  for f in "${XDG_CACHE_HOME:-$HOME/.cache}"/oh-my-posh/init.*.zsh(N); do
+    grep -qF -- "${commands[oh-my-posh]:A}" "$f" || rm -f -- "$f"
+  done
+  unset f
   eval "$(oh-my-posh init zsh --config "${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-posh/theme.omp.json")"
 fi
 
