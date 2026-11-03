@@ -2,9 +2,14 @@
   description = "Composable development toolchains, loaded with direnv's `use toolchain <name>...`";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  # azure-cli only (profiles/work.nix), pinned by rev so `nix flake update`
+  # leaves it alone: newer nixpkgs can't evaluate it (invoke 3 marks its fabric
+  # dependency broken, NixOS/nixpkgs#575989). Drop this input, and the overlay
+  # below, once the fix (NixOS/nixpkgs#576874) is on nixos-unstable.
+  inputs.nixpkgs-azure.url = "github:NixOS/nixpkgs/fe13242281a67641c0102cdb1087f0ebe586c7df";
 
   outputs =
-    { nixpkgs, ... }:
+    { nixpkgs, nixpkgs-azure, ... }:
     let
       inherit (nixpkgs) lib;
       systems = [
@@ -80,6 +85,7 @@
                 "1password-cli"
                 "terraform"
               ];
+            overlays = [ (_: _: { inherit (nixpkgs-azure.legacyPackages.${system}) azure-cli; }) ];
           };
           profiles = map (lib.removeSuffix ".nix") (
             builtins.filter (lib.hasSuffix ".nix") (builtins.attrNames (builtins.readDir ./profiles))

@@ -1,8 +1,8 @@
 [
   {
     "name": "Az.Accounts",
-    "version": "5.5.3",
-    "hash": "sha512-HD+YNZU1SgsBJ3h5ZVEBuZl7UH3uyCJZ3egN6Sr/Ycq6371y3aqpHdMDtNoMhFuKaqLlXRN95IIn9Fq/7ntOpQ=="
+    "version": "5.5.4",
+    "hash": "sha512-mI4TKLbEXMtKooBEDlGOjxfoeypIiLXML+ZEMhjPQ6UsKlud8nQlBqZrudGwTjIHZ59efQ/lXp870rXD0FvnlQ=="
   },
   {
     "name": "Az.Automation",
@@ -11,13 +11,13 @@
   },
   {
     "name": "Az.Cdn",
-    "version": "6.2.0",
-    "hash": "sha512-1uwizrJfNnYzXGpS+slohFCHhd5iHjTnnuUysjdI9YVzgR/oosjJm4h4HVxpqprVAi6iRQLaJX3nhlupeQxT1w=="
+    "version": "6.3.0",
+    "hash": "sha512-8M4rAWP6Rr2jhIzRwJseAy2Jhzbt+9dIjteUCyjOl0/ry+20zwAOGeVTLgZgCSqaaXRI06qZq+IAxiXWyVR7+Q=="
   },
   {
     "name": "Az.Compute",
-    "version": "11.10.0",
-    "hash": "sha512-Bu9Q+MI/9okV7eta9EiTGtdg5EvDOgvxQhHEbGt4HL0kP4lR4vn66lOYj4HQvI1NzUoiy9eGjXVfEcvii5gQjw=="
+    "version": "11.11.0",
+    "hash": "sha512-sJ80tmEihqP9+JBCPM/+lx4prwRrpW/lr9e5l5SQ7zEJ0byv1i2qWNY1JvFb2ECdY4hcnXDvVDczlKA8rUo3KA=="
   },
   {
     "name": "Az.ContainerRegistry",
@@ -26,8 +26,8 @@
   },
   {
     "name": "Az.EventHub",
-    "version": "5.7.0",
-    "hash": "sha512-pFcWKUT4ZK0ZGpYwICBEZScxF0inYlC7BkEB1RbymTHFhiG1f9i295R2s4VMGyVrllhOMFzxGcxexkK1sMAc5Q=="
+    "version": "5.8.0",
+    "hash": "sha512-EpAdB1knWlWFN+ypWTen7kFNCYUvUubIcn2kK7tzVDu1MKg3CfkTu3St8vM9fkIBkN/lNOf48tuJrYnqQpqbnA=="
   },
   {
     "name": "Az.FrontDoor",
@@ -41,8 +41,8 @@
   },
   {
     "name": "Az.KeyVault",
-    "version": "6.6.1",
-    "hash": "sha512-TtwzYZZ8UAMHrHJOhP6mpDh0E+OwJLjHPlwARYBGVmHImiINrkdLPVTNaKnkfJFnSRVT3PMprLxCeUyiAOvYoQ=="
+    "version": "6.6.2",
+    "hash": "sha512-dWz/GG/g/AQ7JNLiQiCcDuwqjlCw0acX7ySjOlo2XRnNXe0WHHMApwJ2rNnJ/wl5qOUFgq7FW4eKZRMuomvpcg=="
   },
   {
     "name": "Az.ManagedServiceIdentity",
@@ -56,8 +56,8 @@
   },
   {
     "name": "Az.Network",
-    "version": "8.3.0",
-    "hash": "sha512-8tsKak33t323tVnGvZitUceOAZsacEk74rnnI/E+l87eSayL1hp5T4/PIjrcq+AtWRRBnGgMsmsXyO8aq9ZRJA=="
+    "version": "8.4.0",
+    "hash": "sha512-MxErEIVaXZYzGyhhS4JnPYsgSrH84UTJ1VLqa8nygDH05I8e3rTdDnIxFj+GrI3akprM77FtcIItUW3re2aCnQ=="
   },
   {
     "name": "Az.PrivateDns",
@@ -66,13 +66,13 @@
   },
   {
     "name": "Az.Resources",
-    "version": "10.2.1",
-    "hash": "sha512-TpkfguhuOsIrl+pCQW6dAADL5jViAuC8dVjnGIB2YEhvel57TZvr0C3AofZoDVBv/o6xtGOAF9ekU/rq+/T/Xw=="
+    "version": "10.2.2",
+    "hash": "sha512-2AjOJmyvPxuBIGZ3B7CXBVs/Ey3j7gaWNl9ysMWAusLCcW5JGKs50jBseqkpYbwFCDYAIWxhAN814SMXmJe5wg=="
   },
   {
     "name": "Az.Sql",
-    "version": "7.2.0",
-    "hash": "sha512-2/vR236LNEt5IH0WOkM9YUyFRLwTh0d4nccpgILpeqg+CDK+gvdFw4nX6hvWUQIPAzuwY0rXuD7l4cSa8xIgrQ=="
+    "version": "7.3.0",
+    "hash": "sha512-6nNrz/vN7aXHBVH9psD5hM7QZIRe3goMOYtPkJiENHvleicfG7/+6egEU1hEcsPQC01Bob4UUlZalbEeaWrXHQ=="
   },
   {
     "name": "Az.Storage",
@@ -81,7 +81,7 @@
   },
   {
     "name": "Az.Websites",
-    "version": "4.2.0",
-    "hash": "sha512-eKLjdm7vUx8h2IBF3K6c1p3cdBgsJIlnFYHDtjYu8OfNkOqrpyjbUrLYm/W9tfb3RkFmE47s4yznUkH6nPBfNw=="
+    "version": "4.3.0",
+    "hash": "sha512-uuk1o6IoENtamoo71ZEQwfw3FHGN+TZ36cP4+9Yywwc2ILy8CUp3uiE5X5fmC9qBCxgycrJ6j2JMYdU0sQFNkQ=="
   }
 ]
