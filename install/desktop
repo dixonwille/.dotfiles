@@ -22,5 +22,3 @@ toolchains="path:$(realpath "$HOME/.config/toolchains")"
 nix profile add "$toolchains#global" "$toolchains#personal"
 
 ln -sf "/opt/1Password/op-ssh-sign" "$HOME/.local/bin/op-ssh-sign"
-
-sudo stow -Rt / cachyos
