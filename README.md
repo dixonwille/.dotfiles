@@ -22,7 +22,7 @@ Personal dotfiles repository using GNU Stow for symlink management, following XD
 
 **Key Features:**
 - **XDG Compliance**: All configurations respect XDG Base Directory specification
-- **Modular Environment**: `env.d` system for environment variables with load-order control
+- **One environment**: variables in systemd's `environment.d`, read by systemd and zsh alike
 - **Private Submodule**: Sensitive work configurations isolated in `personal/` submodule
 - **Custom Scripts**: Utilities like `tmux-sessionizer` for workflow automation
 
@@ -133,40 +133,16 @@ its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
 
 ## Environment Configuration
 
-### environment.d and env.d
+### environment.d
 
-- **Plain values** - `~/.config/environment.d/*.conf`, systemd's format
-  (`KEY=VALUE`, `$VAR` expansion only; no spaces or quotes, lists use `:`), as
-  the work workstation's `env file`. The systemd user manager reads them;
-  `.zshenv` sources them for shells it didn't start. Work's are in
-  `personal/work/`.
-- **Shell code** (PATH, functions, secrets) - zsh's `env.d`:
-  `home/.config/zsh/env.d/` (all machines)
+Every environment variable is in `~/.config/environment.d/*.conf`, systemd's
+format (`KEY=VALUE`, `$VAR` expansion only; no spaces or quotes, lists use `:`),
+as the work workstation's `env file`. The systemd user manager reads them;
+`.zshenv` sources them for shells it didn't start, and keeps each PATH entry once.
 
-### 1Password Secret Management
-
-The `_cache_op_secret()` function provides secure caching of 1Password secrets with a 30-day TTL.
-
-**Usage in env.d files:**
-```bash
-# Basic usage (uses my.1password.com by default)
-export MY_SECRET="$(_cache_op_secret "op://vault/item/field" "MY_SECRET")"
-
-# Specify a different 1Password account
-export WORK_SECRET="$(_cache_op_secret "op://vault/item/field" "WORK_SECRET" "company.1password.com")"
-
-# Examples
-export GITHUB_TOKEN="$(_cache_op_secret "op://Private/GitHub Token/credential" "GITHUB_TOKEN")"
-export API_KEY="$(_cache_op_secret "op://Work/API Keys/production" "API_KEY")"
-export WORK_TOKEN="$(_cache_op_secret "op://Work/Token/credential" "WORK_TOKEN" "company.1password.com")"
-```
-
-**Features:**
-- Automatic 1Password CLI authentication when needed
-- Secure cache with 600 permissions (user read/write only)
-- 30-day cache TTL to minimize CLI calls
-- Graceful fallback to cached values if authentication fails
-- Cache location: `~/.cache/zsh/op-secrets/`
+- `home/.config/environment.d/999-path.conf` - `~/.local/bin`, `~/.cargo/bin`
+  (`999-`: after Ubuntu's `99-environment.conf`, which sets PATH outright)
+- `personal/work/.config/environment.d/` - work's values
 
 ## Development Workflow
 
@@ -181,10 +157,6 @@ Since this is a dotfiles repository, typical operations include:
 ### Updating Existing Configurations
 - Edit files directly - changes reflect immediately via symlinks
 - For shell configs, source updated files or restart terminal
-
-### Managing Secrets
-- Add new secrets to appropriate `env.d/` files using `_cache_op_secret()`
-- Environment files are numbered (e.g., `10-paths.zsh`, `20-tmpdir.zsh`) to control load order
 
 ### Privacy Notes
 - The `personal/` directory is a private git submodule containing sensitive information

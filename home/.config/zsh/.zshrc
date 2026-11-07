@@ -10,8 +10,8 @@ bindkey -v
 # The following lines were added by compinstall
 zstyle :compinstall filename "${ZDOTDIR:-$HOME}/.zshrc"
 
-# Completions for the nix profile's tools, ahead of the system's. Not in env.d:
-# fpath isn't exported, and nested shells (tmux) don't read ~/.zshenv again.
+# Completions for the nix profile's tools, ahead of the system's. Not in
+# .zshenv: fpath isn't exported, so it belongs with the interactive setup.
 if [ -d "$HOME/.nix-profile/share/zsh/site-functions" ]; then
   fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
 fi

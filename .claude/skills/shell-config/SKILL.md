@@ -12,9 +12,8 @@ Zsh configuration following XDG Base Directory specification.
 
 | File | Purpose |
 |------|---------|
-| `home/.zshenv` | Sets `ZDOTDIR`, loads `~/.config/environment.d/*.conf` (plain values), then `env.d/` |
+| `home/.zshenv` | Sets `ZDOTDIR`, keeps PATH entries unique, loads `~/.config/environment.d/*.conf` |
 | `home/.config/zsh/.zshrc` | Main configuration |
-| `home/.config/zsh/env.d/` | Environment set up with shell code (PATH, functions, secrets) |
 | `home/.config/zsh/rc.d/` | Interactive-only snippets (e.g. `osc7.zsh`, the terminals' cwd reporting) |
 | `~/.config/zsh/.zshrc_work` | Work only, from `personal/work` |
 
@@ -58,4 +57,4 @@ zsh
 
 ## Adding Aliases/Functions
 
-Add to `.zshrc`. Environment variables: a plain value goes in an `environment.d` `.conf` (see the env-system skill), anything needing shell code in a numbered `env.d/` file.
+Add to `.zshrc`. Environment variables (PATH included) go in an `environment.d` `.conf` (see the env-system skill).

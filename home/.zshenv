@@ -1,87 +1,17 @@
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 
-# Load zstat module if not already loaded
-zmodload zsh/stat 2>/dev/null
+# Each directory on PATH once, keeping the first: the files below prepend to
+# PATH, and nested shells (tmux) source them again
+typeset -U path PATH
 
-# 1Password secret caching function
-_cache_op_secret() {
-  local op_ref="$1"
-  local var_name="$2"
-  local account="${3:-my.1password.com}"
-  local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/op-secrets"
-  local cache_file="$cache_dir/$var_name"
-  local ttl_days=30
-  
-  # Create cache directory with secure permissions
-  if [ ! -d "$cache_dir" ]; then
-    mkdir -p "$cache_dir"
-    chmod 700 "$cache_dir"
-  fi
-  
-  # Check if cache exists and is valid
-  if [ -f "$cache_file" ]; then
-    local file_mtime
-    if file_mtime=$(zstat +mtime "$cache_file" 2>/dev/null); then
-      local cache_age=$(( $(date +%s) - file_mtime ))
-    else
-      local cache_age=999999999  # Force refresh if we can't get mtime
-    fi
-    local ttl_seconds=$(( ttl_days * 24 * 60 * 60 ))
-    
-    if [ $cache_age -lt $ttl_seconds ]; then
-      cat "$cache_file"
-      return 0
-    fi
-  fi
-  
-  # Cache miss or expired - fetch from 1Password
-  if command -v op >/dev/null 2>&1; then
-    # Check if authenticated, sign in if needed
-    if ! op whoami --account "$account" >/dev/null 2>&1; then
-      echo "Signing in to 1Password account $account to get updated secrets..." >&2
-      if ! eval $(op signin --account "$account"); then
-        # Sign-in failed, return cached value if available
-        if [ -f "$cache_file" ]; then
-          cat "$cache_file"
-        fi
-        return 1
-      fi
-    fi
-    
-    local secret_value
-    if secret_value=$(op read "$op_ref" --account "$account" 2>/dev/null); then
-      echo "$secret_value" > "$cache_file"
-      chmod 600 "$cache_file"
-      echo "$secret_value"
-      return 0
-    fi
-  fi
-  
-  # Fallback: return cached value even if expired, or empty
-  if [ -f "$cache_file" ]; then
-    cat "$cache_file"
-  fi
-}
-
-# Plain variables in systemd's environment.d format (KEY=VALUE, with only $VAR
-# expansion), as the workstation's env file. The systemd user manager reads
-# them itself; shells it didn't start (WSL terminals, macOS) load them here. The
-# shell sources each file, so values can't contain spaces or quotes: lists use ":".
+# The environment: plain variables in systemd's environment.d format (KEY=VALUE,
+# with only $VAR expansion), as the workstation's env file. The systemd
+# user manager reads them itself; shells it didn't start (WSL terminals, macOS)
+# load them here. The shell sources each file, so values can't contain spaces or
+# quotes: lists use ":".
 for env_file in "${XDG_CONFIG_HOME:-$HOME/.config}"/environment.d/*.conf(N); do
   set -a
   . "$env_file"
   set +a
 done
 unset env_file
-
-# Source environment files from main and module env.d directories: anything
-# needing shell code (PATH, functions, secrets)
-for env_dir in "$ZDOTDIR/env.d"; do
-  if [ -d "$env_dir" ]; then
-    for env_file in "$env_dir"/*.zsh; do
-      if [ -r "$env_file" ]; then
-        . "$env_file"
-      fi
-    done
-  fi
-done

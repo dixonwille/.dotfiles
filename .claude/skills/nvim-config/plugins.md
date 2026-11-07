@@ -159,7 +159,7 @@ project, and Neovim uses whatever is on `PATH` when it starts:
   `personal/work`); lists are `:`-separated. E.g.
   `DOTFILES_GOTMPL` lists the Go template files as `glob` or `glob=language`;
   nothing else is a Go template (see `lua/gotmpl.lua`).
-  `DOTFILES_AZURE_PIPELINES` adds pipeline file globs (a work repo's, in work's env.d).
+  `DOTFILES_AZURE_PIPELINES` adds pipeline file globs (a work repo's, in work's `environment.d`).
   `DOTFILES_SPELLFILE` names a machine's own spell word list (2zg), e.g.
   work names in `personal/nvim/spell/` (set in `personal/work`).
 - Files that need different tooling than the rest of their language get a
