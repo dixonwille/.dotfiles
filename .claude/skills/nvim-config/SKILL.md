@@ -11,7 +11,7 @@ Lua-based configuration for Neovim nightly (v0.12+).
 ## File Structure
 
 ```
-nvim/.config/nvim/
+home/.config/nvim/
 ├── init.lua           # Entry point, core settings, keymaps
 ├── queries/           # Query extensions (; extends): gotmpl/ injections
 ├── spell/             # Shared spell word list (en.utf-8.add; compiled .spl ignored)

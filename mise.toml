@@ -1,4 +1,4 @@
-# This repo's editor tools: Lua (nvim config) and shell (bin/, install/).
+# This repo's editor tools: Lua (nvim config) and shell (home/.local/bin/, install).
 # Nix tooling (nixd, nixfmt, statix, deadnix) has no release binaries for mise
 # to install; for profile/, run nvim under `nix shell nixpkgs#nixd nixpkgs#nixfmt`.
 [tools]

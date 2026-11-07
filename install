@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# Sets up this machine from the dotfiles. Safe to re-run; run from anywhere.
+#
+# Every machine gets the same files: home/ mirrors $HOME, and what differs by
+# machine is decided at runtime by the configs themselves (ssh's 1Password
+# agent, git's and jj's work identity, guarded tools in .zshrc), or by the glue
+# at the end. The one role: the work machine is the one with the work
+# workstation (its bootstrap first), which also gets personal/work.
+#
+# Before: git, stow and Nix (on work, the workstation's bootstrap provides Nix).
+cd "$(dirname "$0")" || exit 1
+
+private=(base)
+work=
+if command -v work >/dev/null 2>&1; then
+  work=1
+  private+=(work)
+fi
+
+# Stow folds: a directory that doesn't exist yet becomes one link into the repo,
+# so new files there show up without a restow. These must stay real directories,
+# because something besides home/ writes into them; stow then links file by file
+# inside. ~/.config and ~/.local/share are here so they never fold whole.
+#   ~/.ssh                   ssh's known_hosts
+#   ~/.local/bin             ./install's links below, other installers (work tools)
+#   ~/.config/{git,jj,zsh}   personal/'s files
+#   ~/.config/environment.d  the workstation's env file, personal/work's
+#   ~/.config/direnv         the workstation's lib/ drop-in
+#   ~/.config/nix            nix registry's registry.json
+mkdir -p "$HOME"/.config/{git,jj,zsh,environment.d,direnv,nix} "$HOME"/.local/{bin,share} "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+stow -R -d . -t "$HOME" home
+# personal/ is its own stow directory (a submodule), and only ever adds files
+stow -R -d personal -t "$HOME" --no-folding "${private[@]}"
+
+# Command-line tools (profile/). Only warns when the set is already there;
+# `nix profile upgrade --all` picks up changes. On work they sit behind the
+# team's entry (priority 4), so where both have a tool, the team's runs.
+nix profile add "path:$PWD/profile#global"
+
+# 1Password's SSH signing program for git and jj (`op-ssh-sign` on PATH)
+if [[ -n ${WSL_DISTRO_NAME:-} ]]; then
+  winHome=$(/mnt/c/Windows/System32/cmd.exe /C "echo %USERPROFILE%")
+  winHome=$(wslpath -au "$winHome" | tr -d '\r')
+
+  ln -sf "$winHome/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe" "$HOME/.local/bin/op-ssh-sign"
+  # So Oh-My-Posh can see that it is a git directory. DO NOT BIND TO GIT (without extension)
+  ln -sf "/mnt/c/Program Files/Git/cmd/git.exe" "$HOME/.local/bin/git.exe"
+
+  # WezTerm on Windows reads its config from the Windows home: point it at the
+  # one in this repo, over the WSL share
+  wezterm_lua=$(wslpath -w "$(realpath home/.config/wezterm/wezterm.lua)")
+  mkdir -p "$winHome/.config/wezterm"
+  cat >"$winHome/.config/wezterm/wezterm.lua" <<LUA
+-- Written by ~/.dotfiles/install: the config lives in WSL.
+local wezterm = require("wezterm")
+local path = [[$wezterm_lua]]
+wezterm.add_to_config_reload_watch_list(path)
+return dofile(path)
+LUA
+else
+  for sign in /opt/1Password/op-ssh-sign /Applications/1Password.app/Contents/MacOS/op-ssh-sign; do
+    if [[ -x $sign ]]; then
+      ln -sf "$sign" "$HOME/.local/bin/op-ssh-sign"
+      break
+    fi
+  done
+fi
+
+if [[ -n $work ]]; then
+  # ~/Projects/mise.toml: trust it, then install the editor tools it lists
+  echo "Then: cd ~/Projects && mise trust && mise install"
+fi

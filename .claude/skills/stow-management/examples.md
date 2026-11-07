@@ -1,72 +1,56 @@
 # Stow Examples
 
-## Installing Packages
+## Installing
 
 ```bash
-# Single package
-stow -Rt "$HOME" nvim
+# Everything (what every machine runs)
+./install
 
-# Multiple packages
-PKGS="zsh tmux nvim git" ./install/install
-
-# With verbose output
-stow -Rvt "$HOME" nvim
+# Just home/ again, verbose
+stow -Rv -d . -t "$HOME" home
 ```
 
 ## Removing Symlinks
 
 ```bash
-# Unstow (remove symlinks)
-stow -Dt "$HOME" nvim
-
-# Restow (unstow then stow - useful after changes)
-stow -Rt "$HOME" nvim
+# Unstow everything home/ linked
+stow -D -d . -t "$HOME" home
+stow -D -d personal -t "$HOME" base work
 ```
 
-## Handling --no-folding
+## Adding a Config File
 
 ```bash
-# Check if package uses no-folding
-ls bin/.no-fold
+# 1. Put it at its $HOME path under home/
+mkdir -p home/.config/new-app
+cp /path/to/config home/.config/new-app/
 
-# Manual stow with no-folding
-stow -Rt "$HOME" --no-folding bin
+# 2. Link it (a new top-level directory under ~/.config gets folded: one link)
+./install
 ```
 
-## Creating New Package
-
-```bash
-# 1. Create package structure
-mkdir -p new-app/.config/new-app
-
-# 2. Add config files
-cp /path/to/config new-app/.config/new-app/
-
-# 3. Stow it
-stow -Rt "$HOME" new-app
-
-# 4. (Optional) Add .no-fold if needed
-touch new-app/.no-fold
-```
+If the app also writes its own files into that directory (state, caches, other
+tools' drop-ins), add the directory to `./install`'s `mkdir -p` list first, so
+stow links file by file instead of folding it into the repo.
 
 ## Troubleshooting
 
 ### Conflict with existing file
 ```bash
-# Backup existing file first
+# Back up the existing file first
 mv ~/.config/app/config ~/.config/app/config.bak
-
-# Then stow
-stow -Rt "$HOME" app
+./install
 ```
 
 ### Preview without making changes
 ```bash
-# Simulate (dry-run)
-stow -nRvt "$HOME" nvim
+stow -nRv -d . -t "$HOME" home
 ```
 
-### Check what would be created
+### A directory got folded that shouldn't have
 ```bash
-stow -nvt "$HOME" package-name 2>&1 | grep -E "^(LINK|UNLINK)"
+# e.g. ~/.config/app is a link into the repo, but the app writes there:
+rm ~/.config/app            # the link only
+# add ~/.config/app to ./install's mkdir -p list, then
+./install
 ```

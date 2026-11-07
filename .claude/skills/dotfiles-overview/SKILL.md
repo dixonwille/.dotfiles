@@ -10,22 +10,28 @@ Personal dotfiles repository using GNU Stow for symlink management, following XD
 
 ## Directory Pattern
 
-All application configs follow: `app/.config/app/` → symlinked to `~/.config/app/`
+`home/` mirrors `$HOME` and is the one public stow package, the same on every
+machine: a file at `home/<path>` is linked at `~/<path>`.
 
 ```
-package-name/
-└── .config/
-    └── package-name/
-        └── config files...
+home/
+├── .config/<app>/...   → ~/.config/<app>/
+├── .local/bin/...      → ~/.local/bin/ (custom scripts)
+├── .local/share/zsh/plugins/  (zsh plugin submodules)
+├── .ssh/...
+└── .zshenv
 ```
 
 ## Core Structure
 
-- **Application configs**: Directories with `.config/` subdirectories stowed to `~/.config/`
-- **Binaries**: `bin/.local/bin/` contains custom scripts → `~/.local/bin/`
-- **Git submodules**: `zsh-plugins/` contains Zsh plugin submodules
+- **Folding**: stow links a whole directory where the target doesn't exist yet,
+  so new files appear without a restow. `./install` first creates the
+  directories something else also writes into (`~/.ssh`, `~/.local/bin`,
+  `~/.config/{git,jj,zsh,environment.d,direnv,nix}`), which stow then fills file
+  by file. A new such directory goes in that `mkdir` list.
+- **Git submodules**: `home/.local/share/zsh/plugins/` holds the Zsh plugin submodules
 - **Private submodule**: `personal/` is a private git submodule (work configs, secrets)
-- **Environment-specific**: `hyprland/` for specialized setups; on work WSL the work machine's own setup owns system setup (`/etc/wsl.conf`, podman, git's ssh.exe)
+- **Same everywhere**: every machine stows all of `home/`; differences are decided at runtime or by `./install`. On work WSL the work machine's own setup owns system setup (`/etc/wsl.conf`, podman, git's ssh.exe), and `personal/work` adds the work pieces
 
 ## Key Tools
 

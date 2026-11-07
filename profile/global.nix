@@ -1,7 +1,7 @@
-# Command-line tools for every machine: what I use whatever the project. Each
-# set in profile/ goes in the user's nix profile, ahead of the system's
-# packages, and a machine's install script adds the sets it uses:
-#   nix profile add "path:$HOME/.dotfiles/profile#global" ...#personal
+# Command-line tools for every machine: what I use whatever the project. The
+# one set in the user's nix profile, ahead of the system's packages (./install
+# adds it):
+#   nix profile add "path:$HOME/.dotfiles/profile#global"
 # To upgrade, run `nix flake update` in profile/, then `nix profile upgrade --all`.
 #
 # Not here: a project's tools (runtimes, language servers, formatters, linters).
@@ -40,6 +40,9 @@ pkgs.buildEnv {
       # Data and scripts
       jq
       sqlite
+
+      # Services
+      codecrafters-cli
 
       # Network and system
       cloudflared # tunnels on my own Cloudflare account

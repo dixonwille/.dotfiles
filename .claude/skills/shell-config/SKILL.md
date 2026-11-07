@@ -12,9 +12,11 @@ Zsh configuration following XDG Base Directory specification.
 
 | File | Purpose |
 |------|---------|
-| `zsh/.config/zsh/.zshrc` | Main configuration |
-| `zsh/.config/zsh/env.d/` | Environment variables |
-| `~/.config/zsh/.zshrc_work` | Work-specific (if exists) |
+| `home/.zshenv` | Sets `ZDOTDIR`, loads `~/.config/environment.d/*.conf` (plain values), then `env.d/` |
+| `home/.config/zsh/.zshrc` | Main configuration |
+| `home/.config/zsh/env.d/` | Environment set up with shell code (PATH, functions, secrets) |
+| `home/.config/zsh/rc.d/` | Interactive-only snippets (e.g. `osc7.zsh`, the terminals' cwd reporting) |
+| `~/.config/zsh/.zshrc_work` | Work only, from `personal/work` |
 
 ## Key Features
 
@@ -22,10 +24,11 @@ Zsh configuration following XDG Base Directory specification.
 - **Vi mode**: Enabled by default
 - **History**: 10k entries, XDG-compliant location
 - **Conditional loading**: Tools/plugins load only if available
+- **mise**: `mise activate zsh` puts each project's tools (its `mise.toml`) on PATH while in it; PATH entries added after it (direnv's) stay ahead
 
 ## Plugins
 
-Managed via git submodules in `zsh-plugins/`:
+Managed via git submodules in `home/.local/share/zsh/plugins/`:
 
 | Plugin | Purpose |
 |--------|---------|
@@ -34,11 +37,14 @@ Managed via git submodules in `zsh-plugins/`:
 
 ## Prompt
 
-Uses oh-my-posh (optional). Config in `oh-my-posh/.config/oh-my-posh/`.
+Uses oh-my-posh (optional). Config in `home/.config/oh-my-posh/`.
 
 ## Work Integration
 
-If `~/.config/zsh/.zshrc_work` exists, it's sourced automatically. This allows machine-specific settings without modifying the main config.
+If `~/.config/zsh/.zshrc_work` exists, it's sourced automatically (after the
+keybinds, so it can rebind). It comes from `personal/work`, stowed only where the
+work machine's own setup is installed, and runs the workstation's
+its init (its env file, `~/.local/bin`, direnv's hook).
 
 ## Testing Changes
 
@@ -52,4 +58,4 @@ zsh
 
 ## Adding Aliases/Functions
 
-Add to `.zshrc` or create new file in `env.d/` if environment-related.
+Add to `.zshrc`. Environment variables: a plain value goes in an `environment.d` `.conf` (see the env-system skill), anything needing shell code in a numbered `env.d/` file.

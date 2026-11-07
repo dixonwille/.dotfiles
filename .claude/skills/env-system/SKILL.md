@@ -22,8 +22,8 @@ Two places, by what a variable needs:
 
 | Location | Purpose |
 |----------|---------|
-| `personal/environment-work/.config/environment.d/` | Work's plain values (private submodule), e.g. `60-dotfiles-work.conf` |
-| `zsh/.config/zsh/env.d/` | Shell code, all machines |
+| `personal/work/.config/environment.d/` | Work's plain values (private submodule), e.g. `60-dotfiles-work.conf` |
+| `home/.config/zsh/env.d/` | Shell code, all machines |
 
 ## File Naming Convention
 

@@ -10,32 +10,37 @@ GNU Stow creates symlinks from package directories to target locations (default:
 ## Quick Reference
 
 ```bash
-# Install multiple packages via install script
-PKGS="zsh tmux nvim git" ./install/install
+# Everything: home/, personal/base, and personal/work on the work machine
+./install
 
-# Manual stow (from repo root)
-stow -Rt "$HOME" package-name
-
-# With --no-folding (when .no-fold file exists)
-stow -Rt "$HOME" --no-folding bin
+# Manual (from repo root): what ./install runs
+stow -R -d . -t "$HOME" home
+stow -R -d personal -t "$HOME" --no-folding base work
 ```
 
 ## Install Script
 
-The `install/install` script:
-1. Reads `PKGS` environment variable (space-separated package names)
-2. Checks for `.no-fold` file in each package
-3. Runs stow with appropriate flags
+`./install` (repo root; one script for every machine):
+1. Creates the directories something besides the repo writes into (`~/.ssh`,
+   `~/.local/bin`, `~/.config/{git,jj,zsh,environment.d,direnv,nix}`), so they
+   stay real directories
+2. Stows `home/` (one package mirroring `$HOME`), then `personal/base`, and
+   `personal/work` where the work machine's own setup is installed (`work` on PATH)
+3. Adds the nix profile's `global` set (`profile/`)
+4. Links `op-ssh-sign` from whichever 1Password app is installed; on WSL, also
+   `git.exe` and the Windows-side WezTerm config
 
-## The --no-folding Flag
+## Folding
 
-By default, stow creates symlinks at the highest possible directory level. The `--no-folding` flag creates symlinks for individual files instead.
+By default stow links the highest directory it can: where `~/.config/nvim`
+doesn't exist, it becomes one link to `home/.config/nvim`, so files added to the
+repo appear without a restow. Where the target directory already exists, stow
+links file by file inside it. So the folding choice is per target directory, and
+lives in `./install`'s `mkdir -p` list: a directory that other programs also
+write into (ssh's `known_hosts`, the workstation's env file, `personal/`'s
+files) must exist before stowing, or their files land in the repo.
 
-**Use --no-folding when:**
-- Package directory might receive additional files not from this repo
-- Want to mix stowed and non-stowed files in same directory
-
-**Controlled by:** `.no-fold` file in package root (presence triggers flag)
+`personal/` is always stowed `--no-folding`: it only adds files.
 
 ## Common Operations
 

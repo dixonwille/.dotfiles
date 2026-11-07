@@ -1,11 +1,11 @@
 ---
 name: custom-scripts
-description: Custom scripts in bin/.local/bin/. Use when creating new scripts or understanding existing utilities like project-list and tmux-sessionizer.
+description: Custom scripts in home/.local/bin/. Use when creating new scripts or understanding existing utilities like project-list and tmux-sessionizer.
 ---
 
 # Custom Scripts
 
-Scripts are stored in `bin/.local/bin/` and stowed to `~/.local/bin/`.
+Scripts are stored in `home/.local/bin/` and stowed to `~/.local/bin/`.
 
 ## Key Scripts
 
@@ -22,7 +22,7 @@ job must outlive the terminal.
 
 | Property | Value |
 |----------|-------|
-| Location | `bin/.local/bin/tmux-sessionizer` |
+| Location | `home/.local/bin/tmux-sessionizer` |
 | Keybind | none (zsh `Ctrl+f` is `project-cd`) |
 | Searches | `project-list` |
 
@@ -34,10 +34,10 @@ job must outlive the terminal.
 
 ## Adding New Scripts
 
-1. Create script in `bin/.local/bin/`:
+1. Create script in `home/.local/bin/`:
    ```bash
-   touch bin/.local/bin/my-script
-   chmod +x bin/.local/bin/my-script
+   touch home/.local/bin/my-script
+   chmod +x home/.local/bin/my-script
    ```
 
 2. Add shebang and content:
@@ -48,9 +48,9 @@ job must outlive the terminal.
    # Script content...
    ```
 
-3. If not already stowed:
+3. Link it (each script in `~/.local/bin` is its own link):
    ```bash
-   stow -Rt "$HOME" --no-folding bin
+   ./install
    ```
 
 ## Best Practices
@@ -59,4 +59,4 @@ job must outlive the terminal.
 - Add description comment at top
 - Make executable: `chmod +x`
 - Test locally before committing
-- The `bin` package uses `--no-folding` (has `.no-fold` file)
+- `~/.local/bin` stays a real directory (`./install` creates it before stowing), so each script is its own link: a new script needs `./install` to appear

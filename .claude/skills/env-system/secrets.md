@@ -25,7 +25,7 @@ _cache_op_secret "op://vault/item/field" "CACHE_NAME" ["account"]
 ## Usage Pattern
 
 ```bash
-# In env.d file (e.g., personal/zsh-work/.config/zsh/env.d/40-secrets.zsh)
+# In an env.d file (e.g. personal/work/.config/zsh/env.d/40-secrets.zsh)
 
 # Basic usage
 export GITHUB_TOKEN="$(_cache_op_secret "op://Development/GitHub/token" "GITHUB_TOKEN")"

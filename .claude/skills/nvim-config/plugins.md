@@ -68,7 +68,7 @@ project, and Neovim uses whatever is on `PATH` when it starts:
     versions. In someone else's repo, `mise.local.toml` (globally git-ignored).
   - Work: the work machine's own setup's nix profile provides the runtimes (dotnet
     SDKs, go, node, pwsh with the Az modules, bicep with Bicep.LangServer, uv).
-    `~/Projects/mise.toml` (`personal/mise-work`) adds the editor tools for
+    `~/Projects/mise.toml` (`personal/work`) adds the editor tools for
     every clone under it (mise merges parent directories' configs) and never a
     runtime, which would shadow the team's. Servers build and run with the
     team's runtimes: gopls (`go:` backend) with its go, Roslyn
@@ -156,12 +156,12 @@ project, and Neovim uses whatever is on `PATH` when it starts:
     (powershell_es formatting); copy them with a comment naming the source.
 - Editor settings that differ by machine come from `DOTFILES_*` environment
   variables in `~/.config/environment.d/*.conf` (work's in
-  `personal/environment-work`); lists are `:`-separated. E.g.
+  `personal/work`); lists are `:`-separated. E.g.
   `DOTFILES_GOTMPL` lists the Go template files as `glob` or `glob=language`;
   nothing else is a Go template (see `lua/gotmpl.lua`).
   `DOTFILES_AZURE_PIPELINES` adds pipeline file globs (a work repo's, in work's env.d).
   `DOTFILES_SPELLFILE` names a machine's own spell word list (2zg), e.g.
-  work names in `personal/nvim/spell/` (set in `personal/environment-work`).
+  work names in `personal/nvim/spell/` (set in `personal/work`).
 - Files that need different tooling than the rest of their language get a
   compound filetype (`yaml.github-actions`, `yaml.azure-pipelines`,
   `yaml.docker-compose`): treesitter still uses the yaml parser, while servers

@@ -4,22 +4,20 @@ Personal dotfiles repository using GNU Stow for symlink management, following XD
 
 ## Repository Structure
 
-This dotfiles setup organizes configurations by application, with each directory containing `.config/` subdirectories that get stowed to `~/.config/`:
+`home/` mirrors `$HOME`: a file at `home/<path>` is linked at `~/<path>`, the same on every machine. What differs by machine is decided at runtime by the configs themselves (ssh's 1Password agent, git's and jj's work identity), or by `./install`.
 
 ```
 .dotfiles/
-├── bin/.local/bin/            # Custom scripts (e.g., project-list, tmux-sessionizer)
-├── git/.config/git/           # Git configuration
-├── hyprland/.config/hyprland/ # Hyprland window manager config
-├── nvim/.config/nvim/         # Neovim configuration
-├── tmux/.config/tmux/         # Tmux configuration  
-├── mise/.config/mise/         # mise settings (no tools: those are per project)
-├── zsh/.config/zsh/           # Zsh shell configuration
-├── zsh-plugins/               # Git submodules for Zsh plugins
-├── personal/                  # Private git submodule (work configs, secrets)
-├── profile/                   # Nix flake: command-line tool sets for the nix profile
-├── install/                   # Installation scripts
-└── CLAUDE.md                  # Instructions for Claude Code
+├── home/                      # Stowed into $HOME on every machine
+│   ├── .config/               # git, jj, mise, nix, direnv, nvim, oh-my-posh,
+│   │                          # tmux, zsh, ghostty, wezterm (Windows, for WSL)
+│   ├── .local/bin/            # Custom scripts (e.g., project-list, tmux-sessionizer)
+│   ├── .local/share/zsh/plugins/  # Git submodules for Zsh plugins
+│   ├── .ssh/                  # SSH configuration
+│   └── .zshenv
+├── personal/                  # Private git submodule: base (every machine), work
+├── profile/                   # Nix flake: the command-line tools for the nix profile
+└── install                    # Sets up any machine (stow, nix profile, glue)
 ```
 
 **Key Features:**
@@ -39,41 +37,36 @@ Before installation, ensure these tools are available:
 sudo apt install git stow curl wget tar gcc make unzip
 ```
 
-Plus [Nix](https://nixos.org/download/) (multi-user). The install scripts add
-the everyday command-line tools to your nix profile (see
-[Command-Line Tools](#command-line-tools-nix-profile)).
+Plus [Nix](https://nixos.org/download/) (multi-user). `./install` adds the
+everyday command-line tools to your nix profile (see
+[Command-Line Tools](#command-line-tools-nix-profile)). On the work WSL, run the
+work machine's own setup's bootstrap
+first: it provides Nix, and `./install` then adds `personal/work`.
 
 ### Installation
 
 #### Option 1: Using Install Script (Recommended)
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-
-# Set packages to install and run installer
-PKGS="zsh tmux nvim git bin" ./install/install
+git clone --recurse-submodules git@github.com:dixonwille/.dotfiles.git ~/.dotfiles
+~/.dotfiles/install
 ```
+
+The same on every machine, and safe to re-run.
 
 #### Option 2: Manual Stow Installation
 
 ```bash
-# Clone and navigate to repository
-git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-
-# Stow individual packages
-stow -Rt "$HOME" zsh
-stow -Rt "$HOME" tmux
-stow -Rt "$HOME" nvim
-stow -Rt "$HOME" git
-
-# For packages that need no-folding (like bin/)
-stow -Rt "$HOME" --no-folding bin
+# Directories other programs also write into must exist first (see ./install)
+mkdir -p ~/.config/{git,jj,zsh,environment.d,direnv,nix} ~/.local/{bin,share} ~/.ssh
+stow -R -d . -t "$HOME" home
+stow -R -d personal -t "$HOME" --no-folding base   # and work, on the work machine
 ```
 
-**Note**: Some packages use the `--no-folding` flag, controlled by `.no-fold` files in their directories.
+**Note**: stow folds a directory that doesn't exist yet into one link, so new
+files in the repo show up without a restow; the ones `./install` creates first
+stay real and get file-by-file links.
 
 ## Complete Tool List
 
@@ -91,13 +84,12 @@ to its nix profile:
 
 - **global** (every machine) - mise, oh-my-posh, tmux, fzf, eza, bat, tealdeer,
   taskwarrior, neovim, tree-sitter, ripgrep, fd, gh, delta, jujutsu, jq, yq,
-  sqlite, cloudflared, htop, claude, and on Linux inotify-tools (Neovim's
-  file watching for language servers) and wl-clipboard (Neovim's and gh's
-  clipboard)
-- **personal** - typst, codecrafters
+  sqlite, codecrafters, cloudflared, htop, claude, and on Linux inotify-tools
+  (Neovim's file watching for language servers) and wl-clipboard (Neovim's and
+  gh's clipboard)
 
 ```bash
-nix profile add "path:$HOME/.dotfiles/profile#global" "path:$HOME/.dotfiles/profile#personal"
+nix profile add "path:$HOME/.dotfiles/profile#global"
 ```
 
 After editing a set, or `nix flake update` in `profile/`, run
@@ -115,7 +107,7 @@ its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
   ignore.
 - **Work** (WSL, on the work machine's own setup) -
   the workstation provides the runtimes (dotnet, go, node, pwsh, bicep, uv) and
-  team CLIs. `~/Projects/mise.toml` (`personal/mise-work`) adds the editor tools
+  team CLIs. `~/Projects/mise.toml` (`personal/work`) adds the editor tools
   for every clone under it, and never a runtime. A repo whose CI pins something
   else gets its own `mise.local.toml`.
 - **This repo** - its `mise.toml` has the Lua and shell tools. Nix tooling
@@ -136,7 +128,8 @@ its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
 - **Vi mode**: Enabled by default
 - **History**: 10k entries in XDG-compliant location
 - **Plugins**: zsh-autosuggestions, zsh-syntax-highlighting (via git submodules)
-- **Work integration**: Loads `~/.config/zsh/.zshrc_work` if present
+- **Project tools**: `mise activate` puts each project's `mise.toml` tools on PATH while in it
+- **Work integration**: Loads `~/.config/zsh/.zshrc_work` (from `personal/work`: the workstation's its init) if present
 
 ## Environment Configuration
 
@@ -146,9 +139,9 @@ its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
   (`KEY=VALUE`, `$VAR` expansion only; no spaces or quotes, lists use `:`), as
   the work workstation's `env file`. The systemd user manager reads them;
   `.zshenv` sources them for shells it didn't start. Work's are in
-  `personal/environment-work/`.
+  `personal/work/`.
 - **Shell code** (PATH, functions, secrets) - zsh's `env.d`:
-  `zsh/.config/zsh/env.d/` (all machines)
+  `home/.config/zsh/env.d/` (all machines)
 
 ### 1Password Secret Management
 
@@ -180,10 +173,10 @@ export WORK_TOKEN="$(_cache_op_secret "op://Work/Token/credential" "WORK_TOKEN" 
 Since this is a dotfiles repository, typical operations include:
 
 ### Adding New Configurations
-1. Create new package directory following `app/.config/app/` pattern
-2. Add configuration files in appropriate subdirectories
-3. Create `.no-fold` file if needed for the package
-4. Test with `stow -Rt "$HOME" app`
+1. Put the file at its `$HOME` path under `home/` (e.g. `home/.config/app/config`)
+2. Run `./install` (not needed when it lands in an already-linked directory)
+3. If the app also writes its own files into that directory, add it to
+   `./install`'s `mkdir -p` list, so it stays a real directory
 
 ### Updating Existing Configurations
 - Edit files directly - changes reflect immediately via symlinks

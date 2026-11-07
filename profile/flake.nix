@@ -15,7 +15,8 @@
       ];
     in
     {
-      # One set per <name>.nix next to this file (e.g. `nix profile add path:...#global`).
+      # One set per <name>.nix next to this file (today just global:
+      # `nix profile add path:...#global`).
       # Project tools (runtimes, language servers, linters) aren't here: they come from
       # each project's mise.toml, or on work from the workstation.
       packages = lib.genAttrs systems (
