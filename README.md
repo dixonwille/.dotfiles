@@ -13,10 +13,11 @@ This dotfiles setup organizes configurations by application, with each directory
 ├── hyprland/.config/hyprland/ # Hyprland window manager config
 ├── nvim/.config/nvim/         # Neovim configuration
 ├── tmux/.config/tmux/         # Tmux configuration  
-├── wsl/.config/wsl/           # WSL-specific settings
+├── mise/.config/mise/         # mise settings (no tools: those are per project)
 ├── zsh/.config/zsh/           # Zsh shell configuration
 ├── zsh-plugins/               # Git submodules for Zsh plugins
 ├── personal/                  # Private git submodule (work configs, secrets)
+├── profile/                   # Nix flake: command-line tool sets for the nix profile
 ├── install/                   # Installation scripts
 └── CLAUDE.md                  # Instructions for Claude Code
 ```
@@ -84,29 +85,42 @@ stow -Rt "$HOME" --no-folding bin
 - **gcc/make** - C toolchain for building tools
 
 ### Command-Line Tools (nix profile)
-`nix/.config/toolchains/profiles/` holds sets of command-line tools, newer than a
-distribution's packages, that each machine's install script adds to its nix
-profile:
+`profile/` holds sets of command-line tools I need whatever the project,
+newer than a distribution's packages, that each machine's install script adds
+to its nix profile:
 
-- **global** (every machine) - direnv, nix-direnv, oh-my-posh, tmux, fzf, eza,
-  bat, tealdeer, neovim, tree-sitter, ripgrep, fd, gh, delta, jujutsu, jq, yq, sqlite, uv,
-  cloudflared, htop, claude, and on Linux inotify-tools (Neovim's file watching
-  for language servers) and wl-clipboard (Neovim's and gh's clipboard)
-- **work** (WSL) - podman, az (with extensions), pwsh, pup, sqlcmd (go-sqlcmd), pulumi,
-  terraform, redis-cli, op, xdg-utils, wsl-open (`$BROWSER`), and
-  the Az PowerShell modules scripts use (listed in
-  `toolchains/pkgs/pwsh-modules/modules.json`; `./update.sh [--latest]` there
-  re-locks them, then `nix profile upgrade --all`)
+- **global** (every machine) - mise, oh-my-posh, tmux, fzf, eza, bat, tealdeer,
+  taskwarrior, neovim, tree-sitter, ripgrep, fd, gh, delta, jujutsu, jq, yq,
+  sqlite, cloudflared, htop, claude, and on Linux inotify-tools (Neovim's
+  file watching for language servers) and wl-clipboard (Neovim's and gh's
+  clipboard)
 - **personal** - typst, codecrafters
 
 ```bash
-toolchains="path:$(realpath ~/.config/toolchains)"
-nix profile add "$toolchains#global" "$toolchains#work"
+nix profile add "path:$HOME/.dotfiles/profile#global" "path:$HOME/.dotfiles/profile#personal"
 ```
 
-After editing a set, or `nix flake update` in `~/.config/toolchains`, run
-`nix profile upgrade --all`. Project languages come from toolchains instead
-(`use toolchain <name>` in a project's `.envrc`).
+After editing a set, or `nix flake update` in `profile/`, run
+`nix profile upgrade --all`.
+
+### Project Tools (mise)
+A project's tools aren't global: runtimes, language servers, formatters and
+linters come from the project's `mise.toml` (and `mise.lock`), at the versions
+its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
+`~/.config/mise/config.toml` holds settings only, never `[tools]`.
+
+- **My projects** - commit `mise.toml`; CI reads the same file
+  (`jdx/mise-action`).
+- **Someone else's repo** - `mise.local.toml`, ignored by the global git
+  ignore.
+- **Work** (WSL, on the work machine's own setup) -
+  the workstation provides the runtimes (dotnet, go, node, pwsh, bicep, uv) and
+  team CLIs. `~/Projects/mise.toml` (`personal/mise-work`) adds the editor tools
+  for every clone under it, and never a runtime. A repo whose CI pins something
+  else gets its own `mise.local.toml`.
+- **This repo** - its `mise.toml` has the Lua and shell tools. Nix tooling
+  (nixd, nixfmt) has no release binaries for mise: for `profile/`, run nvim
+  under `nix shell nixpkgs#nixd nixpkgs#nixfmt`.
 
 ### Other Tools
 - **JetBrainsMono Nerd Font Mono** - Font with programming ligatures
@@ -126,12 +140,15 @@ After editing a set, or `nix flake update` in `~/.config/toolchains`, run
 
 ## Environment Configuration
 
-### env.d System
+### environment.d and env.d
 
-This dotfiles setup uses a modular environment configuration system through `env.d` directories:
-
-- `zsh/.config/zsh/env.d/` - Main environment files (all machines)
-- `personal/zsh-work/.config/zsh/env.d/` - Work-specific environment files
+- **Plain values** - `~/.config/environment.d/*.conf`, systemd's format
+  (`KEY=VALUE`, `$VAR` expansion only; no spaces or quotes, lists use `:`), as
+  the work workstation's `env file`. The systemd user manager reads them;
+  `.zshenv` sources them for shells it didn't start. Work's are in
+  `personal/environment-work/`.
+- **Shell code** (PATH, functions, secrets) - zsh's `env.d`:
+  `zsh/.config/zsh/env.d/` (all machines)
 
 ### 1Password Secret Management
 

@@ -41,7 +41,7 @@ for _, domain in ipairs(wsl) do
 	domain.default_cwd = "~"
 end
 config.wsl_domains = wsl
-config.default_domain = "WSL:Ubuntu-24.04"
+config.default_domain = "WSL:Ubuntu-26.04"
 
 -- Leave SSH_AUTH_SOCK alone. WezTerm otherwise points it at its own agent
 -- proxy socket, which never gets created here, so ssh.exe (git's sshCommand)

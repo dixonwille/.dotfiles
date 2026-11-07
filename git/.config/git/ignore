@@ -1,0 +1,6 @@
+**/.claude/settings.local.json
+# My own tools in a repo that isn't mine (mise's local config and its lock)
+mise.local.toml
+mise.local.lock
+.mise.local.toml
+.mise.local.lock

@@ -8,7 +8,6 @@ Complete list of stow packages in this repository.
 |---------|---------|--------|
 | `bin` | Custom scripts | `~/.local/bin/` |
 | `git` | Git configuration | `~/.config/git/` |
-| `git-wsl` | WSL-specific git config | `~/.config/git/` |
 | `nvim` | Neovim configuration | `~/.config/nvim/` |
 | `tmux` | tmux configuration | `~/.config/tmux/` |
 | `zsh` | Zsh shell configuration | `~/.config/zsh/` |
@@ -18,7 +17,6 @@ Complete list of stow packages in this repository.
 | Package | Purpose | When to use |
 |---------|---------|-------------|
 | `hyprland` | Hyprland WM config | Linux with Hyprland |
-| `wsl` | WSL-specific settings | Windows Subsystem for Linux |
 | `ssh-linux` | SSH config for Linux | Linux systems |
 | `ssh-macos` | SSH config for macOS | macOS systems |
 
@@ -28,9 +26,9 @@ Complete list of stow packages in this repository.
 |---------|---------|
 | `ghostty` | Ghostty terminal config |
 | `jj` | Jujutsu VCS config |
-| `nix` | Nix and direnv config, plus `~/.config/toolchains` (flake of per-language dev toolchains loaded by `use toolchain <name>...` in `.envrc`), and the sets of command-line tools each machine adds to its nix profile (`toolchains/profiles/`: global, work, personal) |
+| `nix` | Nix config (`nix.conf`) and direnv's settings (`direnv.toml`; direnv itself is the work workstation's, for repos with their own flake) |
+| `mise` | mise's global settings only (`~/.config/mise/config.toml`); tools are per project |
 | `oh-my-posh` | Shell prompt theme |
-| `containers` | Podman's `~/.config/containers` (image policy; podman itself comes from the nix profile's work set) |
 | `claude` | Global Claude SubAgents and Skills |
 
 ## Support Directories
@@ -38,7 +36,8 @@ Complete list of stow packages in this repository.
 | Directory | Purpose |
 |-----------|---------|
 | `install/` | Installation scripts |
-| `personal/` | Private submodule (work configs) |
+| `profile/` | Nix flake (not stowed) of the command-line tool sets each machine adds to its nix profile: `global`, `personal` |
+| `personal/` | Private submodule (work configs; `mise-work` stows `~/Projects/mise.toml`) |
 | `zsh-plugins/` | Zsh plugin submodules |
 
 ## Adding New Packages

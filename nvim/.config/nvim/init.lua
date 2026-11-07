@@ -39,7 +39,7 @@ require("packages") -- This is what installs all the plugins and is a must
 safe_require("ui")
 safe_require("navigation")
 safe_require("treesitter")
-safe_require("toolchains")
+safe_require("languages")
 safe_require("gotmpl")
 safe_require("completion")
 safe_require("spell")

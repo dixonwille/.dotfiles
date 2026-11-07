@@ -1,0 +1,6 @@
+# mise's global config: settings only. Never [tools] here: tools belong to a
+# project (its mise.toml, at the versions its CI uses), or on work to the
+# workstation, so nothing a project didn't ask for ends up on PATH.
+[settings]
+# The dotnet backend (Roslyn as a .NET tool, in work's ~/Projects/mise.toml)
+experimental = true

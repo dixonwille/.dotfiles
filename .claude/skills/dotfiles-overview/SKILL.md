@@ -25,7 +25,7 @@ package-name/
 - **Binaries**: `bin/.local/bin/` contains custom scripts → `~/.local/bin/`
 - **Git submodules**: `zsh-plugins/` contains Zsh plugin submodules
 - **Private submodule**: `personal/` is a private git submodule (work configs, secrets)
-- **Environment-specific**: `hyprland/`, `wsl/` for specialized setups
+- **Environment-specific**: `hyprland/` for specialized setups; on work WSL the work machine's own setup owns system setup (`/etc/wsl.conf`, podman, git's ssh.exe)
 
 ## Key Tools
 

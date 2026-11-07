@@ -1,36 +1,35 @@
 #!/usr/bin/env bash
+# The work WSL instance, on top of the work machine's own setup (its bootstrap first:
+# Nix, the team's profile entry, git's ssh.exe, podman, wsl.conf, the env file).
+# Run from the repo root.
 packages=(
   bin
   zsh
   nix
+  mise
   git
-  git-wsl
   jj
   wezterm
   nvim
   oh-my-posh
   tmux
   zsh-plugins
-  containers
   personal/git
   personal/git-work
   personal/jj
   personal/jj-work
   personal/zsh-work
+  personal/environment-work
+  personal/mise-work
 )
 
 PKGS="${packages[@]}" ./install/install
 
-# Command-line tools (nix/.config/toolchains/profiles/). Only warns for a set
-# already added; `nix profile upgrade --all` picks up changes.
-toolchains="path:$(realpath "$HOME/.config/toolchains")"
-nix profile add "$toolchains#global" "$toolchains#work"
+# Command-line tools (profile/). Only warns for a set already added;
+# `nix profile upgrade --all` picks up changes. They sit behind the team's
+# entry (priority 4), so where both have a tool, the team's runs.
+nix profile add "path:$PWD/profile#global"
 
-# podman's own user units (podman.socket for Testcontainers), from the profile so
-# they follow upgrades; run `systemctl --user daemon-reload` after one
-systemctl --user link "$HOME"/.nix-profile/lib/systemd/user/podman.{socket,service}
-
-# TODO: This can be done for all WSL instances
 winHome=$(/mnt/c/Windows/System32/cmd.exe /C "echo %USERPROFILE%")
 winHome=$(wslpath -au "$winHome" | tr -d '\r')
 
@@ -49,7 +48,5 @@ local path = [[$wezterm_lua]]
 wezterm.add_to_config_reload_watch_list(path)
 return dofile(path)
 EOF
-
-sudo stow -Rt /etc wsl
 
 # TODO: What do we do about the ssh configs that need to be stored/updated on windows

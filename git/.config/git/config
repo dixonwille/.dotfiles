@@ -19,8 +19,6 @@
 [gpg "ssh"]
   program = "op-ssh-sign"
 [include]
-  path = "~/.config/git/wsl-config"
-[include]
   path = "~/.config/git/personal-config"
 [alias]
   nuke = !git fetch -p && git for-each-ref --format='%(if:equals=[gone])%(upstream:track)%(then)%(if:notequals=*)%(HEAD)%(then)%(refname:short)%(end)%(end)' refs/heads | xargs -r -n1 git branch -D

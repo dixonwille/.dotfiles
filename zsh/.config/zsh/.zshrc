@@ -24,6 +24,13 @@ compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
 
+# Each project's tools (runtimes, language servers, linters) from its mise.toml,
+# on PATH while in it. PATH entries added after this (direnv's, for a repo's own
+# flake) stay ahead of mise's.
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+
 # Source interactive-only files from module rc.d directories
 if [ -d "$ZDOTDIR/rc.d" ]; then
   for rc_file in "$ZDOTDIR/rc.d"/*.zsh(N); do
@@ -58,9 +65,6 @@ bindkey "^[[A" up-line-or-beginning-search
 bindkey "^[[B" down-line-or-beginning-search
 
 # Plugins
-if command -v direnv >/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
-fi
 ZSH_PLUGINS=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins
 if [ -d "$ZSH_PLUGINS" ]; then
   source "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"

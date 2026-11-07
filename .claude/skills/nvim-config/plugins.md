@@ -56,80 +56,79 @@ end)
 
 ## Language Tooling
 
-Language servers, formatters, and linters are NOT installed by Neovim (no mason).
-They come from the project environment, and Neovim uses whatever is on `PATH`
-when it starts:
+Language servers, formatters, and linters are NOT installed by Neovim (no
+mason, which needs every server's build toolchain installed globally), and not
+globally either: each project's CI may pin different tools. They come from the
+project, and Neovim uses whatever is on `PATH` when it starts:
 
-- A repo's `.envrc` loads toolchains: `use toolchain lua` (see the `nix` package,
-  `~/.config/toolchains/`). Repos with their own flake use `use flake` instead.
-  - Toolchains hold what a project builds with and what the editor needs for
-    its languages. General CLI tools (az, pwsh, func, fzf, rg, …) stay
-    installed globally, even when the editor uses them.
-  - Toolchains are versioned (`node24`, `go1_26`, `protobuf36`) when the
-    project can see the tool's version and nixpkgs carries version lines for
-    it. Editor-only tooling (`typescript`, `vue`, `angular`) and tools with a
-    single nixpkgs version (`bicep`, `lua`) aren't; `flake.lock` pins those.
-  - .NET: `use toolchain dotnet` (every SDK in use combined into one `dotnet`,
-    plus roslyn-ls and the Azure Artifacts credential provider for NuGet).
-    Unversioned on purpose: global.json selects the SDK.
-  - Bicep: `use toolchain bicep` (CLI and Bicep.LangServer), usually alongside
-    another: `use toolchain dotnet bicep`.
-  - JavaScript/TypeScript: `typescript` (vtsls, plus ESLint, HTML, CSS/SCSS/Less
-    and JSON servers); `vue` and `angular` add their servers and `require`
-    `typescript`. The project's Node is separate and versioned (`node24`), e.g.
-    `use toolchain dotnet bicep node24 vue`. Language servers and prettierd
-    bring their own Node; npm uses the project's. prettierd only runs the
-    project's own prettier (node_modules), else LSP formatting is the fallback.
-  - Shell: `shell` (bash-language-server with shellcheck diagnostics, shfmt).
-    shfmt uses conform's defaults: the repo's `.editorconfig`, else the
-    buffer's indentation. bash and sh only; nothing supports zsh.
-  - Tailwind: `tailwind` (tailwindcss-language-server, using the project's own
-    tailwindcss), next to `vue`/`angular`/etc. Where it's loaded, cssls learns
-    Tailwind's at-rules from `toolchains/tailwind-css-data.json`.
-  - Python: `python` (uv, ruff, ty). Unversioned, like dotnet: uv installs the
-    Python a project asks for (`UV_PYTHON_PREFERENCE=only-managed`, never the
-    OS's). ruff and ty run from the project's `.venv` when it has them
-    (`toolchains/python.lua`), else the toolchain's. Formatting is ruff's server.
-  - PowerShell: `powershell` (Editor Services with PSScriptAnalyzer, running in
-    nixpkgs' PowerShell; the global pwsh stays for running scripts). Default
-    analysis rules unless a repo has `PSScriptAnalyzerSettings.psd1`.
-    Formatting settings are the VS Code extension's defaults (copied, with
-    their source, in `toolchains/powershell.lua`), not the server's own.
-    Az modules come from the work nix profile (`pkgs/pwsh-modules.nix`) on
-    `PSModulePath`, which the server inherits, so Az cmdlets complete too.
-  - Azure Pipelines: `azure-pipelines` (Microsoft's language server, the pinned
-    public pipeline schema). Pipelines are `azure*.yml`/`azure*.yaml` plus
-    globs in a project's `DOTFILES_AZURE_PIPELINES` (`.envrc`); they get the
-    `yaml.azure-pipelines` filetype (`toolchains/azure_pipelines.lua`).
-  - GitHub Actions: `github-actions` (GitHub's own `actions-languageserver`
-    from @actions/languageserver, actionlint). Workflow files
+- mise: a project's `mise.toml` (and `mise.lock`) lists its runtimes, CI tools
+  and editor tools, on PATH while in it (`mise activate` in `.zshrc`).
+  `~/.config/mise/config.toml` (the `mise` package) holds settings only.
+  - My projects commit `mise.toml`, so CI (`jdx/mise-action`) runs the same
+    versions. In someone else's repo, `mise.local.toml` (globally git-ignored).
+  - Work: the work machine's own setup's nix profile provides the runtimes (dotnet
+    SDKs, go, node, pwsh with the Az modules, bicep with Bicep.LangServer, uv).
+    `~/Projects/mise.toml` (`personal/mise-work`) adds the editor tools for
+    every clone under it (mise merges parent directories' configs) and never a
+    runtime, which would shadow the team's. Servers build and run with the
+    team's runtimes: gopls (`go:` backend) with its go, Roslyn
+    (`dotnet:roslyn-language-server`, prerelease, experimental backend) with its
+    SDK, npm servers with its node.
+  - A server needing more than a command: Editor Services is a module bundle
+    (`powershell.lua` asks `mise where github:PowerShell/PowerShellEditorServices`);
+    Vue's TypeScript plugin is found from the `vue-language-server` on PATH
+    (`vue.lua`); the pipeline schema is a pinned URL (`azure_pipelines.lua`).
+  - Repos with their own flake (`use flake` in a committed `.envrc`) still use
+    direnv (hooked by the workstation's its init); its PATH entries stay
+    ahead of mise's.
+  - This repo's `mise.toml` has the Lua and shell tools. Nix tooling (nixd,
+    nixfmt, statix, deadnix) has no release binaries: run nvim under
+    `nix shell nixpkgs#nixd nixpkgs#nixfmt` for `profile/`.
+- Per language:
+  - .NET: Roslyn (`roslyn_ls`; nvim-lspconfig runs `roslyn-language-server`,
+    the .NET tool's command, when `Microsoft.CodeAnalysis.LanguageServer` isn't
+    on PATH). global.json selects the SDK.
+  - Bicep: Bicep.LangServer, from the bicep CLI's own package.
+  - JavaScript/TypeScript: vtsls, plus ESLint, HTML, CSS/SCSS/Less and JSON
+    servers (vscode-langservers-extracted); vue and angular add their servers.
+    prettierd only runs the project's own prettier (node_modules,
+    `PRETTIERD_LOCAL_PRETTIER_ONLY` in conform's env for it), else LSP
+    formatting is the fallback.
+  - Shell: bash-language-server with shellcheck diagnostics, shfmt. shfmt uses
+    conform's defaults: the repo's `.editorconfig`, else the buffer's
+    indentation. bash and sh only; nothing supports zsh.
+  - Tailwind: tailwindcss-language-server (using the project's own
+    tailwindcss). Where it's on PATH, cssls learns Tailwind's at-rules from
+    `languages/tailwind-css-data.json`.
+  - Python: ruff and ty run from the project's `.venv` when it has them
+    (`languages/python.lua`), else PATH's. Formatting is ruff's server.
+  - PowerShell: Editor Services with PSScriptAnalyzer, in the `pwsh` on PATH
+    (nvim-lspconfig's default). Default analysis rules unless a repo has
+    `PSScriptAnalyzerSettings.psd1`. Formatting settings are the VS Code
+    extension's defaults (copied, with their source, in
+    `languages/powershell.lua`), not the server's own.
+  - Azure Pipelines: Microsoft's language server, validating against the pinned
+    public pipeline schema. Pipelines are `azure*.yml`/`azure*.yaml` plus globs
+    in `DOTFILES_AZURE_PIPELINES`; they get the `yaml.azure-pipelines`
+    filetype (`languages/azure_pipelines.lua`).
+  - GitHub Actions: GitHub's own `actions-languageserver` (npm
+    @actions/languageserver), actionlint. Workflow files
     (`.github/workflows/*.y(a)ml`) get the `yaml.github-actions` filetype,
-    which both key on. `toolchains/github_actions.lua` points
+    which both key on. `languages/github_actions.lua` points
     gh_actions_ls at it instead of lttb's older wrapper, and passes it a token
     and repo metadata from the global `gh` CLI (fetched in the background before
     the server starts) so it validates `with:` inputs, secrets and variables.
   - General YAML gets treesitter highlighting only; no YAML language server.
-  - Servers not in nixpkgs are packaged in `toolchains/pkgs/` from npm
-    (`npm-server.nix`: a package.json pinning the version plus its lockfile).
-  - Nix: `nix` (nixd, nixfmt, statix, deadnix; Nix itself is global). Used by
-    this repo's own `.envrc`. For repos with a shared `.envrc` (e.g. their own
-    flake), add it in their untracked `.envrc.local` where it's sourced.
-  - Containers: `container` (Dockerfile and Compose language servers,
-    hadolint). Engine-agnostic: none of them talk to Podman or Docker. Compose
-    files get the `yaml.docker-compose` filetype (`toolchains/container.lua`).
-  - Go: versioned by minor (`go1_26`: Go and gopls, with `GOTOOLCHAIN=local`
-    so go.mod can't swap in a downloaded Go).
-  - Protobuf: `protobuf36` (protoc 36, protoc-gen-go, protoc-gen-go-grpc,
-    protols), e.g. `use toolchain go1_26 protobuf36`.
-  - A toolchain's `requires = [ ... ]` loads other toolchains with it, once
-    each, before it.
-  - Node comes from toolchains only; mise is gone (no activation in `.zshrc`),
-    so a repo's `.mise.toml` is ignored.
-- Each toolchain's editor tooling is a module, `lua/toolchains/<toolchain>.lua`
-  (named like the toolchain with `_` for `-`; versioned toolchains share one:
-  `go1_26` -> `go.lua`), returning a `Toolchain` spec. `toolchains.lua` loads
+  - Nix: nixd, nixfmt, statix, deadnix.
+  - Containers: Dockerfile and Compose language servers, hadolint.
+    Engine-agnostic: none of them talk to Podman or Docker. Compose files get
+    the `yaml.docker-compose` filetype (`languages/container.lua`).
+  - Go: gopls (also formats).
+  - Protobuf: protols.
+- Each language's editor tooling is a module, `lua/languages/<language>.lua`
+  (`_` for `-`), returning a `Language` spec. `languages.lua` loads
   every module (auto-discovered), merges the specs and applies them. Editor
-  support that isn't tied to a toolchain (`gotmpl.lua`, `spell.lua`) is a
+  support that isn't tied to a language's tools (`gotmpl.lua`, `spell.lua`) is a
   top-level module instead. A spec has `servers` (name -> vim.lsp.config
   overrides, `{}` for defaults, plus `executable` when nvim-lspconfig's `cmd`
   is a function), `formatters_by_ft`/`formatters` (conform),
@@ -147,7 +146,7 @@ when it starts:
   - Modules are all loaded before anything is applied, so reading
     `vim.lsp.config.<server>` in a module gives nvim-lspconfig's defaults.
   - A module that fails to load (or whose `setup` fails) is skipped with a
-    warning; the other toolchains keep working.
+    warning; the other languages keep working.
   - Use nvim-lspconfig defaults; only override what Neovim itself needs (e.g.
     roslyn_ls re-enables file-watching capabilities that Neovim turns off on
     Linux; it watches with `inotifywait`, from inotify-tools in the global nix
@@ -155,14 +154,14 @@ when it starts:
     plugin), never server preferences. The exception is settings a VS Code
     extension sends by default that the server's own defaults contradict
     (powershell_es formatting); copy them with a comment naming the source.
-- Editor settings that differ by machine or project come from `DOTFILES_*`
-  environment variables: machine-wide in zsh's `env.d` (work ones in
-  `personal/zsh-work`), extended per project in `.envrc`. E.g.
+- Editor settings that differ by machine come from `DOTFILES_*` environment
+  variables in `~/.config/environment.d/*.conf` (work's in
+  `personal/environment-work`); lists are `:`-separated. E.g.
   `DOTFILES_GOTMPL` lists the Go template files as `glob` or `glob=language`;
   nothing else is a Go template (see `lua/gotmpl.lua`).
-  `DOTFILES_AZURE_PIPELINES` adds pipeline file globs, usually per project.
+  `DOTFILES_AZURE_PIPELINES` adds pipeline file globs (a work repo's, in work's env.d).
   `DOTFILES_SPELLFILE` names a machine's own spell word list (2zg), e.g.
-  work names in `personal/nvim/spell/` (set in `personal/zsh-work` env.d).
+  work names in `personal/nvim/spell/` (set in `personal/environment-work`).
 - Files that need different tooling than the rest of their language get a
   compound filetype (`yaml.github-actions`, `yaml.azure-pipelines`,
   `yaml.docker-compose`): treesitter still uses the yaml parser, while servers

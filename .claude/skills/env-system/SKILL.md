@@ -6,14 +6,24 @@ user-invocable: false
 
 # Environment Configuration System
 
-Modular `env.d` system for environment variables with numbered files controlling load order.
+Two places, by what a variable needs:
+
+- **Plain values** go in `~/.config/environment.d/*.conf`, systemd's format
+  (`KEY=VALUE`, `$VAR`/`${VAR:-default}` expansion only, `#` comments), the
+  same as the work workstation's `env file`. The systemd user manager
+  reads them itself; `.zshenv` sources them (`set -a`) for shells it didn't
+  start (WSL terminals, macOS). So no spaces or quotes in values: lists use
+  `:`. The directory stays real (stow `--no-folding`): the workstation writes
+  its env file there.
+- **Anything needing shell code** (PATH dedupe, `mkdir`, functions, 1Password
+  secrets) goes in zsh's modular `env.d`, numbered files controlling load order.
 
 ## Locations
 
 | Location | Purpose |
 |----------|---------|
-| `zsh/.config/zsh/env.d/` | Main env files (all machines) |
-| `personal/zsh-work/.config/zsh/env.d/` | Work-specific (private submodule) |
+| `personal/environment-work/.config/environment.d/` | Work's plain values (private submodule), e.g. `60-dotfiles-work.conf` |
+| `zsh/.config/zsh/env.d/` | Shell code, all machines |
 
 ## File Naming Convention
 
@@ -28,9 +38,9 @@ Lower numbers load first. Use gaps (10, 20, 30) to allow insertion.
 
 ## Adding Environment Variables
 
-1. Identify appropriate env.d directory (main vs work)
-2. Choose file by category or create new numbered file
-3. Add export statement
+1. A plain value: a `.conf` in an `environment.d` package (after `50-`, the
+   workstation's), then `systemctl --user daemon-reload` for systemd's copy
+2. Shell code: a numbered file in zsh's `env.d`, with an export statement
 
 ```bash
 # In env.d/30-tools.zsh

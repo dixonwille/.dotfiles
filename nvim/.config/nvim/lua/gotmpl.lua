@@ -4,8 +4,9 @@
 -- queries/gotmpl/injections.scm).
 --
 -- Only files listed in DOTFILES_GOTMPL are Go templates, since other template
--- engines use the same extensions. It's set machine-wide in zsh's env.d and
--- extended per project in .envrc, as space-separated entries:
+-- engines use the same extensions. It's set machine-wide in
+-- ~/.config/environment.d (work's in personal/environment-work), as
+-- ":"-separated entries (spaces work too, outside environment.d):
 --   glob           template files, e.g. config.js.tmpl or layouts/**/*.html
 --   glob=language  also the rendered language, e.g. nginx.headers.tmpl=nginx
 -- Globs match the end of a file's path, so *.conf.tmpl matches in any directory.
@@ -19,7 +20,7 @@
 
 ---@type Template[]
 local templates = {}
-for entry in (vim.env.DOTFILES_GOTMPL or ""):gmatch("%S+") do
+for entry in (vim.env.DOTFILES_GOTMPL or ""):gmatch("[^%s:]+") do
   local glob, lang = entry:match("^([^=]+)=?(.*)$")
   table.insert(templates, {
     glob = vim.glob.to_lpeg(vim.startswith(glob, "/") and glob or "**/" .. glob),

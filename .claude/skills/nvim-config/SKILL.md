@@ -21,9 +21,9 @@ nvim/.config/nvim/
     ├── statusline.lua # Custom statusline (mini.statusline style, standard hl groups)
     ├── navigation.lua # File navigation (fzf, oil)
     ├── treesitter.lua # Parser auto-install (filetype + injected languages in view)
-    ├── toolchains.lua # Loads every toolchains/ module and applies their specs
+    ├── languages.lua  # Loads every languages/ module and applies their specs
     │                  # (servers, formatters, linters, filetypes, setup)
-    ├── toolchains/    # One module per toolchain, returning a Toolchain spec
+    ├── languages/     # One module per language, returning a Language spec
     │   ├── lua.lua, go.lua, protobuf.lua, shell.lua, nix.lua, bicep.lua,
     │   │   angular.lua, container.lua   # plain specs
     │   ├── dotnet.lua     # Roslyn: solution choice per file, :RoslynSolution
@@ -31,7 +31,7 @@ nvim/.config/nvim/
     │   ├── vue.lua        # vue_ls; vtsls gets the vue filetype and Vue's TS plugin
     │   ├── tailwind.lua   # tailwindcss; cssls learns Tailwind at-rules
     │   ├── python.lua     # ruff and ty from the project's .venv when present
-    │   ├── powershell.lua # Editor Services from the toolchain, VS Code formatting
+    │   ├── powershell.lua # Editor Services bundle via `mise where`, VS Code formatting
     │   ├── azure_pipelines.lua # Pipeline files (azure*.yml, DOTFILES_AZURE_PIPELINES)
     │   └── github_actions.lua  # Workflow filetype, actions-languageserver, actionlint
     ├── gotmpl.lua     # Go templates: filetype and rendered-language highlighting
@@ -47,7 +47,7 @@ require("packages")      -- Must succeed (installs plugins)
 safe_require("ui")       -- Continues if fails
 safe_require("navigation")
 safe_require("treesitter")
-safe_require("toolchains")
+safe_require("languages")
 safe_require("gotmpl")
 safe_require("completion")
 safe_require("spell")
