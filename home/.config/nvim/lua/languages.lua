@@ -2,8 +2,8 @@
 -- returns a Language spec for that language's servers, formatters and linters;
 -- this file merges every spec and sets them up.
 --
--- Tools come from the project, not Neovim: its mise.toml (on work, the
--- workstation and ~/Projects/mise.toml), on PATH when Neovim starts. So each is
+-- Tools come from the project, not Neovim: its mise.toml (and the machine's own
+-- setup), on PATH when Neovim starts. So each is
 -- only used when its command is executable: servers are enabled, linters run,
 -- and missing formatters are skipped quietly (LSP formatting is the fallback).
 --

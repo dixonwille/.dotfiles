@@ -5,8 +5,8 @@
 # To upgrade, run `nix flake update` in profile/, then `nix profile upgrade --all`.
 #
 # Not here: a project's tools (runtimes, language servers, formatters, linters).
-# Each project declares its own in mise.toml, at the versions its CI uses; on
-# work, the runtimes are the workstation's.
+# Each project declares its own in mise.toml, at the versions its CI uses; a
+# machine with its own setup (work) brings its runtimes.
 #
 # Left to the system: what bootstraps the dotfiles before nix (git, stow, curl),
 # the login shell (zsh), and the C compiler tree-sitter builds parsers with.
@@ -17,7 +17,10 @@ pkgs.buildEnv {
     with pkgs;
     [
       # Shell (zsh/.zshrc, tmux, nix)
-      mise # each project's tools, from its mise.toml (activated in .zshrc)
+      # Each project's tools, from its mise.toml (.zshrc sets it up). Not direnv:
+      # mise doesn't support running beside it; where a machine's own setup
+      # brings direnv, .zshrc keeps mise out of its way.
+      mise
       oh-my-posh
       tmux
       fzf # project-cd, tmux-sessionizer, fzf-lua

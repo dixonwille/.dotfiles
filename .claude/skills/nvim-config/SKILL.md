@@ -21,6 +21,7 @@ home/.config/nvim/
     ├── statusline.lua # Custom statusline (mini.statusline style, standard hl groups)
     ├── navigation.lua # File navigation (fzf, oil)
     ├── treesitter.lua # Parser auto-install (filetype + injected languages in view)
+    ├── mise.lua       # Swaps mise's shims on PATH for the project's tool directories
     ├── languages.lua  # Loads every languages/ module and applies their specs
     │                  # (servers, formatters, linters, filetypes, setup)
     ├── languages/     # One module per language, returning a Language spec
@@ -47,6 +48,7 @@ require("packages")      -- Must succeed (installs plugins)
 safe_require("ui")       -- Continues if fails
 safe_require("navigation")
 safe_require("treesitter")
+safe_require("mise")
 safe_require("languages")
 safe_require("gotmpl")
 safe_require("completion")

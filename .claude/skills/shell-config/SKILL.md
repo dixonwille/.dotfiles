@@ -23,7 +23,9 @@ Zsh configuration following XDG Base Directory specification.
 - **Vi mode**: Enabled by default
 - **History**: 10k entries, XDG-compliant location
 - **Conditional loading**: Tools/plugins load only if available
-- **mise**: `mise activate zsh` puts each project's tools (its `mise.toml`) on PATH while in it; PATH entries added after it (direnv's) stay ahead
+- **Order** (`.zshrc`'s sections): options and history, completion (`compinit`), `rc.d/`, widgets and keybinds, `.zshrc_work` (after keybinds, so it can rebind; on work it hooks direnv), mise (after it, see below), prompt, completions needing `compdef`, aliases, and the plugins last (zsh-syntax-highlighting wraps every widget defined before it)
+- **direnv**: not installed by the dotfiles; only where a machine's own setup brings and hooks it (the work overrides)
+- **mise**: each project's tools, from its `mise.toml`. mise and direnv: mise doesn't support running beside direnv (both rewrite PATH at each prompt). Where a machine's own setup hooks direnv (from `.zshrc_work`), `.zshrc` sets mise up after it: with direnv hooked, mise's shims go last on PATH (no prompt hook; each shim resolves its version from the directory it runs in, `[env]` isn't applied), so direnv's and the machine's own tools come first; elsewhere, `mise activate zsh`. Tested: in a repo with both an `.envrc` and a `mise.toml`, direnv's tool wins; in a mise-only repo, mise's. Outside any configured project a shim fails with "No version is set for shim" (in both modes: `mise activate` keeps the shims on PATH too, `activate_shims`); Neovim swaps the shims for the project's real tool directories at startup (`lua/mise.lua`)
 
 ## Plugins
 
@@ -41,9 +43,8 @@ Uses oh-my-posh (optional). Config in `home/.config/oh-my-posh/`.
 ## Work Integration
 
 If `~/.config/zsh/.zshrc_work` exists, it's sourced automatically (after the
-keybinds, so it can rebind). It comes from `personal/work`, stowed only where the
-work machine's own setup is installed, and runs the workstation's
-its init (its env file, `~/.local/bin`, direnv's hook).
+keybinds, so it can rebind). It comes from the private submodule's work layer,
+stowed only where `personal/install` decides.
 
 ## Testing Changes
 

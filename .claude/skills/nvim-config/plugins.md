@@ -62,25 +62,31 @@ globally either: each project's CI may pin different tools. They come from the
 project, and Neovim uses whatever is on `PATH` when it starts:
 
 - mise: a project's `mise.toml` (and `mise.lock`) lists its runtimes, CI tools
-  and editor tools, on PATH while in it (`mise activate` in `.zshrc`).
-  `~/.config/mise/config.toml` (the `mise` package) holds settings only.
+  and editor tools, on PATH while in it (`mise activate` in `.zshrc`; where a
+  machine's own setup hooks direnv, mise's shims instead, last on PATH).
+  `~/.config/mise/config.toml` holds settings only.
+  - mise's shims directory has a shim for every tool installed for any
+    project, and outside a project that sets the tool the shim fails. So at
+    startup `lua/mise.lua` asks `mise bin-paths` (once, ~20 ms) which tools the
+    starting directory sets, and swaps the shims directory on Neovim's PATH for
+    their real directories: a command on PATH is then one this project uses,
+    at its real path, and the executable rule below holds in both modes.
   - My projects commit `mise.toml`, so CI (`jdx/mise-action`) runs the same
     versions. In someone else's repo, `mise.local.toml` (globally git-ignored).
-  - Work: the work machine's own setup's nix profile provides the runtimes (dotnet
-    SDKs, go, node, pwsh with the Az modules, bicep with Bicep.LangServer, uv).
-    `~/Projects/mise.toml` (`personal/work`) adds the editor tools for
-    every clone under it (mise merges parent directories' configs) and never a
-    runtime, which would shadow the team's. Servers build and run with the
-    team's runtimes: gopls (`go:` backend) with its go, Roslyn
-    (`dotnet:roslyn-language-server`, prerelease, experimental backend) with its
-    SDK, npm servers with its node.
+  - A machine with its own setup (work) provides the runtimes; the private
+    layer adds editor tools for its repos through a parent directory's
+    `mise.toml` (mise merges parent configs), never a runtime, which would
+    shadow the machine's. Servers build and run with those runtimes: gopls
+    (`go:` backend) with its go, Roslyn (`dotnet:roslyn-language-server`,
+    prerelease, experimental backend) with its SDK, npm servers with its node.
   - A server needing more than a command: Editor Services is a module bundle
     (`powershell.lua` asks `mise where github:PowerShell/PowerShellEditorServices`);
     Vue's TypeScript plugin is found from the `vue-language-server` on PATH
     (`vue.lua`); the pipeline schema is a pinned URL (`azure_pipelines.lua`).
-  - Repos with their own flake (`use flake` in a committed `.envrc`) still use
-    direnv (hooked by the workstation's its init); its PATH entries stay
-    ahead of mise's.
+  - Where a machine's own setup brings direnv, repos with their own flake
+    (`use flake` in a committed `.envrc`) use it; mise's shims sit behind its
+    PATH entries, so the repo's flake wins. Personal machines have no direnv: a repo's
+    `.envrc` becomes a `mise.toml`.
   - This repo's `mise.toml` has the Lua and shell tools. Nix tooling (nixd,
     nixfmt, statix, deadnix) has no release binaries: run nvim under
     `nix shell nixpkgs#nixd nixpkgs#nixfmt` for `profile/`.
@@ -159,7 +165,7 @@ project, and Neovim uses whatever is on `PATH` when it starts:
   `personal/work`); lists are `:`-separated. E.g.
   `DOTFILES_GOTMPL` lists the Go template files as `glob` or `glob=language`;
   nothing else is a Go template (see `lua/gotmpl.lua`).
-  `DOTFILES_AZURE_PIPELINES` adds pipeline file globs (a work repo's, in work's `environment.d`).
+  `DOTFILES_AZURE_PIPELINES` adds pipeline file globs (work's, in the private layer's `environment.d`).
   `DOTFILES_SPELLFILE` names a machine's own spell word list (2zg), e.g.
   work names in `personal/nvim/spell/` (set in `personal/work`).
 - Files that need different tooling than the rest of their language get a

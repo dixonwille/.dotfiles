@@ -31,7 +31,7 @@ home/
   by file. A new such directory goes in that `mkdir` list.
 - **Git submodules**: `home/.local/share/zsh/plugins/` holds the Zsh plugin submodules
 - **Private submodule**: `personal/` is a private git submodule (personal identity, work configs)
-- **Same everywhere**: every machine stows all of `home/`; differences are decided at runtime or by `./install`. On work WSL the work machine's own setup owns system setup (`/etc/wsl.conf`, podman, git's ssh.exe), and `personal/work` adds the work pieces
+- **Same everywhere**: every machine stows all of `home/`; differences are decided at runtime or by `./install`. A machine with its own setup (work) owns its system side; the private submodule's `personal/install` adds its layer (documented in the submodule's own skill)
 
 ## Key Tools
 

@@ -1,44 +1,41 @@
+# Interactive zsh. Order matters: completion setup before anything that calls
+# compdef, keybinds before the work overrides that may rebind them, mise after
+# them (it adapts to whether they hooked direnv), and the plugins last, since
+# zsh-syntax-highlighting wraps every widget defined before it.
+
+# Options and history -----------------------------------------------------------
+
 mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/zsh" "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-# Lines configured by zsh-newuser-install
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
 HISTSIZE=10000
 SAVEHIST=10000
 setopt extendedglob notify SHARE_HISTORY
 unsetopt autocd beep nomatch
 bindkey -v
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename "${ZDOTDIR:-$HOME}/.zshrc"
 
-# Completions for the nix profile's tools, ahead of the system's. Not in
+# Completion ---------------------------------------------------------------------
+
+# The nix profile's completions, ahead of the system's. Here rather than in
 # .zshenv: fpath isn't exported, so it belongs with the interactive setup.
 if [ -d "$HOME/.nix-profile/share/zsh/site-functions" ]; then
   fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
 fi
-
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
-# End of lines added by compinstall
 
-# Commone Environment
-export EDITOR="nvim"
+# Environment --------------------------------------------------------------------
+
+# Variables are in environment.d (see .zshenv); this one has a space, which that
+# format can't hold.
 export MANPAGER='nvim +Man!'
 
-# Each project's tools (runtimes, language servers, linters) from its mise.toml,
-# on PATH while in it. PATH entries added after this (direnv's, for a repo's own
-# flake) stay ahead of mise's.
-if command -v mise >/dev/null 2>&1; then
-  eval "$(mise activate zsh)"
-fi
+# Interactive-only snippets (e.g. rc.d/osc7.zsh, the terminals' cwd reporting)
+for rc_file in "$ZDOTDIR/rc.d"/*.zsh(N); do
+  . "$rc_file"
+done
+unset rc_file
 
-# Source interactive-only files from module rc.d directories
-if [ -d "$ZDOTDIR/rc.d" ]; then
-  for rc_file in "$ZDOTDIR/rc.d"/*.zsh(N); do
-    if [ -r "$rc_file" ]; then
-      . "$rc_file"
-    fi
-  done
-fi
+# Widgets and keybinds -------------------------------------------------------------
 
 # Jump to a project. Runs a real `cd` so prompt hooks and history see it.
 project-cd() {
@@ -51,12 +48,7 @@ zle -N project-cd
 bindkey -M viins '^f' project-cd
 bindkey -M vicmd '^f' project-cd
 
-# Work overrides (after keybinds so they can rebind)
-if [ -r "$HOME/.config/zsh/.zshrc_work" ]; then
-  source "$HOME/.config/zsh/.zshrc_work"
-fi
-
-# History search
+# History search on the arrow keys, by what's typed so far
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
@@ -64,12 +56,32 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search
 bindkey "^[[B" down-line-or-beginning-search
 
-# Plugins
-ZSH_PLUGINS=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins
-if [ -d "$ZSH_PLUGINS" ]; then
-  source "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  source "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+# Work overrides, from the private submodule when that machine gets them. After
+# the keybinds, so they can rebind them.
+if [ -r "$ZDOTDIR/.zshrc_work" ]; then
+  source "$ZDOTDIR/.zshrc_work"
 fi
+
+# Each project's tools, from its mise.toml. mise doesn't support running beside
+# direnv (both rewrite PATH at each prompt, and can undo each other's entries),
+# which a machine's own setup may already have hooked (the work overrides
+# above), for repos that commit an .envrc. So:
+# - where direnv is hooked, mise stays out of the prompt: its shims go last on
+#   PATH, so they only fill in what nothing else provides (e.g. editor tools
+#   from a parent directory's mise.toml), and each resolves its version from the
+#   directory it runs in. direnv's and the machine's own tools come first.
+#   mise.toml's [env] isn't applied there.
+# - everywhere else, mise activate: tools and [env] follow each prompt.
+if command -v mise >/dev/null 2>&1; then
+  if (( ${+functions[_direnv_hook]} )); then
+    path+=("${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}/shims")
+  else
+    eval "$(mise activate zsh)"
+  fi
+fi
+
+# Prompt ---------------------------------------------------------------------------
+
 if command -v oh-my-posh >/dev/null 2>&1; then
   # init caches its script under a name that ignores the binary's path, so a nix
   # rebuild at the same version keeps calling the old, garbage-collected binary.
@@ -81,12 +93,14 @@ if command -v oh-my-posh >/dev/null 2>&1; then
   eval "$(oh-my-posh init zsh --config "${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-posh/theme.omp.json")"
 fi
 
-# Completions
+# Completions that need compinit ---------------------------------------------------
+
 if command -v jj >/dev/null 2>&1; then
   source <(COMPLETE=zsh jj)
 fi
 
-# Aliases
+# Aliases --------------------------------------------------------------------------
+
 alias vim="nvim"
 if command -v eza >/dev/null 2>&1; then
   alias ls="eza"
@@ -94,4 +108,14 @@ if command -v eza >/dev/null 2>&1; then
 fi
 if command -v bat >/dev/null 2>&1; then
   alias cat="bat"
+fi
+
+# Plugins, last ----------------------------------------------------------------------
+
+# zsh-syntax-highlighting has to come after every widget and keybind (it wraps the
+# ones that exist when it loads), and autosuggestions before it.
+ZSH_PLUGINS=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins
+if [ -d "$ZSH_PLUGINS" ]; then
+  source "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi

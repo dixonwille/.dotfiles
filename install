@@ -3,35 +3,79 @@
 #
 # Every machine gets the same files: home/ mirrors $HOME, and what differs by
 # machine is decided at runtime by the configs themselves (ssh's 1Password
-# agent, git's and jj's work identity, guarded tools in .zshrc), or by the glue
-# at the end. The one role: the work machine is the one with the work
-# workstation (its bootstrap first), which also gets personal/work.
+# agent, git's and jj's conditional identities, guarded tools in .zshrc), or by
+# the glue at the end. The private submodule adds its own layer through
+# personal/install, when it has one.
 #
-# Before: git, stow and Nix (on work, the workstation's bootstrap provides Nix).
+# Before (README's "Before you start"): git, stow, curl, tar, a C compiler, Nix,
+# zsh as the login shell, and 1Password's SSH agent on. A plain clone over HTTPS
+# is enough: this checks out the submodules itself.
 cd "$(dirname "$0")" || exit 1
 
-private=(base)
-work=
-if command -v work >/dev/null 2>&1; then
-  work=1
-  private+=(work)
-fi
+# checkout PATH: check out a submodule that isn't yet; fails if it can't. Only
+# then: `git submodule update` would move one that's checked out back to the
+# commit this repo records.
+checkout() {
+  [[ $(git submodule status -- "$1") == -* ]] || return 0
+  git submodule update --init -- "$1"
+}
+
+# The public submodules (the zsh plugins, over HTTPS) now; personal/ (private,
+# over SSH) once home/ has given ssh its config, below
+while read -r _ path; do
+  if [[ $path != personal ]]; then checkout "$path"; fi
+done < <(git config -f .gitmodules --get-regexp '\.path$')
+
+# Links into this repo whose file is gone (moved or deleted since the last run):
+# stow doesn't remove them, and refuses to stow over them. Only dangling links
+# whose target is in this repo, only where stow links (old layouts included).
+# Portable: macOS has neither find -xtype nor realpath -m.
+repo_name=$(basename "$PWD")
+while IFS= read -r link; do
+  [[ -e $link ]] && continue
+  target=$(readlink "$link")
+  case "/$target/" in
+    */"$repo_name"/*) rm -- "$link" && echo "removed dangling ${link/#$HOME/\~} -> $target" ;;
+  esac
+done < <(
+  find "$HOME" -maxdepth 1 -type l
+  for d in .config:3 .local/bin:1 .local/share:1 .ssh:2 Projects:1; do
+    if [[ -d $HOME/${d%:*} ]]; then find "$HOME/${d%:*}" -maxdepth "${d#*:}" -type l; fi
+  done
+)
 
 # Stow folds: a directory that doesn't exist yet becomes one link into the repo,
 # so new files there show up without a restow. These must stay real directories,
 # because something besides home/ writes into them; stow then links file by file
 # inside. ~/.config and ~/.local/share are here so they never fold whole.
 #   ~/.ssh                   ssh's known_hosts
-#   ~/.local/bin             ./install's links below, other installers (work tools)
+#   ~/.local/bin             ./install's links below, other installers
 #   ~/.config/{git,jj,zsh}   personal/'s files
-#   ~/.config/environment.d  the workstation's env file, personal/work's
-#   ~/.config/direnv         the workstation's lib/ drop-in
+#   ~/.config/environment.d  other tools' env files, personal/'s
+#   ~/.config/direnv         other tools' drop-ins (lib/)
 #   ~/.config/nix            nix registry's registry.json
 mkdir -p "$HOME"/.config/{git,jj,zsh,environment.d,direnv,nix} "$HOME"/.local/{bin,share} "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
 stow -R -d . -t "$HOME" home
+
+# personal/: home/'s ssh config is what points ssh at 1Password's agent (on a
+# machine whose own setup sets git's sshCommand, that does). The first connection
+# asks to confirm GitHub's host key, and 1Password to approve.
+if ! checkout personal; then
+  echo "Couldn't check out personal/ (private, over SSH): is 1Password running, with its SSH agent on?" >&2
+  echo "Everything else is set up; run ./install again for the private layer." >&2
+fi
 # personal/ is its own stow directory (a submodule), and only ever adds files
-stow -R -d personal -t "$HOME" --no-folding "${private[@]}"
+if [[ -d personal/base ]]; then
+  stow -R -d personal -t "$HOME" --no-folding base
+fi
+
+# A clone over HTTPS pushes over SSH, through the same agent; fetching stays
+# anonymous
+push=$(git remote get-url --push origin 2>/dev/null)
+if [[ $push == https://github.com/* ]]; then
+  git remote set-url --push origin "git@github.com:${push#https://github.com/}"
+fi
 
 # Command-line tools (profile/). Only warns when the set is already there;
 # `nix profile upgrade --all` picks up changes. On work they sit behind the
@@ -67,7 +111,7 @@ else
   done
 fi
 
-if [[ -n $work ]]; then
-  # ~/Projects/mise.toml: trust it, then install the editor tools it lists
-  echo "Then: cd ~/Projects && mise trust && mise install"
+# The private submodule's own layer (personal/install decides where it applies)
+if [[ -x personal/install ]]; then
+  personal/install
 fi

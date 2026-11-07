@@ -14,7 +14,7 @@ decided at runtime by the configs themselves, or by `./install`'s glue.
 | `.config/git/` | Git configuration, global ignore |
 | `.config/jj/` | Jujutsu config |
 | `.config/mise/` | mise's global settings only; tools are per project |
-| `.config/nix/`, `.config/direnv/` | `nix.conf`; direnv's settings (direnv itself is the work workstation's, for repos with their own flake) |
+| `.config/nix/`, `.config/direnv/` | `nix.conf`; direnv's settings (where a machine's own setup brings direnv) |
 | `.config/nvim/` | Neovim configuration |
 | `.config/oh-my-posh/` | Shell prompt theme |
 | `.config/tmux/` | tmux configuration |
@@ -30,7 +30,7 @@ adds files to directories `home/` already has).
 | Package | Purpose | Stowed |
 |---------|---------|--------|
 | `base` | Personal identity: git's `personal-config`, jj's `01-personal.toml` | Every machine |
-| `work` | Everything work: git and jj work identity, `.zshrc_work` (its init), `environment.d/60-dotfiles-work.conf`, `~/Projects/mise.toml` (work's editor tools) | Where the work machine's own setup is installed (`work` on PATH) |
+| `work` | The work layer: identity, `.zshrc_work`, environment and editor tools for work (see the submodule's own skill) | Where `personal/install` decides (the work machine) |
 
 `personal/nvim/spell/` isn't a package: `DOTFILES_SPELLFILE` names the work word list by its path.
 

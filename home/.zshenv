@@ -5,7 +5,7 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 typeset -U path PATH
 
 # The environment: plain variables in systemd's environment.d format (KEY=VALUE,
-# with only $VAR expansion), as the workstation's env file. The systemd
+# with only $VAR expansion), beside any other tools' files there. The systemd
 # user manager reads them itself; shells it didn't start (WSL terminals, macOS)
 # load them here. The shell sources each file, so values can't contain spaces or
 # quotes: lists use ":".

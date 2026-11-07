@@ -4,7 +4,8 @@
 -- loads it from the package the vue-language-server on PATH belongs to, and
 -- their versions always match.
 
----The @vue/language-server package directory, from its executable
+---The @vue/language-server package directory, from its executable (a real
+---path: lua/mise.lua swaps mise's shims for the project's tool directories)
 ---@return string?
 local function language_server_package()
   local exe = vim.fn.exepath("vue-language-server")

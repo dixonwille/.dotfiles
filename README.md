@@ -28,54 +28,59 @@ Personal dotfiles repository using GNU Stow for symlink management, following XD
 
 ## Quick Start
 
-### Minimal Required Tools
+### Before you start
 
-Before installation, ensure these tools are available:
+- **1Password**, the desktop app, signed in, with Settings → Developer → **Use the
+  SSH agent** on: git reaches the private submodule and signs commits through it.
+  On WSL that's 1Password for Windows, which the work machine's own setup covers.
+- **git, stow, curl, tar and a C compiler.** stow links the files; Neovim's
+  treesitter downloads parsers with curl and tar and compiles them (tree-sitter
+  calls `cc`):
+  - Ubuntu: `sudo apt install zsh git stow curl build-essential`
+  - CachyOS / Arch: `sudo pacman -S --needed zsh git stow curl base-devel`
+  - macOS: `xcode-select --install` (git and the compiler; curl and tar ship
+    with macOS), then `brew install stow`
+- **zsh** as the login shell, once installed: `chsh -s "$(command -v zsh)"`,
+  then a new terminal (already the default on macOS).
+- **[Nix](https://nixos.org/download/)**, multi-user. On a machine with its own
+  setup (work), run that first: it installs Nix.
+- For the terminal: Ghostty (Linux, macOS) or WezTerm (Windows, for WSL), and
+  the fonts both configs use: **Maple Mono NF CN** (text, CJK and Nerd Font
+  icons; from [its releases](https://github.com/subframe7536/maple-font/releases))
+  and **DejaVu Sans Mono** (the symbols Maple lacks). For WezTerm, install them
+  on Windows, not in WSL.
+
+### Install
 
 ```bash
-# Essential tools
-sudo apt install git stow curl wget tar gcc make unzip
-```
-
-Plus [Nix](https://nixos.org/download/) (multi-user). `./install` adds the
-everyday command-line tools to your nix profile (see
-[Command-Line Tools](#command-line-tools-nix-profile)). On the work WSL, run the
-work machine's own setup's bootstrap
-first: it provides Nix, and `./install` then adds `personal/work`.
-
-### Installation
-
-#### Option 1: Using Install Script (Recommended)
-
-```bash
-git clone --recurse-submodules git@github.com:dixonwille/.dotfiles.git ~/.dotfiles
+git clone https://github.com/dixonwille/.dotfiles.git ~/.dotfiles
 ~/.dotfiles/install
 ```
 
-The same on every machine, and safe to re-run.
+Then open a new terminal. Clone over HTTPS: the repo is public, so the clone
+needs no credentials, which a new machine doesn't have set up yet. `./install`
+does the rest, in this order:
 
-#### Option 2: Manual Stow Installation
+1. Checks out the zsh plugins (public submodules, over HTTPS).
+2. Links `home/` into `$HOME`, after creating the directories other tools also
+   write into, so those stay real. That includes `~/.ssh/config`, which points
+   ssh at 1Password's agent.
+3. Checks out `personal/` (private, over SSH, through that agent). The first
+   connection asks you to confirm GitHub's host key, and 1Password to approve.
+   If it can't (1Password not running yet), it says so and skips the private
+   layer.
+4. Links `personal/base`, and sets `origin`'s push URL to SSH (fetching stays
+   anonymous, over HTTPS).
+5. Adds the `global` set to the nix profile.
+6. Links `op-ssh-sign` from the installed 1Password app; on WSL also `git.exe`
+   and WezTerm's Windows-side config.
+7. Runs `personal/install`, the private layer's own step.
 
-```bash
-cd ~/.dotfiles
-# Directories other programs also write into must exist first (see ./install)
-mkdir -p ~/.config/{git,jj,zsh,environment.d,direnv,nix} ~/.local/{bin,share} ~/.ssh
-stow -R -d . -t "$HOME" home
-stow -R -d personal -t "$HOME" --no-folding base   # and work, on the work machine
-```
+It's safe to re-run, and that's how to finish anything it skipped (e.g. after
+starting 1Password) or to pick up changes after a pull. To do it by hand, read
+`install`: it's short, and commented.
 
-**Note**: stow folds a directory that doesn't exist yet into one link, so new
-files in the repo show up without a restow; the ones `./install` creates first
-stay real and get file-by-file links.
-
-## Complete Tool List
-
-### Essential Tools
-- **git** - Version control
-- **stow** - Symlink management
-- **curl/wget** - Download utilities
-- **tar/unzip** - Archive tools
-- **gcc/make** - C toolchain for building tools
+## Tools
 
 ### Command-Line Tools (nix profile)
 `profile/` holds sets of command-line tools I need whatever the project,
@@ -98,25 +103,20 @@ After editing a set, or `nix flake update` in `profile/`, run
 ### Project Tools (mise)
 A project's tools aren't global: runtimes, language servers, formatters and
 linters come from the project's `mise.toml` (and `mise.lock`), at the versions
-its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
+its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`). No
+direnv: mise doesn't support running beside it.
 `~/.config/mise/config.toml` holds settings only, never `[tools]`.
 
 - **My projects** - commit `mise.toml`; CI reads the same file
   (`jdx/mise-action`).
 - **Someone else's repo** - `mise.local.toml`, ignored by the global git
   ignore.
-- **Work** (WSL, on the work machine's own setup) -
-  the workstation provides the runtimes (dotnet, go, node, pwsh, bicep, uv) and
-  team CLIs. `~/Projects/mise.toml` (`personal/work`) adds the editor tools
-  for every clone under it, and never a runtime. A repo whose CI pins something
-  else gets its own `mise.local.toml`.
+- **A machine with its own setup** (work) - that setup provides the runtimes;
+  the private layer can add editor tools for its repos through a parent
+  directory's `mise.toml` (mise merges parent configs), never a runtime.
 - **This repo** - its `mise.toml` has the Lua and shell tools. Nix tooling
   (nixd, nixfmt) has no release binaries for mise: for `profile/`, run nvim
   under `nix shell nixpkgs#nixd nixpkgs#nixfmt`.
-
-### Other Tools
-- **JetBrainsMono Nerd Font Mono** - Font with programming ligatures
-- **1Password** - Desktop app (its CLI integration needs the system's `op`)
 
 ## Key Features
 
@@ -128,8 +128,9 @@ its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
 - **Vi mode**: Enabled by default
 - **History**: 10k entries in XDG-compliant location
 - **Plugins**: zsh-autosuggestions, zsh-syntax-highlighting (via git submodules)
-- **Project tools**: `mise activate` puts each project's `mise.toml` tools on PATH while in it
-- **Work integration**: Loads `~/.config/zsh/.zshrc_work` (from `personal/work`: the workstation's its init) if present
+- **Project tools**: `mise activate` puts each project's `mise.toml` tools on PATH while in it;
+  where something already hooked direnv, mise's shims go last on PATH instead
+- **Work integration**: Loads `~/.config/zsh/.zshrc_work` (from the private submodule) if present
 
 ## Environment Configuration
 
@@ -137,10 +138,11 @@ its CI uses, and are on PATH only inside it (`mise activate` in `.zshrc`).
 
 Every environment variable is in `~/.config/environment.d/*.conf`, systemd's
 format (`KEY=VALUE`, `$VAR` expansion only; no spaces or quotes, lists use `:`),
-as the work workstation's `env file`. The systemd user manager reads them;
+beside any other tools' files there. The systemd user manager reads them;
 `.zshenv` sources them for shells it didn't start, and keeps each PATH entry once.
 
-- `home/.config/environment.d/999-path.conf` - `~/.local/bin`, `~/.cargo/bin`
+- `home/.config/environment.d/20-editor.conf` - `EDITOR`
+- `home/.config/environment.d/999-path.conf` - `~/.local/bin`
   (`999-`: after Ubuntu's `99-environment.conf`, which sets PATH outright)
 - `personal/work/.config/environment.d/` - work's values
 
@@ -157,6 +159,7 @@ Since this is a dotfiles repository, typical operations include:
 ### Updating Existing Configurations
 - Edit files directly - changes reflect immediately via symlinks
 - For shell configs, source updated files or restart terminal
+- After a pull, run `./install` (new files, moved files, the nix set)
 
 ### Privacy Notes
 - The `personal/` directory is a private git submodule containing sensitive information
