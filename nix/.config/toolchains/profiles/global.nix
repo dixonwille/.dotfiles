@@ -22,6 +22,7 @@ pkgs.buildEnv {
       eza # ls alias
       bat # cat alias, fzf-lua previews
       tealdeer # tldr
+      taskwarrior3
 
       # Editor (nvim)
       neovim-unwrapped
