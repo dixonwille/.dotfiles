@@ -14,7 +14,7 @@ GNU Stow creates symlinks from package directories to target locations (default:
 ./install
 
 # Manual (from repo root): what ./install runs
-stow -R -d . -t "$HOME" home
+stow -d . -t "$HOME" home   # not -R: see ./install
 stow -R -d personal -t "$HOME" --no-folding base work
 ```
 

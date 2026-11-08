@@ -56,7 +56,11 @@ done < <(
 #   ~/.config/nix            nix registry's registry.json
 mkdir -p "$HOME"/.config/{git,jj,zsh,environment.d,direnv,nix} "$HOME"/.local/{bin,share} "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
-stow -R -d . -t "$HOME" home
+# Not a restow (-R): its unstow half folds a directory left holding only
+# personal/'s links (~/.config/git) into one link to personal/, and then can't
+# split it back open (stow 2.4 takes personal/ for a package here: "cannot read
+# directory: .dotfiles/personal/.config/git"). The loop above removes stale links.
+stow -d . -t "$HOME" home
 
 # personal/: home/'s ssh config is what points ssh at 1Password's agent (on a
 # machine whose own setup sets git's sshCommand, that does). The first connection

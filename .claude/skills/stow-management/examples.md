@@ -7,7 +7,7 @@
 ./install
 
 # Just home/ again, verbose
-stow -Rv -d . -t "$HOME" home
+stow -v -d . -t "$HOME" home   # not -R: see ./install
 ```
 
 ## Removing Symlinks
