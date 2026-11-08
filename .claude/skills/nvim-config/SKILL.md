@@ -25,7 +25,7 @@ home/.config/nvim/
     ├── languages.lua  # Loads every languages/ module and applies their specs
     │                  # (servers, formatters, linters, filetypes, setup)
     ├── languages/     # One module per language, returning a Language spec
-    │   ├── lua.lua, go.lua, protobuf.lua, shell.lua, nix.lua, bicep.lua,
+    │   ├── lua.lua, go.lua, odin.lua, protobuf.lua, shell.lua, nix.lua, bicep.lua,
     │   │   angular.lua, container.lua   # plain specs
     │   ├── dotnet.lua     # Roslyn: solution choice per file, :RoslynSolution
     │   ├── typescript.lua # vtsls, eslint, html, cssls, jsonls; prettierd
