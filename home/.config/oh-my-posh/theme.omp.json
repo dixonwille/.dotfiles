@@ -179,6 +179,15 @@
         },
         {
           "foreground": "#e0f8ff",
+          "style": "plain",
+          "options": {
+            "commands": { "context": "_get rc.context" }
+          },
+          "template": "{{ if .Commands.Context }}[\uf4a0 {{ .Commands.Context }}]-{{ end }}",
+          "type": "taskwarrior"
+        },
+        {
+          "foreground": "#e0f8ff",
           "properties": {
             "branch_icon": "\ue725 ",
             "fetch_status": true,

@@ -1,0 +1,82 @@
+# Vague, to match Ghostty, WezTerm and Neovim. Taskwarrior can't take hex
+# colors, so this uses only the terminal's 16 ANSI colors, which it draws in
+# Vague's palette (wezterm.lua has it):
+#   black #252530 (cursorline)   color8 #606079 (comments)
+#   red #D8647E   green #7FA563   yellow #F3BE7C   blue #6E94B2
+#   magenta #BB9DBD   cyan #AEAED1   white #CDCDCD
+# Muted text is color8, not "bright black": taskwarrior only brightens
+# backgrounds, so that would draw as black. Background fills stay rare: Vague
+# is mostly colored text on #141414.
+
+rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
+
+# General
+color.label=color8
+color.label.sort=blue
+color.alternate=on black
+color.header=blue
+color.footnote=color8
+color.warning=yellow
+color.error=red
+color.debug=magenta
+
+# Task states
+color.completed=color8
+color.deleted=color8
+color.active=bold green on black
+color.recurring=magenta
+color.scheduled=cyan
+color.until=
+color.blocked=color8
+color.blocking=yellow
+
+# Project
+color.project.none=
+
+# Priority
+color.uda.priority.H=bold red
+color.uda.priority.M=yellow
+color.uda.priority.L=color8
+
+# Tags
+color.tag.next=bold yellow
+color.tag.none=
+color.tagged=
+
+# Due dates
+color.due=yellow
+color.due.today=bold yellow
+color.overdue=bold red
+
+# Report: burndown
+color.burndown.done=on green
+color.burndown.pending=on red
+color.burndown.started=on yellow
+
+# Report: history
+color.history.add=black on blue
+color.history.delete=black on red
+color.history.done=black on green
+
+# Report: summary
+color.summary.background=on black
+color.summary.bar=black on green
+
+# Command: calendar
+color.calendar.due=black on yellow
+color.calendar.due.today=bold black on yellow
+color.calendar.holiday=black on magenta
+color.calendar.scheduled=black on cyan
+color.calendar.overdue=black on red
+color.calendar.today=bold black on blue
+color.calendar.weekend=color8
+color.calendar.weeknumber=color8
+
+# Command: sync
+color.sync.added=green
+color.sync.changed=yellow
+color.sync.rejected=red
+
+# Command: undo
+color.undo.after=green
+color.undo.before=red

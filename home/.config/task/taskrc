@@ -1,0 +1,6 @@
+data.location=~/.local/share/task
+news.version=3.5.0
+verbose=affected,blank,edit,header,footnote,label,new-id,news,project,special,sync,recur
+
+# Colours: Vague, as the terminal and Neovim
+include ~/.config/task/vague.theme
